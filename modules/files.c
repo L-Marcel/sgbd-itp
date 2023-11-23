@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <direct.h>
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <windows.h>
 #include "files.h"
 
 void create_database_folder() {
@@ -9,6 +9,25 @@ void create_database_folder() {
 
   if(stat("./database", &sb) != 0) {
     mkdir("database");
+  };
+}
+
+Tables * get_tables() {
+  Tables tables = {
+    .size = 0,
+    .tables = malloc(0)
+  };
+
+  HANDLE handle;
+  WIN32_FIND_DATAA data;
+
+  handle = FindFirstFileA("./database/*.csv", &data);
+  if(handle != INVALID_HANDLE_VALUE) {
+    do {
+    
+      printf("\n%s", data.cFileName);
+    } while(FindNextFileA(handle, &data));
+    FindClose(handle);
   };
 }
 

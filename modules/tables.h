@@ -18,3 +18,8 @@ typedef struct {
   int qtd_records;
   Record ** records;
 } Table;
+
+typedef struct {
+  Table * tables;
+  int size;
+} Tables;

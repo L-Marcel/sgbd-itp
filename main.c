@@ -19,6 +19,7 @@ int main() {
     .name = "Teste",
   };
 
+  list_files();
   save_table(table);
 
   UINT CPAGE_DEFAULT = GetConsoleOutputCP();
