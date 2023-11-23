@@ -4,6 +4,8 @@
     "*.sass": "tailwindcss",
     "*.lean4": "lean4",
     "*.lean": "lean",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "errno.h": "c",
+    "stat.h": "c"
   }
 }

@@ -6,9 +6,9 @@ dev: all ./build/main.exe
 	${EXECUTE}
 run: ./build/main.exe
 	${EXECUTE}
-all: main.c prints files tables
+all: main.c prints
 	${COMPILE} ${PARAMS}
-prints: ./modules/prints.c files tables
+prints: ./modules/prints.c files
 	gcc ./modules/prints.c -o ./build/modules/prints.o -c ${PARAMS}
 files: ./modules/files.c tables
 	gcc ./modules/files.c -o ./build/modules/files.o -c ${PARAMS}
