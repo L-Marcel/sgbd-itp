@@ -1,11 +1,13 @@
 PARAMS = -g -W -pedantic -All_LC=Portuguese
-dev:
-	make all \
-	make run
+COMPILE = gcc main.c ./build/modules/prints.o ./build/modules/files.o -o ./build/main
+EXECUTE = "./build/main.exe"
+
+dev: all dev
+	${COMPILE} && ${EXECUTE}
 run: ./build/main.exe
-	./build/main.exe
+	${EXECUTE}
 all: main.c prints files tables
-	gcc main.c ./build/modules/prints.o ./build/modules/files.o -o ./build/main ${PARAMS}
+	${COMPILE} ${PARAMS}
 prints: ./modules/prints.c files tables
 	gcc ./modules/prints.c -o ./build/modules/prints.o -c ${PARAMS}
 files: ./modules/files.c tables
