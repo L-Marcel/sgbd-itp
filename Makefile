@@ -2,8 +2,8 @@ PARAMS = -g -W -pedantic -All_LC=Portuguese
 COMPILE = gcc main.c ./build/modules/prints.o ./build/modules/files.o -o ./build/main
 EXECUTE = "./build/main.exe"
 
-dev: all run
-	${COMPILE} && ${EXECUTE}
+dev: all ./build/main.exe
+	${EXECUTE}
 run: ./build/main.exe
 	${EXECUTE}
 all: main.c prints files tables
