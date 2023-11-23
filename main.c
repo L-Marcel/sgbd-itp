@@ -11,9 +11,9 @@ int main() {
   SetConsoleOutputCP(CPAGE_UTF8);
 
   create_database_folder();
-  
+
   print_table();
-  printf("Tabela sava!");
+  printf("\n→ Tabela salva!");
 
   Table table = {
     .name = "Teste",

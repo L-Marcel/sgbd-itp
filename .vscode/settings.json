@@ -6,6 +6,9 @@
     "*.lean": "lean",
     "stdio.h": "c",
     "errno.h": "c",
-    "stat.h": "c"
+    "stat.h": "c",
+    "direct.h": "c",
+    "corecrt.h": "c",
+    "corecrt_wdirect.h": "c"
   }
 }
