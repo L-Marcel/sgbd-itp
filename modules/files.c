@@ -53,3 +53,11 @@ void save_table(Table table) {
   //fprintf(file, "teste,1,2.5\n");
   fclose(file);
 }
+
+/// @brief Deleta uma tabela por completo, incluindo seu arquivo csv. No momento, funciona apenas se a tabela foi anteriormente criada dentro do programa. 
+/// @param table a tabela
+void delete_table(Table table) {
+  char path[60];
+  sprintf(path, "./database/%s.csv", table.name);
+  remove(path);
+}

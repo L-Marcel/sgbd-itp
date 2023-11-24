@@ -3,6 +3,7 @@ COMPILE = gcc main.c \
 	./build/modules/tables.o \
 	./build/modules/prints.o \
 	./build/modules/files.o \
+	./build/modules/menu.o \
 	-o ./build/main
 EXECUTE = "./build/main.exe"
 
@@ -18,3 +19,7 @@ files: ./modules/files.c tables
 	gcc ./modules/files.c -o ./build/modules/files.o -c ${PARAMS}
 tables: ./modules/tables.c
 	gcc ./modules/tables.c -o ./build/modules/tables.o -c ${PARAMS}
+menu: ./modules/menu.c
+	gcc ./modules/menu.c -o ./build/modules/menu.o -c ${PARAMS}
+
+# O "menu.c" não tá compilando em nenhum dos makes dev e all. Copiei tudo certinho e não sei a diferença. Ainda vou ler o material do notion sobre

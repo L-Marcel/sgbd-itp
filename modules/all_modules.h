@@ -1,2 +1,3 @@
 #include "prints.h"
-// é encadeado!
+#include "menu.h"
+// é (parcialmente :P) encadeado!
