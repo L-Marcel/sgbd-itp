@@ -20,6 +20,9 @@ typedef struct {
 } Table;
 
 typedef struct {
-  Table * tables;
+  Table * list;
   int size;
 } Tables;
+
+Tables sort_tables(Tables tables);
+Table create_table();

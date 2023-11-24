@@ -1,5 +1,9 @@
 PARAMS = -g -W -pedantic -All_LC=Portuguese
-COMPILE = gcc main.c ./build/modules/prints.o ./build/modules/files.o -o ./build/main
+COMPILE = gcc main.c \
+	./build/modules/tables.o \
+	./build/modules/prints.o \
+	./build/modules/files.o \
+	-o ./build/main
 EXECUTE = "./build/main.exe"
 
 dev: all ./build/main.exe
