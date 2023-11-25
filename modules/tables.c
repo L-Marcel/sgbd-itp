@@ -35,6 +35,7 @@ Table createNewTable() {
   Table new_table, empty_table;
   int qtd_columns, i;
   char yes_or_no;
+  // Como a função tem que retornar Table, essa empty_table é caso dê algo errado, aí retorna uma table só com o nome preenchido pra simbolizar que tá errado. 
   strcpy(empty_table.name, "NULL_TABLE");
   printf("Por favor, preencha as informações abaixo:\n\n");
   printf("Nome da tabela: ");
@@ -64,6 +65,11 @@ Table createNewTable() {
       system("pause");
       return empty_table;
   };
+}
+
+/// Deleta a tabela solicitada (pelo index desta). Não fiz nada ainda
+void deleteTable(int table_index, Tables tables) {
+  printf("Deletei nada!");
 }
 
 /// @brief Percorre a database para saber se a tabela inserida pelo usuário já existe

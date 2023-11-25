@@ -40,7 +40,7 @@ Tables get_tables() {
     HANDLE handle;
     WIN32_FIND_DATAA data;
 
-    handle = FindFirstFileA("./database/\*.csv", &data);
+    handle = FindFirstFileA("./database/*.csv", &data);
     if(handle != INVALID_HANDLE_VALUE) {
       do {
         char * piece = strtok(data.cFileName, ".");
@@ -93,7 +93,7 @@ void save_table(Table table) {
 
 /// @brief Deleta uma tabela por completo, incluindo seu arquivo csv. No momento, funciona apenas se a tabela foi anteriormente criada dentro do programa. 
 /// @param table a tabela
-void delete_table(Table table) {
+void remove_table(Table table) {
   char path[70];
   sprintf(path, "./database/%s.csv", table.name);
   remove(path);

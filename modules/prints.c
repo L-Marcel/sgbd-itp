@@ -28,3 +28,12 @@ void clear_terminal() {
     system("clear");
   #endif
 }
+
+/// @brief Pausa o terminal
+void pause_terminal() {
+  #ifdef _WIN32
+	  system("pause");
+	#else
+	  system("read -p \"Pressione ENTER para sair.\" saindo");
+	#endif
+}

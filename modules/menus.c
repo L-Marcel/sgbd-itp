@@ -16,7 +16,6 @@ int displayDefaultMenu(int table_size) {
     printf("================================================\n");
     printf("Opção: ");
     scanf("%i", &option);
-
     return option;
 }
 
@@ -33,4 +32,36 @@ int displayTablesMenu(Tables tables) {
     printf("Opção: ");
     scanf("%i", &option);
     return option;
+}
+
+/// Não sei ainda, só botei aqui (menu pra remover tupla, add tupla, procurar coisas, etc)
+int displayProceduresMenu() {
+    int option;
+    clear_terminal();
+    printf("========= Selecione o que deseja fazer com a tabela =========\n");
+    printf("0 - Voltar ao menu\n");
+    printf("1 - Criar uma nova linha na tabela\n");
+    printf("2 - Listar todos os dados da tabela\n");
+    printf("3 - Pesquisar valor na tabela\n");
+    printf("4 - Apagar uma tupla da tabela\n");
+    printf("=============================================================\n");
+    printf("Opção: ");
+    scanf("%i", &option);
+    return option;
+}
+
+/// @brief Valida a opção de menu escolhida
+/// @param option opção escolhida
+/// @param qtd_menu_options quantidade de opções/indexs disponíveis para escolha
+/// @return 0, se o usuário inserir 0 (voltar ao menu) ou se a opção escolhida ultrapassar a quantidade de opções disponíves; 1, se nada do que foi citado anteriormente acontecer
+int isOptionValid(int option, int qtd_menu_options) {
+    if (option == 0) {
+        return 0;
+    } else if (option > qtd_menu_options) {
+        printf("A opção escolhida não é valida. Redirecionando ao menu principal.\n");
+        pause_terminal();
+        return 0;
+    } else {
+        return 1;
+    }
 }

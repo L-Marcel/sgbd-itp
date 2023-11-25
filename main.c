@@ -10,7 +10,7 @@
 #endif
 
 int main() {
-  int menu_option = 99999, table_option, table_exists;
+  int menu_option = 99999, table_option, procedure_option, table_exists;
   #ifdef _WIN32
     UINT CPAGE_UTF8 = 65001;
     SetConsoleOutputCP(CPAGE_UTF8);
@@ -26,46 +26,42 @@ int main() {
     switch (menu_option) {
       case 0:
         break;
-      case 1:
-        // Abre passo a passo para o usuário inserir as informações da tabela
+      case 1: 
         new_table = createNewTable();
         if (strcmp(new_table.name, "NULL_TABLE") != 0) {
-          // Verifica se a tabela já existe. Atualmente, se existir a função retorna 1 e se não, retorna 0.
           table_exists = tableAlreadyExists(new_table, tables);
           if (table_exists == 0) {
             save_table(new_table);
             printf("Tabela \"%s\" adicionada ao banco de dados com sucesso.\n", new_table.name);
           }
         };
-	#ifdef _WIN32
-        system("pause");
-	#else
-	system("read -p \"Pressione ENTER para sair.\" saindo");
-	#endif
+        pause_terminal();
         break;
       case 2:
         if(tables.size == 0) {
           goto error_message;
         };
-        printf("\nDeletou a tabela! (Ilustrativo):\n");
+        printf("Insira o index da tabela que deseja excluir\n");
+        table_option = displayTablesMenu(tables);       
+        if (isOptionValid(table_option, tables.size) == 0) break;
+        deleteTable(table_option, tables);
+        pause_terminal();
         break;
-
       case 3:
         if(tables.size == 0) {
           goto error_message;
         };
         table_option = displayTablesMenu(tables);
-        printf("Você escolheu mudar a tabela %i! Redirecionando para o menu principal.", table_option);
+        if (isOptionValid(table_option, tables.size) == 0) break;
+        printf("Você escolheu mudar a tabela %i!", table_option);
+        procedure_option = displayProceduresMenu();
+        if (isOptionValid(procedure_option, 5) == 0) break;
+        pause_terminal();
         break;
       error_message:
       default:
         printf("ERRO: Opção inválida. Por favor, tente novamente.\n\n");
-        // Pra Linux é diferente. Não faço ideia de como é no Mac. É bom ter atenção nisso.
-	#ifdef _WIN32
-	system("pause");
-	#else
-	system("read -p \"Pressione ENTER para sair.\" saindo");
-	#endif
+        pause_terminal();
         break;
     };
   };
