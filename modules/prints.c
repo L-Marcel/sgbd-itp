@@ -11,7 +11,7 @@ void print_tables(Tables tables, int start){
   //essa imprimirá a lista de tabelas!
   for(int i = 0; i < tables.size; i++) {
     //começa a imprimir do {start} porque o 0 será a opção de cancelar
-    printf("%d → %s\n", i + start, tables.list[i].name);
+    printf("[%d] → %s\n", i + start, tables.list[i].name);
   };
 }
 
@@ -34,6 +34,7 @@ void pause_terminal() {
   #ifdef _WIN32
 	  system("pause");
 	#else
-	  system("read -p \"Pressione ENTER para sair.\" saindo");
+    system("read -p \"Pressione ENTER para sair.\" saindo");
+    clear_terminal();
 	#endif
 }

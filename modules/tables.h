@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include "utils.h"
 
 typedef struct {
   char type[10];
@@ -24,7 +25,7 @@ typedef struct {
 } Tables;
 
 Tables sort_tables(Tables tables);
-void add_in_tables(Tables * tables, Table table);
-Table createNewTable();
-void deleteTable(int table_index, Tables tables);
-int tableAlreadyExists(Table table, Tables tables);
+void add_table(Tables * tables, Table table);
+Table create_new_table();
+void delete_table(int table_index, Tables * tables);
+int table_already_exists(Table table, Tables tables);

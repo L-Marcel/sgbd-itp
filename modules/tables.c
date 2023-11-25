@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "tables.h"
 
 /// @brief Ordena a lista de tabelas pelo nome delas
@@ -23,7 +24,10 @@ Tables sort_tables(Tables tables) {
   return tables;
 }
 
-void add_in_tables(Tables * tables, Table table) {
+/// @brief Adiciona uma tabela na lista de tabelas
+/// @param tables a lista de tabelas
+/// @param table a tabela a ser adicionada
+void add_table(Tables * tables, Table table) {
   tables -> size++;
   tables -> list = realloc(tables -> list, sizeof(Table) * tables -> size);
   tables -> list[tables -> size - 1] = table;
@@ -31,21 +35,22 @@ void add_in_tables(Tables * tables, Table table) {
 
 /// @brief Cria uma nova tabela. Ainda está incompleto (falta os inputs do usuário)
 /// @return em caso de sucesso: a própria tabela criada. em caso de erro ou cancelamento, uma tabela vazia com parâmetro name = "NULL_TABLE", para simbolizar à main que a tabela é vazia.
-Table createNewTable() {
+Table create_new_table() {
   Table new_table, empty_table;
   int qtd_columns, i;
   char yes_or_no;
-  // Como a função tem que retornar Table, essa empty_table é caso dê algo errado, aí retorna uma table só com o nome preenchido pra simbolizar que tá errado. 
+ 
   strcpy(empty_table.name, "NULL_TABLE");
-  printf("Por favor, preencha as informações abaixo:\n\n");
   printf("Nome da tabela: ");
-  scanf("%s", new_table.name);
-  getchar();
-  printf("Quantidade de colunas/atributos da tabela (se não souber, insira 0): ");
+  fgets(new_table.name, 50, stdin);
+  trim(strlen(new_table.name), new_table.name);
+
+  fflush(stdin);
+  printf("Quantidade de colunas (se não souber, insira 0): ");
   scanf("%i", &qtd_columns);
   getchar();
   if (qtd_columns < 0) {
-    printf("Valor inválido: Não é possível ter colunas negativas. Redirecionando para o menu principal.");
+    printf("Valor inválido: não é possível ter colunas negativas. Redirecionando para o menu principal.");
     return empty_table;
   } else if (qtd_columns > 0) {
     for (i = 0; i < qtd_columns; i++) {
@@ -56,9 +61,10 @@ Table createNewTable() {
   };
   printf("Deseja realmente adicionar a tabela \"%s\" ao banco de dados? (Y/N): ", new_table.name);
   scanf("%c", &yes_or_no);
-  if (yes_or_no == 'Y' || yes_or_no == 'y') {
+  getchar();
+  if (tolower(yes_or_no) == 'y') {
       return new_table;
-  } else if (yes_or_no == 'N' || yes_or_no == 'n') {
+  } else if (tolower(yes_or_no) == 'n') {
       return empty_table;
   } else {
       printf("Opção inválida. Voltando para o menu principal.");
@@ -67,19 +73,28 @@ Table createNewTable() {
   };
 }
 
-/// Deleta a tabela solicitada (pelo index desta). Não fiz nada ainda
-void deleteTable(int table_index, Tables tables) {
-  printf("Deletei nada!");
+/// @brief Remove uma tabela da lista de tabelas
+/// @param table_index index da tabela
+/// @param tables lista de tabelas
+void delete_table(int table_index, Tables * tables) {
+  for(int i = 0; i < tables -> size - 1; i++) {
+    if(i >= table_index) {
+      tables -> list[i] = tables -> list[i + 1];
+    };
+  };
+
+  tables -> size--;
+  tables -> list = realloc(tables -> list, sizeof(Table) * tables -> size);
 }
 
 /// @brief Percorre a database para saber se a tabela inserida pelo usuário já existe
 /// @param table a tabela inserida
 /// @param tables a lista de tabelas do momento (tables.list e database)
 /// @return 1, se houver tabela igual na database; 0, se não houver tabela igual
-int tableAlreadyExists(Table table, Tables tables) {
+int table_already_exists(Table table, Tables tables) {
   for (int i = 0; i < tables.size; i++) {
     if (strcmp(table.name, tables.list[i].name) == 0) {
-      printf("Erro: Tabela já existente.\n");
+      printf("Erro: tabela já existe!\n");
       return 1;
     };
   };

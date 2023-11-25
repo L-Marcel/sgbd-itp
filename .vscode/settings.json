@@ -8,5 +8,6 @@
     "corecrt_wdirect.h": "c",
     "dirent.h": "c",
     "files.h": "c"
-  }
+  },
+  "C_Cpp.errorSquiggles": "disabled"
 }

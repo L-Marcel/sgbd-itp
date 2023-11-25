@@ -18,20 +18,21 @@ int main() {
 
   Table new_table;
   Tables tables;
-  clear_terminal();
+
   while (menu_option != 0) {
+    clear_terminal();
     tables = get_tables();
-    menu_option = displayDefaultMenu(tables.size);
+    menu_option = display_default_menu(tables.size);
     clear_terminal();
     switch (menu_option) {
       case 0:
         break;
       case 1: 
-        new_table = createNewTable();
+        new_table = create_new_table();
         if (strcmp(new_table.name, "NULL_TABLE") != 0) {
-          table_exists = tableAlreadyExists(new_table, tables);
+          table_exists = table_already_exists(new_table, tables);
           if (table_exists == 0) {
-            save_table(new_table);
+            save_table_file(new_table);
             printf("Tabela \"%s\" adicionada ao banco de dados com sucesso.\n", new_table.name);
           }
         };
@@ -41,32 +42,33 @@ int main() {
         if(tables.size == 0) {
           goto error_message;
         };
-        printf("Insira o index da tabela que deseja excluir\n");
-        table_option = displayTablesMenu(tables);       
-        if (isOptionValid(table_option, tables.size) == 0) break;
-        deleteTable(table_option, tables);
+        table_option = display_tables_menu(tables, " para remover");       
+        if (is_option_valid(table_option, tables.size) == 0) break;
+        Table table_to_delete = tables.list[table_option - 1];
+        delete_table(table_option - 1, &tables);
+        clear_terminal();
+        remove_table_file(table_to_delete);
         pause_terminal();
         break;
       case 3:
         if(tables.size == 0) {
           goto error_message;
         };
-        table_option = displayTablesMenu(tables);
-        if (isOptionValid(table_option, tables.size) == 0) break;
-        printf("Você escolheu mudar a tabela %i!", table_option);
-        procedure_option = displayProceduresMenu();
-        if (isOptionValid(procedure_option, 5) == 0) break;
-        pause_terminal();
+
+        table_option = display_tables_menu(tables, "");
+        if (is_option_valid(table_option, tables.size) == 0) break;
+        procedure_option = display_procedures_menu(tables.list[table_option - 1]);
+        if (is_option_valid(procedure_option, 5) == 0) break;
+
         break;
       error_message:
       default:
-        printf("ERRO: Opção inválida. Por favor, tente novamente.\n\n");
-        pause_terminal();
+        fflush(stdin);
         break;
     };
   };
   clear_terminal();
-  printf("Programa encerrado!\n\n");
+  printf("Programa encerrado!");
   #ifdef _WIN32
     UINT CPAGE_DEFAULT = GetConsoleOutputCP();
     SetConsoleOutputCP(CPAGE_DEFAULT);

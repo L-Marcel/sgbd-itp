@@ -1,5 +1,6 @@
 PARAMS = -g -W -pedantic -All_LC=Portuguese
 COMPILE = gcc main.c \
+	./build/modules/utils.o \
 	./build/modules/tables.o \
 	./build/modules/prints.o \
 	./build/modules/files.o \
@@ -19,5 +20,7 @@ prints: ./modules/prints.c files
 	gcc ./modules/prints.c -o ./build/modules/prints.o -c ${PARAMS}
 files: ./modules/files.c tables
 	gcc ./modules/files.c -o ./build/modules/files.o -c ${PARAMS}
-tables: ./modules/tables.c
+tables: ./modules/tables.c utils
 	gcc ./modules/tables.c -o ./build/modules/tables.o -c ${PARAMS}
+utils: ./modules/utils.c
+	gcc ./modules/utils.c -o ./build/modules/utils.o -c ${PARAMS}

@@ -3,7 +3,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "files.h"
-  #include <dirent.h>
+
 #ifdef _WIN32
   #include <windows.h>
   #include <direct.h>
@@ -45,14 +45,11 @@ Tables get_tables() {
       do {
         char * piece = strtok(data.cFileName, ".");
         strcpy(table.name, piece);
-        add_in_tables(&tables, table);
+        add_table(&tables, table);
       } while(FindNextFileA(handle, &data));
       FindClose(handle);
     };
-
-
   #else
-    // Lembrando que isso funciona no Linux. No MAC, pode ser que a estrutura de diretórios seja diferente
     DIR * dir = opendir("./database");
     if(dir == NULL) {
       perror("Não foi possível localizar a pasta \"./dabatase\"!");
@@ -63,19 +60,19 @@ Tables get_tables() {
     // Calloca o aux_name baseado na quantidade de caracteres do diretório
     aux_name = calloc(strlen(file -> d_name), sizeof(char));
     while(file != NULL) {
-	// Se for os diretórios "." ou "..", ele ignora e passa pro próximo (dois reais ou um presente misterioso? >:D)
-	if (strcmp(file -> d_name, ".") != 0 && strcmp(file -> d_name, "..") != 0) {
-		aux_name = realloc(aux_name, strlen(file -> d_name) * sizeof(char));
-		strcpy(aux_name, file -> d_name);
-		piece = strtok(aux_name, ".");
-		strcpy(table.name, piece);
-		add_in_tables(&tables, table);
-	}
-        file = readdir(dir);
+      // Se for os diretórios "." ou "..", ele ignora e passa pro próximo (dois reais ou um presente misterioso? >:D)
+      if (strcmp(file -> d_name, ".") != 0 && strcmp(file -> d_name, "..") != 0) {
+        aux_name = realloc(aux_name, strlen(file -> d_name) * sizeof(char));
+        strcpy(aux_name, file -> d_name);
+        piece = strtok(aux_name, ".");
+        strcpy(table.name, piece);
+        add_table(&tables, table);
+      };
+
+      file = readdir(dir);
     };
 
     closedir(dir);
-
   #endif
 
   return tables;
@@ -83,18 +80,19 @@ Tables get_tables() {
 
 /// @brief Salva as alterações de uma tabela, a cria se ela não existir
 /// @param table a tabela
-void save_table(Table table) {
+void save_table_file(Table table) {
   char path[70];
   sprintf(path, "./database/%s.csv", table.name);
   FILE * file = fopen(path, "w+");
-  //fprintf(file, "teste,1,2.5\n");
+
   fclose(file);
 }
 
 /// @brief Deleta uma tabela por completo, incluindo seu arquivo csv. No momento, funciona apenas se a tabela foi anteriormente criada dentro do programa. 
 /// @param table a tabela
-void remove_table(Table table) {
+void remove_table_file(Table table) {
   char path[70];
   sprintf(path, "./database/%s.csv", table.name);
   remove(path);
+  printf("Tabela \"%s\" removida!\n", table.name);
 }
