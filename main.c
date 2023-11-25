@@ -1,22 +1,27 @@
 #include <stdio.h>
 #include <locale.h>
 #include <string.h>
-#include <windows.h>
 #include <stdbool.h>
 #include "modules/all_modules.h"
 
+#ifdef _WIN32
+  #include <windows.h>
+#endif
+
 int main() {
   int menu_option, table_option;
-  UINT CPAGE_UTF8 = 65001;
-  Tables tables;
-  Table new_table;
-  SetConsoleOutputCP(CPAGE_UTF8);
+  #ifdef _WIN32
+    UINT CPAGE_UTF8 = 65001;
+    SetConsoleOutputCP(CPAGE_UTF8);
+  #endif
 
-  create_database_folder();
+  Tables tables, new_table;
 
   while (menu_option != 0) {
+    clear_terminal();
     tables = get_tables();
     menu_option = displayDefaultMenu(tables.size);
+    clear_terminal();
     switch (menu_option) {
       // Agora tem um case 0 pq como não tinha antes, qnd inseria 0 ia pro 
       // case default antes de encerrar o programa. Tá um pouquinho gambiarra,
@@ -41,21 +46,22 @@ int main() {
         if(tables.size == 0) {
           goto error_message;
         };
-        print_tables(tables, 1);
-        table_option = displayTablesMenu();
+        table_option = displayTablesMenu(tables);
         printf("Você escolheu mudar a tabela %i! Redirecionando para o menu principal.", table_option);
         break;
-    // goto default; não funciona :(
-    error_message:
+      error_message:
       default:
         printf("\nOpção inválida. Tente novamente.\n");
         break;
     };
   };
-  printf("Programa encerrado.\n\n");
+  clear_terminal();
+  printf("Programa encerrado!\n");
 
-  UINT CPAGE_DEFAULT = GetConsoleOutputCP();
-  SetConsoleOutputCP(CPAGE_DEFAULT);
+  #ifdef _WIN32
+    UINT CPAGE_DEFAULT = GetConsoleOutputCP();
+    SetConsoleOutputCP(CPAGE_DEFAULT);
+  #endif
 
   return 0;
 }

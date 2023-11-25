@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "tables.h"
 
 /// @brief Ordena a lista de tabelas pelo nome delas
@@ -20,6 +21,12 @@ Tables sort_tables(Tables tables) {
   };
 
   return tables;
+}
+
+void add_in_tables(Tables * tables, Table table) {
+  tables -> size++;
+  tables -> list = realloc(tables -> list, sizeof(Table) * tables -> size);
+  tables -> list[tables -> size - 1] = table;
 }
 
 Table create_table() {
