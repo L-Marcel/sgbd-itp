@@ -2,6 +2,7 @@
 #include <locale.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include "modules/all_modules.h"
 
 #ifdef _WIN32
@@ -9,7 +10,7 @@
 #endif
 
 int main() {
-  int menu_option, table_option, table_exists;
+  int menu_option = 99999, table_option, table_exists;
   #ifdef _WIN32
     UINT CPAGE_UTF8 = 65001;
     SetConsoleOutputCP(CPAGE_UTF8);
@@ -35,8 +36,12 @@ int main() {
             save_table(new_table);
             printf("Tabela \"%s\" adicionada ao banco de dados com sucesso.\n", new_table.name);
           }
-        }
+        };
+	#ifdef _WIN32
         system("pause");
+	#else
+	system("read -p \"Pressione ENTER para sair.\" saindo");
+	#endif
         break;
       case 2:
         if(tables.size == 0) {
@@ -44,6 +49,7 @@ int main() {
         };
         printf("\nDeletou a tabela! (Ilustrativo):\n");
         break;
+
       case 3:
         if(tables.size == 0) {
           goto error_message;
@@ -54,13 +60,17 @@ int main() {
       error_message:
       default:
         printf("ERRO: Opção inválida. Por favor, tente novamente.\n\n");
-        system("pause");
+        // Pra Linux é diferente. Não faço ideia de como é no Mac. É bom ter atenção nisso.
+	#ifdef _WIN32
+	system("pause");
+	#else
+	system("read -p \"Pressione ENTER para sair.\" saindo");
+	#endif
         break;
     };
   };
   clear_terminal();
-  printf("Programa encerrado!\n");
-
+  printf("Programa encerrado!\n\n");
   #ifdef _WIN32
     UINT CPAGE_DEFAULT = GetConsoleOutputCP();
     SetConsoleOutputCP(CPAGE_DEFAULT);

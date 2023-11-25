@@ -4,7 +4,7 @@ COMPILE = gcc main.c \
 	./build/modules/prints.o \
 	./build/modules/files.o \
 	./build/modules/menus.o \
-	-o ./build/main
+	-o ./build/main.exe
 EXECUTE = "./build/main.exe"
 
 dev: all ./build/main.exe
