@@ -5,6 +5,7 @@
 /// @return a opção escolhida
 int displayDefaultMenu(int table_size) {
     int option;
+    clear_terminal();
     printf("====== Menu que vai ser melhorado depois! ======\n");
     printf("0 → Sair do programa\n");
     printf("1 → Criar uma nova tabela\n");
@@ -24,12 +25,12 @@ int displayDefaultMenu(int table_size) {
 /// @return a opção escolhida
 int displayTablesMenu(Tables tables) {
     int option;
+    clear_terminal();
     printf("============== Selecione uma tabela ============\n");
-    printf("0 → Cancelar\n");
+    printf("0 → Voltar ao menu\n");
     print_tables(tables, 1);
     printf("================================================\n");
     printf("Opção: ");
     scanf("%i", &option);
-    printf("----------------\n\n");
     return option;
 }

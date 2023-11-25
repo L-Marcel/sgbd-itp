@@ -25,4 +25,5 @@ typedef struct {
 
 Tables sort_tables(Tables tables);
 void add_in_tables(Tables * tables, Table table);
-Table create_table();
+Table createNewTable();
+int tableAlreadyExists(Table table, Tables tables);

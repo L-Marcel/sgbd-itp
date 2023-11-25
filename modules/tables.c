@@ -29,7 +29,53 @@ void add_in_tables(Tables * tables, Table table) {
   tables -> list[tables -> size - 1] = table;
 }
 
-Table create_table() {
-  Table t;
-  return t;
+/// @brief Cria uma nova tabela. Ainda está incompleto (falta os inputs do usuário)
+/// @return em caso de sucesso: a própria tabela criada. em caso de erro ou cancelamento, uma tabela vazia com parâmetro name = "NULL_TABLE", para simbolizar à main que a tabela é vazia.
+Table createNewTable() {
+  Table new_table, empty_table;
+  int qtd_columns, i;
+  char yes_or_no;
+  strcpy(empty_table.name, "NULL_TABLE");
+  printf("Por favor, preencha as informações abaixo:\n\n");
+  printf("Nome da tabela: ");
+  scanf("%s", new_table.name);
+  getchar();
+  printf("Quantidade de colunas/atributos da tabela (se não souber, insira 0): ");
+  scanf("%i", &qtd_columns);
+  getchar();
+  if (qtd_columns < 0) {
+    printf("Valor inválido: Não é possível ter colunas negativas. Redirecionando para o menu principal.");
+    return empty_table;
+  } else if (qtd_columns > 0) {
+    for (i = 0; i < qtd_columns; i++) {
+      printf("Valor da coluna %i\n", i);
+    };
+  } else {
+      printf("Vamo fazer um while.\n");
+  };
+  printf("Deseja realmente adicionar a tabela \"%s\" ao banco de dados? (Y/N): ", new_table.name);
+  scanf("%c", &yes_or_no);
+  if (yes_or_no == 'Y' || yes_or_no == 'y') {
+      return new_table;
+  } else if (yes_or_no == 'N' || yes_or_no == 'n') {
+      return empty_table;
+  } else {
+      printf("Opção inválida. Voltando para o menu principal.");
+      system("pause");
+      return empty_table;
+  };
+}
+
+/// @brief Percorre a database para saber se a tabela inserida pelo usuário já existe
+/// @param table a tabela inserida
+/// @param tables a lista de tabelas do momento (tables.list e database)
+/// @return 1, se houver tabela igual na database; 0, se não houver tabela igual
+int tableAlreadyExists(Table table, Tables tables) {
+  for (int i = 0; i < tables.size; i++) {
+    if (strcmp(table.name, tables.list[i].name) == 0) {
+      printf("Erro: Tabela já existente.\n");
+      return 1;
+    };
+  };
+  return 0;
 }

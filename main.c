@@ -9,40 +9,42 @@
 #endif
 
 int main() {
-  int menu_option, table_option;
+  int menu_option, table_option, table_exists;
   #ifdef _WIN32
     UINT CPAGE_UTF8 = 65001;
     SetConsoleOutputCP(CPAGE_UTF8);
   #endif
 
-  Tables tables, new_table;
-
+  Table new_table;
+  Tables tables;
+  clear_terminal();
   while (menu_option != 0) {
-    clear_terminal();
     tables = get_tables();
     menu_option = displayDefaultMenu(tables.size);
     clear_terminal();
     switch (menu_option) {
-      // Agora tem um case 0 pq como não tinha antes, qnd inseria 0 ia pro 
-      // case default antes de encerrar o programa. Tá um pouquinho gambiarra,
-      // n gostei mt :P
       case 0:
         break;
       case 1:
-        printf("\nCriou a tabela! (Ilustrativo)\n");
+        // Abre passo a passo para o usuário inserir as informações da tabela
+        new_table = createNewTable();
+        if (strcmp(new_table.name, "NULL_TABLE") != 0) {
+          // Verifica se a tabela já existe. Atualmente, se existir a função retorna 1 e se não, retorna 0.
+          table_exists = tableAlreadyExists(new_table, tables);
+          if (table_exists == 0) {
+            save_table(new_table);
+            printf("Tabela \"%s\" adicionada ao banco de dados com sucesso.\n", new_table.name);
+          }
+        }
+        system("pause");
         break;
       case 2:
-        // Se não tiver tabelas e mesmo assim o usuário inserir "2", vai para
-        // o default case do switch, que é ativado, também, quando nenhuma das 
-        // opções corresponde aos cases (é o else do switch-case). 
         if(tables.size == 0) {
           goto error_message;
         };
         printf("\nDeletou a tabela! (Ilustrativo):\n");
         break;
       case 3:
-        // Mesma coisa do 2, só que com o 3. Fica meio feiozinho ali em baixo, 
-        // mas não consigo pensar em nenhuma forma melhor de fazer, por enquanto
         if(tables.size == 0) {
           goto error_message;
         };
@@ -51,7 +53,8 @@ int main() {
         break;
       error_message:
       default:
-        printf("\nOpção inválida. Tente novamente.\n");
+        printf("ERRO: Opção inválida. Por favor, tente novamente.\n\n");
+        system("pause");
         break;
     };
   };
