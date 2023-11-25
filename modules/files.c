@@ -34,7 +34,7 @@ Tables get_tables() {
   Table table;
   char *piece, *aux_name;
 
-//  create_database_folder();
+  create_database_folder();
 
   #ifdef _WIN32
     HANDLE handle;
