@@ -26,8 +26,8 @@ void print_divisor(char title[53]) {
   int size = strlen(title);
 
   if(size == 0) {
-      printf("======================================================\n");
-      return;
+    printf("======================================================\n");
+    return;
   };
 
   int left = 0;
@@ -36,7 +36,7 @@ void print_divisor(char title[53]) {
 
   if(size != 0) max -= 2; 
   if(size % 2 == 1) {
-      max++;
+    max++;
   };
 
   left += max/2;

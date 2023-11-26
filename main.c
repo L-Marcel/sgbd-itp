@@ -76,13 +76,13 @@ int main() {
             if (valid_option == 0) break;
 
             switch (valid_option) {
-              case 1: //Criar um novo registro na tabela
+              case 1: //[TODO] Criar um novo registro na tabela
                 break;
-              case 2: //Listar todos os dados da tabela
+              case 2: //[TODO] Listar todos os dados da tabela
                 break;
-              case 3: //Pesquisar valor na tabela
+              case 3: //[TODO] Pesquisar valor na tabela
                 break;
-              case 4: //Apagar uma registro da tabela
+              case 4: //[TODO] Apagar uma registro da tabela
                 break;
               default:
                 break;
@@ -98,7 +98,7 @@ int main() {
   };
   
   clear_terminal();
-  printf("Programa encerrado!");
+  printf("Programa encerrado!\n");
   #ifdef _WIN32
     UINT CPAGE_DEFAULT = GetConsoleOutputCP();
     SetConsoleOutputCP(CPAGE_DEFAULT);

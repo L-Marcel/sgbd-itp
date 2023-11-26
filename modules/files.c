@@ -85,6 +85,17 @@ void save_table_file(Table table) {
   sprintf(path, "./database/%s.csv", table.name);
   FILE * file = fopen(path, "w+");
 
+  // [TODO] Escrever dados da tabela no arquivo
+
+  // Formato do arquivo (para n colunas, m registros/linhas):
+
+  // [nome coluna 1],[nome coluna 2], …, [nome coluna n]
+  // [tipo coluna 1],[tipo coluna 2], …, [tipo coluna n]
+
+  // [valor 1 do registro 1], [valor 2 do registro 1], …, [valor n do registro 1]
+  // …
+  // [valor 1 do registro m], [valor 2 do registro m], …, [valor n do registro m]
+
   fclose(file);
 }
 

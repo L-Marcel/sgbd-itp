@@ -52,9 +52,9 @@ Table new_table_procedure(Tables tables) {
 
     valid_option = -1;
     switch (procedure_option) {
-      case 2: // Adicionar coluna
+      case 2: // [TODO] Adicionar coluna
         break;
-      case 3: // Remover coluna 
+      case 3: // [TODO] Remover coluna 
         break;
       default:
         while(true) {
