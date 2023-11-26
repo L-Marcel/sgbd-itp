@@ -11,7 +11,7 @@
   #include <dirent.h>
 #endif
 
-/// @brief Cria a pasta "database" se ela não existir
+/// @brief Cria a pasta "database" se ela não existir.
 void create_database_folder() {
   struct stat sb;
 
@@ -24,8 +24,8 @@ void create_database_folder() {
   };
 }
 
-/// @brief Pega todas as tabelas dentro da pasta "database"
-/// @return Lista de tabelas
+/// @brief Pega todas as tabelas dentro da pasta "database".
+/// @return Lista de tabelas.
 Tables get_tables() {
   Tables tables = {
     .size = 0,
@@ -78,7 +78,7 @@ Tables get_tables() {
   return tables;
 }
 
-/// @brief Salva as alterações de uma tabela, a cria se ela não existir
+/// @brief Salva as alterações de uma tabela, a cria se ela não existir.
 /// @param table a tabela
 void save_table_file(Table table) {
   char path[70];
@@ -88,7 +88,9 @@ void save_table_file(Table table) {
   fclose(file);
 }
 
-/// @brief Deleta uma tabela por completo, incluindo seu arquivo csv. No momento, funciona apenas se a tabela foi anteriormente criada dentro do programa. 
+/// @brief Deleta uma tabela por completo, incluindo seu arquivo csv. 
+/// No momento, funciona apenas se a tabela foi anteriormente criada 
+/// dentro do programa. 
 /// @param table a tabela
 void remove_table_file(Table table) {
   char path[70];

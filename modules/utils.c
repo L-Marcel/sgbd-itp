@@ -2,7 +2,21 @@
 #include <stdlib.h>
 #include "utils.h"
 
-/// @brief Remove espaço vázio no começo e final de um texto
+/// @brief Função que captura um texto não vazio, em caso de texto invalido, repete a operação.
+/// @param max_size tamanho máximo do texto
+/// @param text o texto capturado
+/// @param message a texto imprimido antes do input
+void get_string(int max_size, char text[max_size], char* message) {
+  do {
+    clear_terminal();
+    printf("%s", message);
+    fgets(text, max_size, stdin);
+    trim(strlen(text), text);
+    //nunca vai passar um texto vazio
+  } while(strlen(text) == 0);
+}
+
+/// @brief Remove espaço vázio no começo e final de um texto.
 /// @param size tamanho do texto
 /// @param text o texto
 void trim(int size, char text[size]) {

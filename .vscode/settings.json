@@ -1,5 +1,9 @@
 {
   "files.associations": {
+    "*.css": "css",
+    "*.sass": "tailwindcss",
+    "*.lean4": "lean4",
+    "*.lean": "lean",
     "stdio.h": "c",
     "errno.h": "c",
     "stat.h": "c",
@@ -7,7 +11,9 @@
     "corecrt.h": "c",
     "corecrt_wdirect.h": "c",
     "dirent.h": "c",
-    "files.h": "c"
+    "files.h": "c",
+    "tables.h": "c",
+    "stdlib.h": "c"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

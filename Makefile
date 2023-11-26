@@ -5,6 +5,7 @@ COMPILE = gcc main.c \
 	./build/modules/prints.o \
 	./build/modules/files.o \
 	./build/modules/menus.o \
+	./build/modules/procedures.o \
 	-o ./build/main.exe
 EXECUTE = "./build/main.exe"
 
@@ -12,8 +13,10 @@ dev: all ./build/main.exe
 	${EXECUTE}
 run: ./build/main.exe
 	${EXECUTE}
-all: main.c menus
+all: main.c procedures
 	${COMPILE} ${PARAMS}
+procedures: ./modules/procedures.c menus
+	gcc ./modules/procedures.c -o ./build/modules/procedures.o -c ${PARAMS}
 menus: ./modules/menus.c prints
 	gcc ./modules/menus.c -o ./build/modules/menus.o -c ${PARAMS}
 prints: ./modules/prints.c files

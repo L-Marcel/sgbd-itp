@@ -1,12 +1,33 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include "tables.h"
 
-/// @brief Ordena a lista de tabelas pelo nome delas
+/// @brief Converte o typo enumerado para um texto.
+/// @param type o tipo enumerado
+/// @return A texto, com tamanho máximo de 10 chars.
+char* get_type_name(types type) {
+  switch (type) {
+    case T_NAT:
+      return "Nat";
+    case T_INT:
+      return "Int";
+    case T_STRING:
+      return "String";
+    case T_CHAR:
+      return "Char";
+    case T_DOUBLE:
+      return "Double";
+    case T_FLOAT:
+      return "Float";
+    default:
+      return "Undefined";
+  }
+}
+
+/// @brief Ordena a lista de tabelas pelo nome delas.
 /// @param tables as tabelas
-/// @return as tabelas ordenadas por nome
+/// @return As tabelas ordenadas por nome.
 Tables sort_tables(Tables tables) {
   for(int i = 0; i < tables.size; i++) {
     Table next = tables.list[i];
@@ -24,7 +45,7 @@ Tables sort_tables(Tables tables) {
   return tables;
 }
 
-/// @brief Adiciona uma tabela na lista de tabelas
+/// @brief Adiciona uma tabela na lista de tabelas.
 /// @param tables a lista de tabelas
 /// @param table a tabela a ser adicionada
 void add_table(Tables * tables, Table table) {
@@ -33,38 +54,30 @@ void add_table(Tables * tables, Table table) {
   tables -> list[tables -> size - 1] = table;
 }
 
-/// @brief Cria uma nova tabela. Ainda está incompleto (falta os inputs do usuário)
-/// @return em caso de sucesso: a própria tabela criada. em caso de erro ou cancelamento, uma tabela vazia com parâmetro name = "NULL_TABLE", para simbolizar à main que a tabela é vazia.
-Table create_new_table() {
-  Table new_table, empty_table;
-  int qtd_columns = 0;
-  char yes_or_no;
-  
-  //A tabela vazia é uma tabela sem nome
-  strcpy(empty_table.name, "");
-
-  do {
-    clear_terminal();
-    printf("Nome da tabela: ");
-    fgets(new_table.name, 50, stdin);
-    trim(strlen(new_table.name), new_table.name);
-    //nunca vai passar uma tabela sem nome
-  } while(strlen(new_table.name) != 0);
-  fflush(stdin);
-
-  //Ok, muita coisa a fazer ainda
-
-  while(1) {
-    printf("Deseja realmente adicionar a tabela \"%s\"? (Y/N): ", new_table.name);
-    scanf("%c", &yes_or_no);
-    getchar();
-    if (tolower(yes_or_no) == 'y') {
-      return new_table;
-    } else if (tolower(yes_or_no) == 'n') {
-      return empty_table;
-    };
-    clear_terminal();
+/// @brief Inicializa uma tabela vazia.
+/// @return a tabela vazia
+Table create_empty_table() {
+  Table table = {
+    .name = "",
+    .qtd_columns = 0,
+    .qtd_records = 0,
   };
+
+  //É necessário alocar para conseguirmos
+  //realocar depois
+  table.columns = malloc(0);
+  table.records = malloc(0);
+
+  return table;
+}
+
+/// @brief Adiciona uma coluna em uma tabela.
+/// @param table a tabela
+/// @param column a coluna
+void add_column(Table table, Column column) {
+  table.qtd_columns++;
+  table.columns = realloc(table.columns, sizeof(Column) * table.qtd_columns);
+  table.columns[table.qtd_columns - 1] = column;
 }
 
 /// @brief Remove uma tabela da lista de tabelas
@@ -81,16 +94,16 @@ void delete_table(int table_index, Tables * tables) {
   tables -> list = realloc(tables -> list, sizeof(Table) * tables -> size);
 }
 
-/// @brief Percorre a database para saber se a tabela inserida pelo usuário já existe
+/// @brief Percorre a database para saber se a tabela inserida pelo usuário já existe.
 /// @param table a tabela inserida
 /// @param tables a lista de tabelas do momento (tables.list e database)
-/// @return 1, se houver tabela igual na database; 0, se não houver tabela igual
-int table_already_exists(Table table, Tables tables) {
+/// @return true, se houver tabela igual na database; false, se não houver tabela igual.
+bool table_already_exists(Table table, Tables tables) {
   for (int i = 0; i < tables.size; i++) {
     if (strcmp(table.name, tables.list[i].name) == 0) {
-      printf("Erro: tabela já existe!\n");
-      return 1;
+      return true;
     };
   };
-  return 0;
+
+  return false;
 }
