@@ -41,3 +41,6 @@ void add_column(Table * table, Column column);
 void delete_column(Table * table, int column_index);
 bool table_already_exists(Table table, Tables tables);
 bool column_already_exists(Column column, Table table);
+void columns_names_to_csv_string(Table table, char line[200]);
+void columns_types_to_csv_string(Table table, char line[200]);
+//void columns_values_to_csv_string(Table table, char line[200]);

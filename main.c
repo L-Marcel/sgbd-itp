@@ -30,7 +30,7 @@ int main() {
       case 1: // Criar uma nova tabela
         new_table = new_table_procedure(tables);
         if (strcmp(new_table.name, "") != 0) {
-          save_table_file(new_table);
+          save_new_table_file(new_table);
           printf("Tabela \"%s\" adicionada ao banco de dados com sucesso.\n", new_table.name);
         } else {
           printf("Operação cancelada!\n");

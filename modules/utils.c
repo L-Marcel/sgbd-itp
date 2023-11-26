@@ -6,6 +6,8 @@
 /// @param max_size tamanho máximo do texto
 /// @param text o texto capturado
 /// @param message a texto imprimido antes do input
+/// NATHAM Ele tá pegando o INPUT do usuário e, enquanto ele não colocar nada, vai repetir. Quando ele colocar um texto, 
+/// o table.name vai pegar ele e a função termina.
 void get_string(int max_size, char text[max_size], char* message) {
   do {
     clear_terminal();

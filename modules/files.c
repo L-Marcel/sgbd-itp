@@ -78,24 +78,30 @@ Tables get_tables() {
   return tables;
 }
 
+/// @brief Salva uma nova tabela criada no diretório database. Salve apenas
+/// O nome das colunas e seus tipos, sem salvar nenhuma linha.
+/// @param table a tabela
+void save_new_table_file(Table table) {
+  char path[70];
+  int total_len = 0;
+  char line_content[200];
+  sprintf(path, "./database/%s.csv", table.name);
+  FILE * file = fopen(path, "w+");
+  columns_names_to_csv_string(table, line_content);
+  fputs(line_content, file);
+  fseek(file, 0, SEEK_END);
+  columns_types_to_csv_string(table, line_content);
+  fputs(line_content, file);
+  fclose(file);
+}
+/* Comentado temporariamente
+
 /// @brief Salva as alterações de uma tabela, a cria se ela não existir.
 /// @param table a tabela
 void save_table_file(Table table) {
   char path[70];
   sprintf(path, "./database/%s.csv", table.name);
   FILE * file = fopen(path, "w+");
-
-  // [TODO] Escrever dados da tabela no arquivo
-
-  // Formato do arquivo (para n colunas, m registros/linhas):
-
-  // [nome coluna 1],[nome coluna 2], …, [nome coluna n]
-  // [tipo coluna 1],[tipo coluna 2], …, [tipo coluna n]
-
-  // [valor 1 do registro 1], [valor 2 do registro 1], …, [valor n do registro 1]
-  // …
-  // [valor 1 do registro m], [valor 2 do registro m], …, [valor n do registro m]
-
   fclose(file);
 }
 
@@ -109,3 +115,4 @@ void remove_table_file(Table table) {
   remove(path);
   printf("Tabela \"%s\" removida!\n", table.name);
 }
+*/

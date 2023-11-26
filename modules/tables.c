@@ -135,3 +135,47 @@ bool column_already_exists(Column column, Table table) {
 
   return false;
 }
+
+/// @brief A partir de uma tabela, transforma todos os nomes de suas colunas em uma única
+/// string do formato csv (ex: "chaveprimaria,atributo1,atributo2,atributo3\n"). Não retorna
+/// nada, e sim, altera o "char line[200]" passado como parâmetro na chamada da função.
+void columns_names_to_csv_string(Table table, char line[200]) {
+  int line_len = 0; 
+  int csv_qtd_columns = table.qtd_columns;
+
+  strcpy(line, table.columns[0].name);      
+  strcat(line, ",");
+
+  for (int i = 1; i < csv_qtd_columns; i++) {
+    if (i + 1 == csv_qtd_columns) {
+      strcat(line, table.columns[i].name);
+      strcat(line, "\n");
+    } else {
+      strcat(line, table.columns[i].name);
+      strcat(line, ",");
+    }
+  };
+
+}
+
+/// @brief A partir de uma tabela, transforma todos os tipos de suas colunas em uma única
+/// string do formato csv (ex: "tipo1, tipo2, tipo3, tipo4\n"). Não retorna
+/// nada, e sim, altera o "char line[200]" passado como parâmetro na chamada da função.
+void columns_types_to_csv_string(Table table, char line[200]) {
+  int line_len = 0; 
+  int csv_qtd_columns = table.qtd_columns;
+
+  strcpy(line, get_type_name(table.columns[0].type));      
+  strcat(line, ",");
+
+  for (int i = 1; i < csv_qtd_columns; i++) {
+    if (i + 1 == csv_qtd_columns) {
+      strcat(line, get_type_name(table.columns[i].type));
+      strcat(line, "\n");
+    } else {
+      strcat(line, get_type_name(table.columns[i].type));
+      strcat(line, ",");
+    }
+  };
+
+}

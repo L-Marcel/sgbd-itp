@@ -5,22 +5,25 @@
 /// @brief Cria uma nova tabela valida.
 /// @param tables lista de tabelas já existentes
 /// @return em caso de sucesso, a própria tabela criada. Em caso de erro ou cancelamento, 
-/// uma tabela vazia, para simbolizar à main que não é uma tabela invalida.
+/// uma tabela vazia, para simbolizar à main que é uma tabela invalida.
 Table new_table_procedure(Tables tables) {
   Table new_table = create_empty_table();
 
   int qtd_columns = 0;
   char yes_or_no;
+  // [CHANGE] A declaração de exists_message tava dentro de um laço. Coloquei a declaração fora 
+  // e a atribuição continua dentro do laço.
+  char exists_message[120];
   
   bool table_exists = false;
   do {
-    char exists_message[120];
+    // NATHAM Coloca na exists_message essa string com a table inválida.
     sprintf(
       exists_message, 
       "Já existe uma tabela chamada \"%s\"!\nNome da tabela (max: 49): ", 
       new_table.name
     );
-
+    // NATHAM Se já existir a tabela, ele passa o exists_message (pergunta de novo o nome)
     get_string(
       50, 
       new_table.name,
@@ -28,6 +31,8 @@ Table new_table_procedure(Tables tables) {
         exists_message : 
         "Nome da tabela (max: 49): "
     );
+    // NATHAM Verifica se o nome inserido existe nas tables existentes. Se existir, retorna true.
+    // Se não, retorna false.
     table_exists = table_already_exists(new_table, tables);
   } while(table_exists);
 
@@ -38,7 +43,7 @@ Table new_table_procedure(Tables tables) {
 
   get_string(50, primary_column.name, "Nome da chave primária (max: 49): ");
   add_column(&new_table, primary_column);
-
+/////////////
   int valid_option = -1;
   do {
     int procedure_option = display_new_table_procedure_menu(new_table);
