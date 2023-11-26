@@ -3,10 +3,10 @@
 typedef enum {
   T_NAT,
   T_INT,
-  T_STRING,
-  T_CHAR,
   T_FLOAT,
-  T_DOUBLE
+  T_DOUBLE,
+  T_CHAR,
+  T_STRING
 } types;
 
 typedef struct {
@@ -32,9 +32,12 @@ typedef struct {
   int size;
 } Tables;
 
+char* get_type_name(types type);
 Tables sort_tables(Tables tables);
 void add_table(Tables * tables, Table table);
-Table create_empty_table();
-void add_column(Table table, Column column);
 void delete_table(int table_index, Tables * tables);
+Table create_empty_table();
+void add_column(Table * table, Column column);
+void delete_column(Table * table, int column_index);
 bool table_already_exists(Table table, Tables tables);
+bool column_already_exists(Column column, Table table);

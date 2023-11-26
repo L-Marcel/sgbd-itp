@@ -74,10 +74,24 @@ Table create_empty_table() {
 /// @brief Adiciona uma coluna em uma tabela.
 /// @param table a tabela
 /// @param column a coluna
-void add_column(Table table, Column column) {
-  table.qtd_columns++;
-  table.columns = realloc(table.columns, sizeof(Column) * table.qtd_columns);
-  table.columns[table.qtd_columns - 1] = column;
+void add_column(Table * table, Column column) {
+  table -> qtd_columns++;
+  table -> columns = realloc(table -> columns, sizeof(Column) * table -> qtd_columns);
+  table -> columns[table -> qtd_columns - 1] = column;
+}
+
+/// @brief Apaga uma coluna de uma tabela.
+/// @param table a tabela
+/// @param column_index o index da coluna
+void delete_column(Table * table, int column_index) {
+  for(int i = 0; i < table -> qtd_columns - 1; i++) {
+    if(i >= column_index) {
+      table -> columns[i] = table -> columns[i + 1];
+    };
+  };
+
+  table -> qtd_columns--;
+  table -> columns = realloc(table -> columns, sizeof(Column) * table -> qtd_columns);
 }
 
 /// @brief Remove uma tabela da lista de tabelas
@@ -96,11 +110,25 @@ void delete_table(int table_index, Tables * tables) {
 
 /// @brief Percorre a database para saber se a tabela inserida pelo usuário já existe.
 /// @param table a tabela inserida
-/// @param tables a lista de tabelas do momento (tables.list e database)
+/// @param tables a lista de tabelas
 /// @return true, se houver tabela igual na database; false, se não houver tabela igual.
 bool table_already_exists(Table table, Tables tables) {
   for (int i = 0; i < tables.size; i++) {
     if (strcmp(table.name, tables.list[i].name) == 0) {
+      return true;
+    };
+  };
+
+  return false;
+}
+
+/// @brief Percorre as colunas da tabela para saber se a coluna inserida pelo usuário já existe.
+/// @param column a coluna inserida
+/// @param table a tabela
+/// @return true, se houver coluna igual na tabela; false, se não houver coluna igual.
+bool column_already_exists(Column column, Table table) {
+  for (int i = 0; i < table.qtd_columns; i++) {
+    if (strcmp(column.name, table.columns[i].name) == 0) {
       return true;
     };
   };

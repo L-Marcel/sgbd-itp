@@ -10,8 +10,10 @@ void get_string(int max_size, char text[max_size], char* message) {
   do {
     clear_terminal();
     printf("%s", message);
+
     fgets(text, max_size, stdin);
     trim(strlen(text), text);
+
     //nunca vai passar um texto vazio
   } while(strlen(text) == 0);
 }

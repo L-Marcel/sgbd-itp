@@ -8,16 +8,35 @@
 void print_tables(Tables tables, int start){
   tables = sort_tables(tables);
   
-  //essa imprimirá a lista de tabelas!
   for(int i = 0; i < tables.size; i++) {
-    //começa a imprimir do {start} porque o 0 será a opção de cancelar
     printf("[%d] → %s\n", i + start, tables.list[i].name);
   };
 }
 
+/// @brief Imprime as colunas de uma tabela
+/// @param table a tabelas
+/// @param start número do primeiro elemento da lista 
+/// @param include_primary_key se deve ou não incluir a chave primária
+void print_columns(Table table, int start, bool include_primary_key) {
+  int start_column = include_primary_key? 0:1;
+  for(int i = start_column; i < table.qtd_columns; i++) {
+    printf(
+      "[%d] → %s : %s\n", 
+      i - start_column + start, 
+      table.columns[i].name,
+      get_type_name(table.columns[i].type)
+    );
+  };
+}
+
+// [TODO] Imprimir tabela
 void print_table(){
-  //essa imprimirá a tabela com os dados!
-  printf("Olá mundo! Isso vai dar muito trabalho!");
+  // Acho que essa parte é a que envolve mais matemática
+  // tem que pegar o tamanho da maior string a ser imprimida
+  // na coluna para gerar o tamanho da coluna e, então, conseguir
+  // imprimir corretamente cada coluna, a ideia aqui é realmente
+  // imprimir no formato de uma tabela
+  printf("Isso vai dar muito trabalho!");
 }
 
 /// @brief Gera divisores com um título no meio.

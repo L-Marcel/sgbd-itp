@@ -1,4 +1,4 @@
-PARAMS = -g -W -pedantic -All_LC=Portuguese
+PARAMS = -g -W -pedantic -All_LC=Portuguese.utf8
 COMPILE = gcc main.c \
 	./build/modules/utils.o \
 	./build/modules/tables.o \

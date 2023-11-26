@@ -17,7 +17,7 @@ int get_nat_option() {
 
 /// @brief Valida a opção de menu escolhida.
 /// @param option opção escolhida
-/// @param qtd_menu_options quantidade de opções/indexs disponíveis para escolha
+/// @param qtd_menu_options quantidade de opções/indexes disponíveis para escolha
 /// @return 0 → se o usuário inserir 0 (voltar ao menu);
 /// (-1) → se receber uma opção inválida; 1 → se nada do que 
 /// foi citado anteriormente acontecer.
@@ -88,7 +88,23 @@ int display_procedures_menu(Table table) {
 int display_new_table_procedure_menu(Table table) {
     clear_terminal();
     print_divisor("Criar nova tabela");
+    
+    printf("Tabela: %s\n", table.name);
+    printf(
+        "Colunas:\n∘ %s : %s (chave primaria)\n", 
+        table.columns[0].name,
+        get_type_name(table.columns[0].type)
+    );
 
+    for(int i = 1; i < table.qtd_columns; i++) {
+        printf(
+            "∘ %s : %s\n", 
+            table.columns[i].name,
+            get_type_name(table.columns[i].type)
+        );
+    };
+
+    print_divisor("");
     printf("[0] → Cancelar\n");
     printf("[1] → Finalizar\n");
     printf("[2] → Adicionar uma coluna\n");
@@ -96,6 +112,42 @@ int display_new_table_procedure_menu(Table table) {
       printf("[3] → Remover uma coluna\n");
     };
 
+    print_divisor("");
+    printf("Opção: ");
+    return get_nat_option();
+}
+
+/// @brief Menu de operações de tipos para a coluna.
+/// @return A opção escolhida.
+int display_select_types_menu() {
+    clear_terminal();
+    print_divisor("Escolha o tipo da coluna");
+
+    // Já está na ordem do enum!
+    printf("[0] → Nat\n");
+    printf("[1] → Int\n");
+    printf("[2] → Float\n");
+    printf("[3] → Double\n");
+    printf("[4] → Char\n");
+    printf("[5] → String\n");
+
+    print_divisor("");
+    printf("Opção: ");
+    return get_nat_option();
+}
+
+/// @brief Menu para selecionar coluna de uma tabela.
+/// @param table a tabela
+/// @param include_primary_keu se deve ou não incluir a chave primária
+/// @return A opção escolhida.
+int display_select_column_menu(Table table, char complement[26], bool include_primary_key) {
+    clear_terminal();
+    char title[47];
+    sprintf(title, "Colunas disponíveis%s", complement);
+    print_divisor(title);
+    print_columns(table, 1, include_primary_key);
+    print_divisor("");
+    printf("[0] → Voltar\n");
     print_divisor("");
     printf("Opção: ");
     return get_nat_option();
