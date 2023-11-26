@@ -37,39 +37,33 @@ void add_table(Tables * tables, Table table) {
 /// @return em caso de sucesso: a própria tabela criada. em caso de erro ou cancelamento, uma tabela vazia com parâmetro name = "NULL_TABLE", para simbolizar à main que a tabela é vazia.
 Table create_new_table() {
   Table new_table, empty_table;
-  int qtd_columns, i;
+  int qtd_columns = 0;
   char yes_or_no;
- 
-  strcpy(empty_table.name, "NULL_TABLE");
-  printf("Nome da tabela: ");
-  fgets(new_table.name, 50, stdin);
-  trim(strlen(new_table.name), new_table.name);
+  
+  //A tabela vazia é uma tabela sem nome
+  strcpy(empty_table.name, "");
 
+  do {
+    clear_terminal();
+    printf("Nome da tabela: ");
+    fgets(new_table.name, 50, stdin);
+    trim(strlen(new_table.name), new_table.name);
+    //nunca vai passar uma tabela sem nome
+  } while(strlen(new_table.name) != 0);
   fflush(stdin);
-  printf("Quantidade de colunas (se não souber, insira 0): ");
-  scanf("%i", &qtd_columns);
-  getchar();
-  if (qtd_columns < 0) {
-    printf("Valor inválido: não é possível ter colunas negativas. Redirecionando para o menu principal.");
-    return empty_table;
-  } else if (qtd_columns > 0) {
-    for (i = 0; i < qtd_columns; i++) {
-      printf("Valor da coluna %i\n", i);
-    };
-  } else {
-      printf("Vamo fazer um while.\n");
-  };
-  printf("Deseja realmente adicionar a tabela \"%s\" ao banco de dados? (Y/N): ", new_table.name);
-  scanf("%c", &yes_or_no);
-  getchar();
-  if (tolower(yes_or_no) == 'y') {
+
+  //Ok, muita coisa a fazer ainda
+
+  while(1) {
+    printf("Deseja realmente adicionar a tabela \"%s\"? (Y/N): ", new_table.name);
+    scanf("%c", &yes_or_no);
+    getchar();
+    if (tolower(yes_or_no) == 'y') {
       return new_table;
-  } else if (tolower(yes_or_no) == 'n') {
+    } else if (tolower(yes_or_no) == 'n') {
       return empty_table;
-  } else {
-      printf("Opção inválida. Voltando para o menu principal.");
-      system("pause");
-      return empty_table;
+    };
+    clear_terminal();
   };
 }
 

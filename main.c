@@ -29,7 +29,7 @@ int main() {
         break;
       case 1: 
         new_table = create_new_table();
-        if (strcmp(new_table.name, "NULL_TABLE") != 0) {
+        if (strcmp(new_table.name, "") != 0) {
           table_exists = table_already_exists(new_table, tables);
           if (table_exists == 0) {
             save_table_file(new_table);

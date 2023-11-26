@@ -20,21 +20,3 @@ void print_table(){
   printf("Olá mundo! Isso vai dar muito trabalho!");
 }
 
-/// @brief Limpa o terminal
-void clear_terminal() {
-  #ifdef _WIN32
-    system("cls");
-  #else
-    system("clear");
-  #endif
-}
-
-/// @brief Pausa o terminal
-void pause_terminal() {
-  #ifdef _WIN32
-	  system("pause");
-	#else
-    system("read -p \"Pressione ENTER para sair.\" saindo");
-    clear_terminal();
-	#endif
-}
