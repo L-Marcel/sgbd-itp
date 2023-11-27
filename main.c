@@ -73,8 +73,28 @@ int main() {
           else if (valid_option == -1) continue;
 
           Table table = tables.list[table_option - 1];
+          /// Ajudinha pra não se perder:
+          ///
+          /// get_data_from_table(table) -> files.c, linha 137
+          /// set_new_table_file(table) (mudar nome depois pra set_table_file) -> files.c, linha 86
+          /// new_tuple_procedure(table) -> procedures.c, linha 143
+          /// funções de conversão (string <-> CSV) -> tables.c, a partir da linha 193
+          ///
+          /// Passo a passo do algoritmo (até a etapa 2, tá funcionando certo):
+          ///
+          /// 1 - A atribuição do table ocorre (linha 75), pegando somente o nome da tabela
+          /// 2 - Agora na linha 97, tá indo no CSV da tabela e pegando todos os dados da tabela através 
+          /// do get_data_from_table(table);
+          /// 3 - Depois, na linha 108, tá indo pra o procedimento em que o usuário
+          /// insire os dados da nova tupla. Até o momento, o programa frecha na hora
+          /// em que vai realocar/callocar memória para a nova tupla da tabela. Tentei
+          /// apenas realocar e não deu; além disso, tentei dar free e depois callocar,
+          /// também não deu.
+          /// 4 - Depois de *teoricamente* tudo dar certo, vai para a linha 113 e sobrescreve
+          /// a tabela com a nova tupla. 
+          ///
           // [NOVO]  
-          get_data_from_table(table);
+          table = get_data_from_table(table);
           //
           do {
           
@@ -85,9 +105,11 @@ int main() {
             switch (procedure_option) {
               case 1: //[PARCIAL] Criar um novo registro na tabela 
                 // [NOVO] corrigir new_tuple  
-                new_tuple = new_tuple_procedure(table);
-                if (strcmp(new_tuple[0].value, "") != 0) {
-                  // save_tuple_on_table_file(table, new_tuple);
+                table = new_tuple_procedure(table);
+                printf("Parece que deu certo!\n");
+                pause_terminal();
+                if (strcmp(table.records[0][0].value, "") != 0) {
+                  save_new_table_file(table);
                   printf("Tupla adicionada com sucesso!\n");
                 } else {
                   printf("Operação cancelada!\n");

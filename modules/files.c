@@ -85,15 +85,23 @@ Tables get_tables() {
 /// @param table a tabela
 void save_new_table_file(Table table) {
   char path[70];
-  int total_len = 0;
   char line_content[200];
   sprintf(path, "./database/%s.csv", table.name);
+  printf("colunas: %i e records: %i\n", table.qtd_columns, table.qtd_records);
+  pause_terminal();
   FILE * file = fopen(path, "w+");
   columns_names_to_csv_string(table, line_content);
   fputs(line_content, file);
-  fseek(file, 0, SEEK_END);
-  columns_types_to_csv_string(table, line_content, true);
+  columns_types_to_csv_string(table, line_content, table.qtd_records == 2 ? true : false);
   fputs(line_content, file);
+  if (table.qtd_records > 2) {
+    printf("Entrou no laço de salvar tuplas (qtd_records) > 2\n");
+    for (int i = 3; i <= table.qtd_records; i++) {
+      columns_values_to_csv_string(table, line_content, i == table.qtd_records ? true : false);
+      printf("A linha é essa: %s\n", line_content);
+      fputs(line_content, file);
+    }
+  }
   fclose(file);
 }
 /* Comentado temporariamente
@@ -128,6 +136,7 @@ void remove_table_file(Table table) {
 Table get_data_from_table(Table table) {
   char path[70];
   char line_content[200];
+  int qtd_records = 2;
   sprintf(path, "./database/%s.csv", table.name);
   FILE *file = fopen(path, "r");
   fgets(line_content, 199, file);
@@ -135,15 +144,18 @@ Table get_data_from_table(Table table) {
   fgets(line_content, 199, file);
   table = csv_string_to_columns_types(table, line_content);
   printf("Nomes e tipos das colunas adicionados com sucesso! (Parcial)\n");
-  pause_terminal();
   /*
   while (feof(file) == 0); {
     fgets(line_content, 199, file);
-    table = csv_string_to_columns_values(table, line_content);
+    
+    table = csv_string_to_columns_values(table, line_content, counter_i);
+    qtd_records++;
     pause_terminal();
+    
   };
   */
-  fclose(file);
+  table.qtd_records = qtd_records;
+  pause_terminal();
   return table;
 }
 //

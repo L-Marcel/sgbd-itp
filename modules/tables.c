@@ -232,7 +232,21 @@ void columns_types_to_csv_string(Table table, char line[200], bool is_last_line)
 }
 
 void columns_values_to_csv_string(Table table, char line[200], bool is_last_line) {
-  printf("Por enquanto, nada!");
+  int line_len = 0; 
+  printf("aq%saq", table.records[table.qtd_records - 3][0].value);
+  pause_terminal();
+  strcpy(line, table.records[table.qtd_records - 3][0].value);      
+  if (table.qtd_columns == 1) strcat(line, "\n"); else strcat(line, ",");
+
+  for (int i = 1; i < table.qtd_columns; i++) {
+    if (i + 1 == table.qtd_columns) {
+      strcat(line, table.records[table.qtd_records - 3][i].value);
+      strcat(line, "\n");
+    } else {
+      strcat(line, table.records[table.qtd_records - 3][i].value);
+      strcat(line, ",");
+    }
+  };
 }
 
 /// @brief Transforma uma string em estilo CSV em várias outras string menores, as quais são 
@@ -287,8 +301,20 @@ Table csv_string_to_columns_types(Table table, char line[200]) {
 
 /// @brief Transforma uma string em estilo CSV em várias outras string menores, as quais são 
 /// transformadas nos values das colunas 
-Table csv_string_to_columns_values(Table table, char line[200]) {
+Table csv_string_to_columns_values(Table table, char line[200], int counter_i) {
   char *piece;
+  char aux_line[200];
+  strcpy(aux_line, line);
+  aux_line[strlen(aux_line)] = '\0';
+  int counter_j = 0;
+
+  piece = strtok(aux_line, ",");
+
+  while (piece != NULL) {
+    strcpy(table.records[counter_i][counter_j].value, piece);
+    counter_j++;
+    piece = strtok(NULL, ",");
+  }
 
   return table;
 }

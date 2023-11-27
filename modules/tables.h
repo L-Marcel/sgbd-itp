@@ -55,5 +55,5 @@ void columns_types_to_csv_string(Table table, char line[200], bool is_last_line)
 void columns_values_to_csv_string(Table table, char line[200], bool is_last_line);
 Table csv_string_to_columns_names(Table table, char line[200]);
 Table csv_string_to_columns_types(Table table, char line[200]);
-Table csv_string_to_columns_values(Table table, char line[200]);
+Table csv_string_to_columns_values(Table table, char line[200], int counter_i);
 //
