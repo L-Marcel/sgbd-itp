@@ -71,6 +71,16 @@ Table create_empty_table() {
   return table;
 }
 
+// [NOVO]
+/// @brief Inicializa uma linha/tupla vazia, de acordo com a quantidade
+/// de colunas da tabela.
+/// @return a tupla vazia
+Record *create_empty_tuple(int qtd_columns) {
+  Record *tuple = calloc(qtd_columns, sizeof(Record));
+  return tuple;
+}
+//
+
 /// @brief Adiciona uma coluna em uma tabela.
 /// @param table a tabela
 /// @param column a coluna
@@ -136,6 +146,7 @@ bool column_already_exists(Column column, Table table) {
   return false;
 }
 
+// [NOVO]
 /// @brief A partir de uma tabela, transforma todos os nomes de suas colunas em uma única
 /// string do formato csv (ex: "chaveprimaria,atributo1,atributo2,atributo3\n"). Não retorna
 /// nada, e sim, altera o "char line[200]" passado como parâmetro na chamada da função.
@@ -144,7 +155,7 @@ void columns_names_to_csv_string(Table table, char line[200]) {
   int csv_qtd_columns = table.qtd_columns;
 
   strcpy(line, table.columns[0].name);      
-  strcat(line, ",");
+  if (csv_qtd_columns == 1) strcat(line, "\n"); else strcat(line, ",");
 
   for (int i = 1; i < csv_qtd_columns; i++) {
     if (i + 1 == csv_qtd_columns) {
@@ -166,7 +177,7 @@ void columns_types_to_csv_string(Table table, char line[200]) {
   int csv_qtd_columns = table.qtd_columns;
 
   strcpy(line, get_type_name(table.columns[0].type));      
-  strcat(line, ",");
+  if (csv_qtd_columns == 1) strcat(line, "\n"); else strcat(line, ",");
 
   for (int i = 1; i < csv_qtd_columns; i++) {
     if (i + 1 == csv_qtd_columns) {
@@ -177,5 +188,5 @@ void columns_types_to_csv_string(Table table, char line[200]) {
       strcat(line, ",");
     }
   };
-
 }
+//

@@ -133,3 +133,61 @@ Table new_table_procedure(Tables tables) {
     };
   } while(valid_option == -1);
 }
+
+// [NOVO]
+/// @brief Cria uma nova tupla valida.
+/// @param table tabela a ser criada a tupla
+/// @return em caso de sucesso, a própria tupla criada. Em caso de erro ou cancelamento, 
+/// uma tupla com primeiro termo vazio, para simbolizar à main que é uma tabela invalida.
+Record *new_tuple_procedure(Table table) {
+    int qtd_columns = 0, strlen_first_line;
+    char aux_string[200], path[70], first_line[200], second_line[200];
+    char *piece, *name_piece, *type_piece;
+    sprintf(path, "./database/%s.csv", table.name);
+
+    FILE *file = fopen(path, "r");
+    fgets(aux_string, 199, file);
+    fclose(file);
+
+    strlen_first_line = strlen(aux_string);
+    piece = strtok(aux_string, ",");
+    while(piece != NULL) {
+      piece = strtok(NULL, ",");
+      qtd_columns++;
+    }
+
+    Record *tuple = create_empty_tuple(qtd_columns);
+    Record record;
+    char yes_or_no;
+    char value_message[100];
+
+    file = fopen(path, "r");
+    fgets(first_line, 199, file);
+    fclose(file);
+
+    name_piece = strtok(first_line, ",");
+    // O usuário não pode inserir o valor da primeira coluna (primary_key)
+    name_piece = strtok(NULL, ",");
+    for (int i = 0; i < qtd_columns - 1; i++) {
+      if (i + 1 == qtd_columns - 1) {
+        name_piece[strlen(name_piece) - 1] = '\0';
+      }
+      sprintf(value_message, "Insira o valor do(a) campo \"%s\": ", name_piece);
+      get_string(200, tuple[i].value, value_message);
+      name_piece = strtok(NULL, ",");
+    }
+
+    while(true) {
+      printf("Deseja realmente criar a tupla inserida? (Y/N): ");
+      scanf("%c", &yes_or_no);
+      getchar();
+      clear_terminal();
+      if (tolower(yes_or_no) == 'y') {
+        return tuple;
+      } else if (tolower(yes_or_no) == 'n') {
+        strcpy(tuple[0].value, "");
+        return tuple;
+      };
+    };
+}
+//

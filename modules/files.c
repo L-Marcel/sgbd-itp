@@ -105,6 +105,9 @@ void save_table_file(Table table) {
   fclose(file);
 }
 
+void save_tuple_on_table(Record *tuple);
+*/
+
 /// @brief Deleta uma tabela por completo, incluindo seu arquivo csv. 
 /// No momento, funciona apenas se a tabela foi anteriormente criada 
 /// dentro do programa. 
@@ -115,4 +118,3 @@ void remove_table_file(Table table) {
   remove(path);
   printf("Tabela \"%s\" removida!\n", table.name);
 }
-*/

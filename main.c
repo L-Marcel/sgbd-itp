@@ -16,6 +16,9 @@ int main() {
   #endif
 
   Table new_table;
+  // [NOVO]
+  Record *new_tuple;
+  //
 
   int menu_option = -1;
   int valid_option = -1;
@@ -71,12 +74,24 @@ int main() {
 
           Table table = tables.list[table_option - 1];
           do {
+          
             procedure_option = display_procedures_menu(table);
             valid_option = is_option_valid(procedure_option, 5);
             if (valid_option == 0) break;
 
-            switch (valid_option) {
-              case 1: //[TODO] Criar um novo registro na tabela
+            switch (procedure_option) {
+              case 1: //[PARCIAL] Criar um novo registro na tabela 
+                // [NOVO]   
+                new_tuple = new_tuple_procedure(table);
+                if (strcmp(new_tuple[0].value, "") != 0) {
+                  // save_tuple_on_table_file(table, new_tuple);
+                  printf("Tupla adicionada com sucesso!\n");
+                } else {
+                  printf("Operação cancelada!\n");
+                }
+                
+                pause_terminal();
+                //
                 break;
               case 2: //[TODO] Listar todos os dados da tabela
                 break;
