@@ -214,16 +214,15 @@ void columns_names_to_csv_string(Table table, char line[200]) {
 /// nada, e sim, altera o "char line[200]" passado como parâmetro na chamada da função.
 void columns_types_to_csv_string(Table table, char line[200], bool is_last_line) {
   int line_len = 0; 
-  int csv_qtd_columns = table.qtd_columns;
 
   strcpy(line, get_type_name(table.columns[0].type));      
-  if (csv_qtd_columns == 1) strcat(line, "\n"); else strcat(line, ",");
+  if (table.qtd_columns == 1) strcat(line, "\n"); else strcat(line, ",");
 
-  for (int i = 1; i < csv_qtd_columns; i++) {
+  for (int i = 1; i < table.qtd_columns; i++) {
     strcat(line, get_type_name(table.columns[i].type));
-    if (is_last_line && i + 1 == csv_qtd_columns) {
+    if (is_last_line && i + 1 == table.qtd_columns) {
       break;
-    } else if (i + 1 == csv_qtd_columns) {
+    } else if (i + 1 == table.qtd_columns) {
       strcat(line, "\n");
     } else {
       strcat(line, ",");
@@ -233,17 +232,17 @@ void columns_types_to_csv_string(Table table, char line[200], bool is_last_line)
 
 void columns_values_to_csv_string(Table table, char line[200], bool is_last_line) {
   int line_len = 0; 
-  printf("aq%saq", table.records[table.qtd_records - 3][0].value);
-  pause_terminal();
+
   strcpy(line, table.records[table.qtd_records - 3][0].value);      
   if (table.qtd_columns == 1) strcat(line, "\n"); else strcat(line, ",");
 
   for (int i = 1; i < table.qtd_columns; i++) {
-    if (i + 1 == table.qtd_columns) {
-      strcat(line, table.records[table.qtd_records - 3][i].value);
+    strcat(line, table.records[table.qtd_records - 3][i].value);
+    if (is_last_line && i + 1 == table.qtd_columns) {
+      break;
+    } else if (i + 1 == table.qtd_columns) {
       strcat(line, "\n");
     } else {
-      strcat(line, table.records[table.qtd_records - 3][i].value);
       strcat(line, ",");
     }
   };
@@ -301,19 +300,24 @@ Table csv_string_to_columns_types(Table table, char line[200]) {
 
 /// @brief Transforma uma string em estilo CSV em várias outras string menores, as quais são 
 /// transformadas nos values das colunas 
-Table csv_string_to_columns_values(Table table, char line[200], int counter_i) {
+Table csv_string_to_columns_values(Table table, char line[200], int qtd_records_minus_3, bool is_last_line) {
   char *piece;
   char aux_line[200];
   strcpy(aux_line, line);
   aux_line[strlen(aux_line)] = '\0';
   int counter_j = 0;
+  int aux_len;
 
   piece = strtok(aux_line, ",");
 
   while (piece != NULL) {
-    strcpy(table.records[counter_i][counter_j].value, piece);
+    strcpy(table.records[qtd_records_minus_3][counter_j].value, piece);
     counter_j++;
     piece = strtok(NULL, ",");
+  }
+  if (is_last_line && piece == NULL) {
+    aux_len = strlen(table.records[qtd_records_minus_3][counter_j].value);
+    table.records[qtd_records_minus_3][counter_j].value[aux_len] = '\0';
   }
 
   return table;

@@ -148,9 +148,6 @@ Table new_tuple_procedure(Table table) {
     table.records = calloc(table.qtd_columns, sizeof(Record*));
     for(int i = 0; i < table.qtd_columns; i++) {
       table.records[i] = calloc(table.qtd_columns, sizeof(Record));
-      printf("%p", table.records[i]);
-      printf("oi");
-      pause_terminal();
     }
     sprintf(table.records[table.qtd_records - 2][0].value, "%i", table.qtd_records - 1);
 

@@ -144,16 +144,18 @@ Table get_data_from_table(Table table) {
   fgets(line_content, 199, file);
   table = csv_string_to_columns_types(table, line_content);
   printf("Nomes e tipos das colunas adicionados com sucesso! (Parcial)\n");
+  /// [FALTA] Para tables com pelo menos uma tupla
   /*
-  while (feof(file) == 0); {
+  while (feof(file) == 0) {
+    printf("eentrou no trovao\n");
     fgets(line_content, 199, file);
-    
-    table = csv_string_to_columns_values(table, line_content, counter_i);
     qtd_records++;
+    table = csv_string_to_columns_values(table, line_content, qtd_records - 3, feof(file) == 0 ? false : true);
     pause_terminal();
-    
-  };
+  }; 
   */
+  fclose(file);
+
   table.qtd_records = qtd_records;
   pause_terminal();
   return table;

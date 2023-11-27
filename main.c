@@ -86,10 +86,10 @@ int main() {
           /// 2 - Agora na linha 97, tá indo no CSV da tabela e pegando todos os dados da tabela através 
           /// do get_data_from_table(table);
           /// 3 - Depois, na linha 108, tá indo pra o procedimento em que o usuário
-          /// insire os dados da nova tupla. Até o momento, o programa frecha na hora
-          /// em que vai realocar/callocar memória para a nova tupla da tabela. Tentei
-          /// apenas realocar e não deu; além disso, tentei dar free e depois callocar,
-          /// também não deu.
+          /// insire os dados da nova tupla. Até o momento, o programa consegue, com sucesso,
+          /// inserir os dados quando é a primeira tupla cadastrada. Quando já tem uma  ou mais tupla,
+          /// ainda não tá dando certo.
+          /// 
           /// 4 - Depois de *teoricamente* tudo dar certo, vai para a linha 113 e sobrescreve
           /// a tabela com a nova tupla. 
           ///
@@ -106,7 +106,6 @@ int main() {
               case 1: //[PARCIAL] Criar um novo registro na tabela 
                 // [NOVO] corrigir new_tuple  
                 table = new_tuple_procedure(table);
-                printf("Parece que deu certo!\n");
                 pause_terminal();
                 if (strcmp(table.records[0][0].value, "") != 0) {
                   save_new_table_file(table);
@@ -114,7 +113,6 @@ int main() {
                 } else {
                   printf("Operação cancelada!\n");
                 }
-                
                 pause_terminal();
                 //
                 break;
