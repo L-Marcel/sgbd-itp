@@ -78,6 +78,8 @@ Tables get_tables() {
   return tables;
 }
 
+// Vai ser mudado para salvar de uma vez só, depois.
+
 /// @brief Salva uma nova tabela criada no diretório database. Salve apenas
 /// O nome das colunas e seus tipos, sem salvar nenhuma linha.
 /// @param table a tabela
@@ -90,7 +92,7 @@ void save_new_table_file(Table table) {
   columns_names_to_csv_string(table, line_content);
   fputs(line_content, file);
   fseek(file, 0, SEEK_END);
-  columns_types_to_csv_string(table, line_content);
+  columns_types_to_csv_string(table, line_content, true);
   fputs(line_content, file);
   fclose(file);
 }
@@ -118,3 +120,30 @@ void remove_table_file(Table table) {
   remove(path);
   printf("Tabela \"%s\" removida!\n", table.name);
 }
+
+// [NOVO]
+/// @brief Coleta todos os dados da tabela de acordo com seu arquivo CSV
+/// @param table a tabela
+/// @return a tabela, com todos os dados anteriormente vazios, preenchida
+Table get_data_from_table(Table table) {
+  char path[70];
+  char line_content[200];
+  sprintf(path, "./database/%s.csv", table.name);
+  FILE *file = fopen(path, "r");
+  fgets(line_content, 199, file);
+  table = csv_string_to_columns_names(table, line_content);
+  fgets(line_content, 199, file);
+  table = csv_string_to_columns_types(table, line_content);
+  printf("Nomes e tipos das colunas adicionados com sucesso! (Parcial)\n");
+  pause_terminal();
+  /*
+  while (feof(file) == 0); {
+    fgets(line_content, 199, file);
+    table = csv_string_to_columns_values(table, line_content);
+    pause_terminal();
+  };
+  */
+  fclose(file);
+  return table;
+}
+//

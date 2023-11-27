@@ -33,6 +33,7 @@ typedef struct {
 } Tables;
 
 char* get_type_name(types type);
+types get_type_original(char string[15]);
 Tables sort_tables(Tables tables);
 void add_table(Tables * tables, Table table);
 void delete_table(int table_index, Tables * tables);
@@ -48,7 +49,11 @@ bool table_already_exists(Table table, Tables tables);
 bool column_already_exists(Column column, Table table);
 
 // [NOVO]
+int get_qtd_columns(char line[200]);
 void columns_names_to_csv_string(Table table, char line[200]);
-void columns_types_to_csv_string(Table table, char line[200]);
-//void columns_values_to_csv_string(Table table, char line[200]);
+void columns_types_to_csv_string(Table table, char line[200], bool is_last_line);
+void columns_values_to_csv_string(Table table, char line[200], bool is_last_line);
+Table csv_string_to_columns_names(Table table, char line[200]);
+Table csv_string_to_columns_types(Table table, char line[200]);
+Table csv_string_to_columns_values(Table table, char line[200]);
 //

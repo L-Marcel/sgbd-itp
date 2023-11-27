@@ -73,6 +73,9 @@ int main() {
           else if (valid_option == -1) continue;
 
           Table table = tables.list[table_option - 1];
+          // [NOVO]  
+          get_data_from_table(table);
+          //
           do {
           
             procedure_option = display_procedures_menu(table);
@@ -81,7 +84,7 @@ int main() {
 
             switch (procedure_option) {
               case 1: //[PARCIAL] Criar um novo registro na tabela 
-                // [NOVO]   
+                // [NOVO] corrigir new_tuple  
                 new_tuple = new_tuple_procedure(table);
                 if (strcmp(new_tuple[0].value, "") != 0) {
                   // save_tuple_on_table_file(table, new_tuple);
