@@ -28,7 +28,7 @@ char* get_type_name(types type) {
 /// @brief Converte o texto para um type
 /// @param str a string do tipo enumerado
 /// @return O tipo correspondente à string
-types get_type_original(char str[15]) {
+types get_type_original(char str[10]) {
   if (strcmp(str, "Nat") == 0) {
     return T_NAT;
   } else if (strcmp(str, "Int") == 0) {
@@ -292,7 +292,7 @@ Table csv_string_to_columns_types(Table table, char line[200]) {
   int counter = 0;
   char aux_line[200];
   strcpy(aux_line, line);
-  aux_line[strlen(aux_line)] = '\0';
+  aux_line[strlen(aux_line) - 1] = '\0';
 
   piece = strtok(aux_line, ",");
 
