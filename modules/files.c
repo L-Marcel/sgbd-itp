@@ -126,7 +126,7 @@ Table get_data_from_table(Table table) {
   fgets(line_content, 199, file);
   table = csv_string_to_columns_types(table, line_content);
 
-  /// [FALTA] Para tables com pelo menos uma tupla
+  /// [TODO] Ler as tuplas
   /*
   while (feof(file) == 0) {
     printf("eentrou no trovao\n");

@@ -97,23 +97,26 @@ int main() {
           do {
             procedure_option = display_procedures_menu(table);
             valid_option = is_option_valid(procedure_option, 5);
+            int start_qtd_records = table.qtd_records;
             if (valid_option == 0) break;
 
             switch (procedure_option) {
-              case 1: // [PARCIAL] Criar um novo registro na tabela 
+              case 1: 
+                // [CHANGE] Está completo! Mas como não está carregando as
+                // tuplas anteriores, ainda não foi testado a verificação
+                // de unicidade dos ids
 
-                // [CHANGE] Bug corrigido, mas como não está carregando as
-                // tuplas anteriores, a tabela sempre vai ficar só com uma
                 table = new_tuple_procedure(table);
-                if (strcmp(table.records[0][0].value, "") != 0) {
+                if (start_qtd_records < table.qtd_records) {
                   save_table_file(table);
                   printf("Tupla adicionada com sucesso!\n");
                 } else {
                   printf("Operação cancelada!\n");
                 }
+                
                 pause_terminal();
                 break;
-              case 2: // [TODO] Listar todos os dados da tabela
+              case 2: // [NOVO] Já funciona!
                 print_table(table);
                 pause_terminal();
                 break;

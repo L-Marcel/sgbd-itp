@@ -140,38 +140,66 @@ Table new_table_procedure(Tables tables) {
 /// @return em caso de sucesso, a própria tupla criada. Em caso de erro ou cancelamento, 
 /// uma tupla com primeiro termo vazio, para simbolizar à main que é uma tabela invalida.
 Table new_tuple_procedure(Table table) {
-    char yes_or_no;
-    char value_message[100];
-    char test[200];
+  char yes_or_no;
+  char value_message[200];
+  char test[200];
 
-    table.records = calloc(table.qtd_records + 1, sizeof(Record*));
+  table.records = realloc(table.records, (table.qtd_records + 1) * sizeof(Record*));
+  table.records[table.qtd_records] = calloc(table.qtd_columns, sizeof(Record));
 
-    for(int i = 0; i < table.qtd_records + 1; i++) {
-      table.records[i] = calloc(table.qtd_columns, sizeof(Record));
-    }
+  for(int i = 0; i < table.qtd_columns; i++) {
+    bool is_valid = true;
+    char error[100] = "";
 
-    sprintf(table.records[table.qtd_records][0].value, "%i", table.qtd_records);
-
-    for (int i = 1; i < table.qtd_columns; i++) {
-      sprintf(value_message, "Insira o valor do(a) campo \"%s\" (%s): ", table.columns[i].name, get_type_name(table.columns[i].type));
-      get_string(200, table.records[table.qtd_records][i].value, value_message);
-      printf("real %s", table.records[table.qtd_records][i].value);
-      pause_terminal();
-    }
-
-    while(true) {
-      printf("Deseja realmente criar a tupla inserida? (Y/N): ");
-      scanf("%c", &yes_or_no);
-      clear_terminal();
-      if (tolower(yes_or_no) == 'y') {
-        getchar();
-        table.qtd_records++;
-        return table;
-      } else if (tolower(yes_or_no) == 'n') {
-        getchar();
-        strcpy(table.records[table.qtd_records][0].value, "");
-        return table;
+    do {
+      if(!is_valid) {
+        sprintf(
+          value_message, 
+          "%s\nInsira o valor do(a) campo \"%s\" (%s): ",
+          error,
+          table.columns[i].name, 
+          get_type_name(table.columns[i].type)
+        );
+      } else {
+        sprintf(
+          value_message, 
+          "Insira o valor do campo \"%s\" (%s): ", 
+          table.columns[i].name, 
+          get_type_name(table.columns[i].type)
+        );
       };
+
+      get_string(200, table.records[table.qtd_records][i].value, value_message);
+      is_valid = validate_record_value(
+        table.records[table.qtd_records][i].value,
+        table.columns[i].type,
+        error
+      );
+
+      if(i == 0 && is_valid) {
+        strcpy(error, "Já existe um registro com essa chave primária!");
+        is_valid = !primary_key_already_in_use(
+          table.records[table.qtd_records][i].value,
+          table
+        );
+      };
+    } while(!is_valid);
+
+    pause_terminal();
+  };
+
+  while(true) {
+    printf("Deseja realmente criar a tupla inserida? (Y/N): ");
+    scanf("%c", &yes_or_no);
+    clear_terminal();
+    if (tolower(yes_or_no) == 'y') {
+      getchar();
+      table.qtd_records++;
+      return table;
+    } else if (tolower(yes_or_no) == 'n') {
+      getchar();
+      table.records = calloc(table.qtd_records, sizeof(Record*));
+      return table;
     };
+  };
 }
-//

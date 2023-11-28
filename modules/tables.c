@@ -41,7 +41,9 @@ types get_type_original(char str[10]) {
     return T_DOUBLE;
   } else if (strcmp(str, "Float") == 0) {
     return T_FLOAT;
-  } 
+  } else {
+    return -1;
+  };
 }
 
 /// @brief Ordena a lista de tabelas pelo nome delas.
@@ -169,20 +171,19 @@ bool column_already_exists(Column column, Table table) {
 int get_qtd_columns(char line[200]){
   // [TODO] tirar limitação de 200 caracteres
   // Alocação dinâmica resolve isso
+  char token[200];
+  strcpy(token, line);
 
   char *piece;
   int quantity = 0;
 
-  line[strlen(line) - 1] = '\0';
-  piece = strtok(line, ",");
-  quantity++;
+  trim(strlen(token), token);
+  piece = strtok(token, ",");
 
   while (piece != NULL) {
     quantity++;    
     piece = strtok(NULL, ",");
-  }
-
-  quantity--; 
+  };
 
   return quantity;
 }
@@ -269,16 +270,16 @@ Table csv_string_to_columns_names(Table table, char line[200]) {
   // Alocação dinâmica resolve isso
 
   char *piece;
-  char aux_line[200];
+  char aux_line[200] = "";
   strcpy(aux_line, line);
-  aux_line[strlen(aux_line) - 1] = '\0';
-  int columns_quantity = get_qtd_columns(line), counter = 0;
+  trim(strlen(aux_line), aux_line);
 
-  table.qtd_columns = columns_quantity;
-  table.columns = calloc(columns_quantity, sizeof(Column));
+  int counter = 0; 
+
+  table.qtd_columns = get_qtd_columns(line);
+  table.columns = calloc(table.qtd_columns, sizeof(Column));
 
   piece = strtok(aux_line, ",");
-
   while (piece != NULL) {
     strcpy(table.columns[counter].name, piece);
     counter++;
@@ -298,13 +299,12 @@ Table csv_string_to_columns_types(Table table, char line[200]) {
   // Alocação dinâmica resolve isso
 
   char *piece;
-  int counter = 0;
+  int counter = 0; 
   char aux_line[200];
   strcpy(aux_line, line);
-  aux_line[strlen(aux_line) - 1] = '\0';
+  trim(strlen(aux_line), aux_line);
 
   piece = strtok(aux_line, ",");
-
   while (piece != NULL) {
     table.columns[counter].type = get_type_original(piece);
     counter++;
@@ -316,7 +316,10 @@ Table csv_string_to_columns_types(Table table, char line[200]) {
 
 /// @brief Transforma uma string em estilo CSV em várias outras string menores, as quais são 
 /// transformadas nos values das colunas 
-Table csv_string_to_columns_values(Table table, char line[200], int qtd_records_minus_3, bool is_last_line) {
+Table csv_string_to_columns_values(
+  Table table, char line[200], 
+  int qtd_records_minus_3, bool is_last_line
+) {
   // [TODO] tirar limitação de 200 caracteres
   // Alocação dinâmica resolve isso
 
@@ -383,8 +386,14 @@ char * format_table_line_names(
   strcpy(line, "");
 
   for(int i = 0; i < qtd_columns; i++) {
+    int gap = i == qtd_columns - 1? 4:3;
     char column[columns_length[i]];
-    sprintf(column, "%*s", -columns_length[i], table.columns[i].name);
+    sprintf(
+      column, 
+      "%*s%s", -(columns_length[i] - gap), 
+      table.columns[i].name,
+      i == qtd_columns - 1? "":" | "
+    );
     strcat(line, column);
   };
   
@@ -408,8 +417,15 @@ char * format_table_line_types(
   strcpy(line, "");
 
   for(int i = 0; i < qtd_columns; i++) {
+    int gap = i == qtd_columns - 1? 4:3;
     char column[columns_length[i]];
-    sprintf(column, "%*s", -columns_length[i], get_type_name(table.columns[i].type));
+    sprintf(
+      column, 
+      "%*s%s", 
+      -(columns_length[i] - gap), 
+      get_type_name(table.columns[i].type),
+      i == qtd_columns - 1? "":" | "
+    );
     strcat(line, column);
   };
   
@@ -435,10 +451,79 @@ char * format_table_line_record(
   strcpy(line, "");
 
   for(int i = 0; i < qtd_columns; i++) {
+    int gap = i == qtd_columns - 1? 4:3;
     char column[columns_length[i]];
-    sprintf(column, "%*s", -columns_length[i], table.records[record_index][i].value);
+    sprintf(
+      column, 
+      "%*s%s", 
+      -(columns_length[i] - gap), 
+      table.records[record_index][i].value, 
+      i == qtd_columns - 1? "":" | "
+    );
     strcat(line, column);
   };
   
   return line;
+}
+
+/// @brief Verifica se o valor do record condiz com o tipo dele.
+/// @param value o valor
+/// @param type o tipo
+/// @param error a razão de ser invalido
+/// @return true, se for valido; false, caso contrário.
+bool validate_record_value(char value[200], types type, char error[200]) {
+  char value_to_validate[200];
+  strcpy(value_to_validate, value);
+  trim(strlen(value_to_validate) + 1, value_to_validate);
+
+  int nat, integer, success;
+  double number;
+  switch(type) {
+    case T_NAT:
+      nat = atoi(value_to_validate);
+      strcpy(error, "Valor informado não é um número natural!");
+
+      return 
+        !include_char(value_to_validate, ',') &&
+        !include_char(value_to_validate, '.') &&
+        (nat > 0 || strcmp(value_to_validate, "0") == 0);
+    case T_INT:
+      integer = atoi(value_to_validate);
+
+      strcpy(error, "Valor informado não é um número inteiro!");
+      return 
+        !include_char(value_to_validate, ',') &&
+        !include_char(value_to_validate, '.') &&
+        (integer != 0 || strcmp(value_to_validate, "0") == 0);
+    case T_FLOAT:
+    case T_DOUBLE:
+      strcpy(error, "Valor informado não é um número!");
+      success = sscanf(value, "%lf", &number);
+
+      if(success == 1 || strcmp(value_to_validate, "0") == 0) {
+        //Bonus da função: vai deixar no formato reduzido do double/float
+        sprintf(value, "%lg", number);
+        return true;
+      };
+
+      return false;
+    case T_CHAR:
+      strcpy(error, "Valor informado possuí mais de um caractere!");
+      return strlen(value_to_validate) == 1;
+    case T_STRING:
+      strcpy(error, "Por razões de segurança, não gostamos de vírgulas!");
+      return !include_char(value_to_validate, ',');
+    default:
+      return true;
+  };
+}
+
+bool primary_key_already_in_use(char value[200], Table table) {
+  for(int i = 0; i < table.qtd_records; i++) {
+    if(strcmp(table.records[i][0].value, value) == 0) {
+      return true;
+    };
+  };
+
+  return false;
 }

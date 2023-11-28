@@ -8,22 +8,33 @@
 /// @param message a texto imprimido antes do input
 /// NATHAM Ele tá pegando o INPUT do usuário e, enquanto ele não colocar nada, vai repetir. Quando ele colocar um texto, 
 /// o table.name vai pegar ele e a função termina.
-void get_string(int max_size, char text[max_size], char* message) {
+void get_string(unsigned long max_size, char text[max_size], char* message) {
+  bool can_clear = true;
+  char input[max_size + 2];
   do {
-    clear_terminal();
+    if(can_clear) clear_terminal();
     printf("%s", message);
 
-    fgets(text, max_size, stdin);
-    trim(strlen(text), text);
+    fgets(input, max_size + 3, stdin);
+    trim(strlen(input), input);
 
-    //nunca vai passar um texto vazio
-  } while(strlen(text) == 0);
+    if(strlen(input) >= max_size) {
+      fflush(stdin);
+      can_clear = false;
+      clear_terminal();
+      printf("O sistema só suporta entradas com no máximo 200 caracteres!\n");
+    } else {
+      can_clear = true;
+    };
+  } while(strlen(input) == 0 || strlen(input) >= max_size + 1);
+
+  strcpy(text, input);
 }
 
 /// @brief Remove espaço vázio no começo e final de um texto.
 /// @param size tamanho do texto
 /// @param text o texto
-void trim(int size, char text[size]) {
+void trim(unsigned long size, char text[size]) {
   for(int i = size - 1; i > 0; i--) {
     if(text[i] == ' ' || text[i] == '\n' || text[i] == '\t') {
       text[i] = '\0';
@@ -33,7 +44,7 @@ void trim(int size, char text[size]) {
   };
 
   int gap = 0;
-  for(int i = 0; i < size - 1; i++) {
+  for(unsigned long i = 0; i < size - 1; i++) {
     if(text[i] == ' ' || text[i] == '\n' || text[i] == '\t') {
       gap++;
     } else {
@@ -41,7 +52,7 @@ void trim(int size, char text[size]) {
     };
   };
 
-  for(int i = gap; i < size - 1; i++) {
+  for(unsigned long i = gap; i < size - 1; i++) {
     text[i - gap] = text[i];
   };
   text[size - 1 - gap] = '\0';
@@ -78,4 +89,18 @@ void pause_terminal() {
     system("read -p \"Pressione ENTER para sair.\" saindo");
     clear_terminal();
 	#endif
+}
+
+/// @brief Diz se uma string contem ou não um caractere especifico.
+/// @param text a string
+/// @param target o caractere
+/// @return true, se conter; false, caso constrário.
+bool include_char(char * text, char target) {
+  for(unsigned long i = 0; i < strlen(text); i++) {
+    if(text[i] == target) {
+      return true;
+    };
+  };
+
+  return false;
 }

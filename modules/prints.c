@@ -29,16 +29,16 @@ void print_columns(Table table, int start, bool include_primary_key) {
   };
 }
 
-// [TODO] Imprimir tabela
+// [NOVO] Imprimir tabela
 void print_table(Table table){
   int columns_length[table.qtd_columns];
   for(int i = 0; i < table.qtd_columns; i++) {
-    int gap = i == table.qtd_columns - 1? 0:2;
+    int gap = i == table.qtd_columns - 1? 0:3;
     columns_length[i] = get_column_length(table, i) + gap;
   };
 
   int line_length = sum(table.qtd_columns, columns_length) + 1;
-  printf("%s / Registros: %d\n", table.name, table.qtd_records);
+  printf("%s / Registros: %d\n\n", table.name, table.qtd_records);
 
   printf("%s\n", 
     format_table_line_names(
@@ -47,12 +47,7 @@ void print_table(Table table){
     )
   );
 
-  printf("%s\n", 
-    format_table_line_types(
-      table.qtd_columns, columns_length, 
-      line_length, table
-    )
-  );
+  print_table_divisor(line_length);
 
   for(int i = 0; i < table.qtd_records; i++) {
     printf("%s\n", 
@@ -62,6 +57,21 @@ void print_table(Table table){
       )
     );
   };
+
+  printf("\n");
+}
+
+/// @brief Imprime o divisor horizontal da tabela.
+/// @param line_length tamanho da linha
+void print_table_divisor(int line_length) {
+  char * div = malloc(sizeof(char) * (line_length + 1));
+  strcpy(div, "");
+
+  for(int i = 0; i < line_length; i++) {
+    strcat(div, "-");
+  };
+
+  printf("%s\n", div);
 }
 
 /// @brief Gera divisores com um título no meio.

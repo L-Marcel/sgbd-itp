@@ -74,3 +74,5 @@ char * format_table_line_record(
   int line_length, int record_index,
   Table table
 );
+bool validate_record_value(char value[200], types type, char error[200]);
+bool primary_key_already_in_use(char value[200], Table table);
