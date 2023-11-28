@@ -31,11 +31,6 @@ void print_columns(Table table, int start, bool include_primary_key) {
 
 // [TODO] Imprimir tabela
 void print_table(){
-  // Acho que essa parte é a que envolve mais matemática
-  // tem que pegar o tamanho da maior string a ser imprimida
-  // na coluna para gerar o tamanho da coluna e, então, conseguir
-  // imprimir corretamente cada coluna, a ideia aqui é realmente
-  // imprimir no formato de uma tabela
   printf("Isso vai dar muito trabalho!");
 }
 

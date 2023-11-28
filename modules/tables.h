@@ -45,12 +45,13 @@ void delete_column(Table * table, int column_index);
 bool table_already_exists(Table table, Tables tables);
 bool column_already_exists(Column column, Table table);
 
-// [NOVO]
-int get_qtd_columns(char line[200]);
+// [CHANGE] Tirei limitação de 200 caracteres
 char * columns_names_to_csv_string(Table table);
 char * columns_types_to_csv_string(Table table);
 char * columns_values_to_csv_string(Table table, int record_index);
+
+// [TODO] Tirar limitação de 200 caracteres de todas elas
+int get_qtd_columns(char line[200]);
 Table csv_string_to_columns_names(Table table, char line[200]);
 Table csv_string_to_columns_types(Table table, char line[200]);
 Table csv_string_to_columns_values(Table table, char line[200], int counter_i, bool is_last_line);
-//

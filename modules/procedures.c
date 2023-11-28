@@ -120,11 +120,12 @@ Table new_table_procedure(Tables tables) {
           );
 
           scanf("%c", &yes_or_no);
-          getchar();
           clear_terminal();
           if (tolower(yes_or_no) == 'y') {
+            getchar();
             return will_create? new_table:create_empty_table();
           } else if (tolower(yes_or_no) == 'n') {
+                      getchar();
             valid_option = -1;
             break;
           };
@@ -142,30 +143,32 @@ Table new_tuple_procedure(Table table) {
     char yes_or_no;
     char value_message[100];
     char test[200];
-    free(table.records);
-    table.records = calloc(table.qtd_columns, sizeof(Record*));
+
+    table.records = calloc(table.qtd_records + 1, sizeof(Record*));
     for(int i = 0; i < table.qtd_columns; i++) {
       table.records[i] = calloc(table.qtd_columns, sizeof(Record));
     }
-    sprintf(table.records[table.qtd_records - 2][0].value, "%i", table.qtd_records - 1);
+
+    sprintf(table.records[table.qtd_records][0].value, "%i", table.qtd_records);
 
     for (int i = 1; i < table.qtd_columns; i++) {
       sprintf(value_message, "Insira o valor do(a) campo \"%s\" (%s): ", table.columns[i].name, get_type_name(table.columns[i].type));
-      get_string(200, table.records[table.qtd_records - 2][i].value, value_message);
-      printf("real %s", table.records[table.qtd_records - 2][i].value);
+      get_string(200, table.records[table.qtd_records][i].value, value_message);
+      printf("real %s", table.records[table.qtd_records][i].value);
       pause_terminal();
     }
-  
+
     while(true) {
       printf("Deseja realmente criar a tupla inserida? (Y/N): ");
       scanf("%c", &yes_or_no);
-      getchar();
       clear_terminal();
       if (tolower(yes_or_no) == 'y') {
+        getchar();
         table.qtd_records++;
         return table;
       } else if (tolower(yes_or_no) == 'n') {
-        strcpy(table.records[table.qtd_records - 2][0].value, "");
+        getchar();
+        strcpy(table.records[table.qtd_records][0].value, "");
         return table;
       };
     };

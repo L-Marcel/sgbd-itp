@@ -16,9 +16,7 @@ int main() {
   #endif
 
   Table new_table;
-  // [NOVO]
   Record *new_tuple;
-  //
 
   int menu_option = -1;
   int valid_option = -1;
@@ -94,17 +92,18 @@ int main() {
           /// a tabela com a nova tupla. 
           ///
           // [NOVO]  
+
           table = get_data_from_table(table);
-          //
           do {
-          
             procedure_option = display_procedures_menu(table);
             valid_option = is_option_valid(procedure_option, 5);
             if (valid_option == 0) break;
 
             switch (procedure_option) {
-              case 1: //[PARCIAL] Criar um novo registro na tabela 
-                // [NOVO] corrigir new_tuple  
+              case 1: // [PARCIAL] Criar um novo registro na tabela 
+
+                // [CHANGE] Bug corrigido, mas como não está carregando as
+                // tuplas anteriores, a tabela sempre vai ficar só com uma
                 table = new_tuple_procedure(table);
                 pause_terminal();
                 if (strcmp(table.records[0][0].value, "") != 0) {
@@ -114,13 +113,12 @@ int main() {
                   printf("Operação cancelada!\n");
                 }
                 pause_terminal();
-                //
                 break;
-              case 2: //[TODO] Listar todos os dados da tabela
+              case 2: // [TODO] Listar todos os dados da tabela
                 break;
-              case 3: //[TODO] Pesquisar valor na tabela
+              case 3: // [TODO] Pesquisar valor na tabela
                 break;
-              case 4: //[TODO] Apagar uma registro da tabela
+              case 4: // [TODO] Apagar uma registro da tabela
                 break;
               default:
                 break;

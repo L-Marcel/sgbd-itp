@@ -31,7 +31,14 @@ Tables get_tables() {
     .size = 0,
     .list = malloc(0)
   };
-  Table table;
+  
+  Table table = {
+    .qtd_columns = 0,
+    .qtd_records = 0,
+    .records = malloc(0),
+    .columns = malloc(0),
+  };
+
   char *piece, *aux_name;
 
   create_database_folder();
@@ -129,7 +136,7 @@ Table get_data_from_table(Table table) {
     pause_terminal();
   }; 
   */
- 
+
   fclose(file);
   pause_terminal();
   return table;
