@@ -246,9 +246,9 @@ char * columns_values_to_csv_string(Table table, int record_index) {
     strcat(result, table.records[record_index][i].value);
 
     if(i == table.qtd_columns - 1) {
-      strcat(table.records[record_index][i].value, "\n");
+      strcat(result, "\n");
     } else {
-      strcat(table.records[record_index][i].value, ",");
+      strcat(result, ",");
     }
   };
 

@@ -111,7 +111,7 @@ void remove_table_file(Table table) {
 Table get_data_from_table(Table table) {
   char path[70];
   char line_content[200];
-  int qtd_records = 2;
+  //int qtd_records = 2; -- é 0
   sprintf(path, "./database/%s.csv", table.name);
   FILE *file = fopen(path, "r");
   fgets(line_content, 199, file);
@@ -129,9 +129,8 @@ Table get_data_from_table(Table table) {
     pause_terminal();
   }; 
   */
+ 
   fclose(file);
-
-  table.qtd_records = qtd_records;
   pause_terminal();
   return table;
 }
