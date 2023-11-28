@@ -30,8 +30,38 @@ void print_columns(Table table, int start, bool include_primary_key) {
 }
 
 // [TODO] Imprimir tabela
-void print_table(){
-  printf("Isso vai dar muito trabalho!");
+void print_table(Table table){
+  int columns_length[table.qtd_columns];
+  for(int i = 0; i < table.qtd_columns; i++) {
+    int gap = i == table.qtd_columns - 1? 0:2;
+    columns_length[i] = get_column_length(table, i) + gap;
+  };
+
+  int line_length = sum(table.qtd_columns, columns_length) + 1;
+  printf("%s / Registros: %d\n", table.name, table.qtd_records);
+
+  printf("%s\n", 
+    format_table_line_names(
+      table.qtd_columns, columns_length, 
+      line_length, table
+    )
+  );
+
+  printf("%s\n", 
+    format_table_line_types(
+      table.qtd_columns, columns_length, 
+      line_length, table
+    )
+  );
+
+  for(int i = 0; i < table.qtd_records; i++) {
+    printf("%s\n", 
+      format_table_line_record(
+        table.qtd_columns, columns_length, 
+        line_length, i, table
+      )
+    );
+  };
 }
 
 /// @brief Gera divisores com um título no meio.

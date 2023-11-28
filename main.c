@@ -104,6 +104,7 @@ int main() {
 
                 // [CHANGE] Bug corrigido, mas como não está carregando as
                 // tuplas anteriores, a tabela sempre vai ficar só com uma
+                printf("%d | %d \n", table.qtd_columns, table.qtd_records);
                 table = new_tuple_procedure(table);
                 pause_terminal();
                 if (strcmp(table.records[0][0].value, "") != 0) {
@@ -115,6 +116,8 @@ int main() {
                 pause_terminal();
                 break;
               case 2: // [TODO] Listar todos os dados da tabela
+                print_table(table);
+                pause_terminal();
                 break;
               case 3: // [TODO] Pesquisar valor na tabela
                 break;
@@ -122,7 +125,9 @@ int main() {
                 break;
               default:
                 break;
-            }
+            };
+
+            valid_option = -1;
           } while(valid_option == -1);
         } while(valid_option == -1);
 

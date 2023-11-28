@@ -275,7 +275,6 @@ Table csv_string_to_columns_names(Table table, char line[200]) {
   int columns_quantity = get_qtd_columns(line), counter = 0;
 
   table.qtd_columns = columns_quantity;
-  free(table.columns);
   table.columns = calloc(columns_quantity, sizeof(Column));
 
   piece = strtok(aux_line, ",");
@@ -302,7 +301,6 @@ Table csv_string_to_columns_types(Table table, char line[200]) {
   int counter = 0;
   char aux_line[200];
   strcpy(aux_line, line);
-
   aux_line[strlen(aux_line) - 1] = '\0';
 
   piece = strtok(aux_line, ",");
@@ -342,4 +340,105 @@ Table csv_string_to_columns_values(Table table, char line[200], int qtd_records_
   }
 
   return table;
+}
+
+/// @brief Calcula o tamanho de uma coluna da tabela.
+/// @param table a tabela
+/// @param column_index o index da coluna
+/// @return o tamanho.
+int get_column_length(Table table, int column_index) {
+  unsigned int length = 0;
+  char column[table.qtd_columns + 1][200];
+
+  strcpy(column[0], table.columns[column_index].name);
+  strcpy(column[1], get_type_name(table.columns[column_index].type));
+
+  for(int i = 0; i < table.qtd_records; i++) {
+    strcpy(column[i + 2], table.records[i][column_index].value);
+  };
+
+  for(int i = 0; i < table.qtd_records + 2; i++) {
+    if(strlen(column[i]) > length) {
+      length = strlen(column[i]);
+    };
+  };
+
+  return length;
+}
+
+/// @brief Concatena os nomes das colunas em uma string,
+/// separadas por espaços.
+/// @param qtd_columns o numero de colunas
+/// @param columns_length o vetor de tamanho das colunas
+/// @param line_length o tamanho da linha
+/// @param table a tabela
+/// @return a string formatada.
+char * format_table_line_names(
+  int qtd_columns, 
+  int columns_length[qtd_columns], 
+  int line_length, 
+  Table table
+) {
+  char * line = malloc(sizeof(char) * line_length);
+  strcpy(line, "");
+
+  for(int i = 0; i < qtd_columns; i++) {
+    char column[columns_length[i]];
+    sprintf(column, "%*s", -columns_length[i], table.columns[i].name);
+    strcat(line, column);
+  };
+  
+  return line;
+}
+
+/// @brief Concatena os tipos das colunas em uma string,
+/// separadas por espaços.
+/// @param qtd_columns o numero de colunas
+/// @param columns_length o vetor de tamanho das colunas
+/// @param line_length o tamanho da linha
+/// @param table a tabela
+/// @return a string formatada.
+char * format_table_line_types(
+  int qtd_columns, 
+  int columns_length[qtd_columns], 
+  int line_length, 
+  Table table
+) {
+  char * line = malloc(sizeof(char) * line_length);
+  strcpy(line, "");
+
+  for(int i = 0; i < qtd_columns; i++) {
+    char column[columns_length[i]];
+    sprintf(column, "%*s", -columns_length[i], get_type_name(table.columns[i].type));
+    strcat(line, column);
+  };
+  
+  return line;
+}
+
+/// @brief Concatena os records das colunas em uma string,
+/// separadas por espaços.
+/// @param qtd_columns o numero de colunas
+/// @param columns_length o vetor de tamanho das colunas
+/// @param line_length o tamanho da linha
+/// @param record_index o index do record
+/// @param table a tabela
+/// @return a string formatada.
+char * format_table_line_record(
+  int qtd_columns, 
+  int columns_length[qtd_columns], 
+  int line_length,
+  int record_index,
+  Table table
+) {
+  char * line = malloc(sizeof(char) * line_length);
+  strcpy(line, "");
+
+  for(int i = 0; i < qtd_columns; i++) {
+    char column[columns_length[i]];
+    sprintf(column, "%*s", -columns_length[i], table.records[record_index][i].value);
+    strcat(line, column);
+  };
+  
+  return line;
 }

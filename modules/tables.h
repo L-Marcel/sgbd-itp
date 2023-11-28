@@ -54,4 +54,23 @@ char * columns_values_to_csv_string(Table table, int record_index);
 int get_qtd_columns(char line[200]);
 Table csv_string_to_columns_names(Table table, char line[200]);
 Table csv_string_to_columns_types(Table table, char line[200]);
-Table csv_string_to_columns_values(Table table, char line[200], int counter_i, bool is_last_line);
+Table csv_string_to_columns_values(
+  Table table, char line[200], 
+  int counter_i, bool is_last_line
+);
+
+// [NOVO]
+int get_column_length(Table Table, int column_index);
+char * format_table_line_names(
+  int qtd_columns, int columns_length[qtd_columns], 
+  int line_length, Table table
+);
+char * format_table_line_types(
+  int qtd_columns, int columns_length[qtd_columns], 
+  int line_length, Table table
+);
+char * format_table_line_record(
+  int qtd_columns, int columns_length[qtd_columns], 
+  int line_length, int record_index,
+  Table table
+);

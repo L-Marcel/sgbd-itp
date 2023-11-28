@@ -145,7 +145,8 @@ Table new_tuple_procedure(Table table) {
     char test[200];
 
     table.records = calloc(table.qtd_records + 1, sizeof(Record*));
-    for(int i = 0; i < table.qtd_columns; i++) {
+
+    for(int i = 0; i < table.qtd_records + 1; i++) {
       table.records[i] = calloc(table.qtd_columns, sizeof(Record));
     }
 

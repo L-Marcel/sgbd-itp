@@ -47,6 +47,20 @@ void trim(int size, char text[size]) {
   text[size - 1 - gap] = '\0';
 }
 
+/// @brief Soma um vetor de inteiros.
+/// @param size tamanho do vetor
+/// @param vector o vetor
+/// @return somatório dos valores do vetor.
+int sum(int size, int vector[size]) {
+  int result = 0;
+
+  for(int i = 0; i < size; i++) {
+    result += vector[i];
+  };
+
+  return result;
+}
+
 /// @brief Limpa o terminal
 void clear_terminal() {
   #ifdef _WIN32
