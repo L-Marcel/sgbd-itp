@@ -104,9 +104,7 @@ int main() {
 
                 // [CHANGE] Bug corrigido, mas como não está carregando as
                 // tuplas anteriores, a tabela sempre vai ficar só com uma
-                printf("%d | %d \n", table.qtd_columns, table.qtd_records);
                 table = new_tuple_procedure(table);
-                pause_terminal();
                 if (strcmp(table.records[0][0].value, "") != 0) {
                   save_table_file(table);
                   printf("Tupla adicionada com sucesso!\n");

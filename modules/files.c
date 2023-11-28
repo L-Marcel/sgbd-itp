@@ -125,7 +125,7 @@ Table get_data_from_table(Table table) {
   table = csv_string_to_columns_names(table, line_content);
   fgets(line_content, 199, file);
   table = csv_string_to_columns_types(table, line_content);
-  printf("Nomes e tipos das colunas adicionados com sucesso! (Parcial)\n");
+
   /// [FALTA] Para tables com pelo menos uma tupla
   /*
   while (feof(file) == 0) {
@@ -138,6 +138,5 @@ Table get_data_from_table(Table table) {
   */
 
   fclose(file);
-  pause_terminal();
   return table;
 }
