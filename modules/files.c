@@ -78,49 +78,25 @@ Tables get_tables() {
   return tables;
 }
 
-// Vai ser mudado para salvar de uma vez só, depois.
-
-/// @brief Salva uma nova tabela criada no diretório database. Salve apenas
-/// O nome das colunas e seus tipos, sem salvar nenhuma linha.
-/// @param table a tabela
-void save_new_table_file(Table table) {
-  char path[70];
-  char line_content[200];
-  sprintf(path, "./database/%s.csv", table.name);
-  printf("colunas: %i e records: %i\n", table.qtd_columns, table.qtd_records);
-  pause_terminal();
-  FILE * file = fopen(path, "w+");
-  columns_names_to_csv_string(table, line_content);
-  fputs(line_content, file);
-  columns_types_to_csv_string(table, line_content, table.qtd_records == 2 ? true : false);
-  fputs(line_content, file);
-  if (table.qtd_records > 2) {
-    printf("Entrou no laço de salvar tuplas (qtd_records) > 2\n");
-    for (int i = 3; i <= table.qtd_records; i++) {
-      columns_values_to_csv_string(table, line_content, i == table.qtd_records ? true : false);
-      printf("A linha é essa: %s\n", line_content);
-      fputs(line_content, file);
-    }
-  }
-  fclose(file);
-}
-/* Comentado temporariamente
-
-/// @brief Salva as alterações de uma tabela, a cria se ela não existir.
+/// @brief Salva os dados de uma tabela em um arquivo.
 /// @param table a tabela
 void save_table_file(Table table) {
   char path[70];
+
   sprintf(path, "./database/%s.csv", table.name);
   FILE * file = fopen(path, "w+");
+
+  fputs(columns_names_to_csv_string(table), file);
+  fputs(columns_types_to_csv_string(table), file);
+  
+  for(int i = 0; i < table.qtd_records; i++) {
+    fputs(columns_values_to_csv_string(table, i), file);
+  };
+
   fclose(file);
 }
 
-void save_tuple_on_table(Record *tuple);
-*/
-
-/// @brief Deleta uma tabela por completo, incluindo seu arquivo csv. 
-/// No momento, funciona apenas se a tabela foi anteriormente criada 
-/// dentro do programa. 
+/// @brief Deleta o arquivo de uma tabela.
 /// @param table a tabela
 void remove_table_file(Table table) {
   char path[70];
@@ -129,10 +105,9 @@ void remove_table_file(Table table) {
   printf("Tabela \"%s\" removida!\n", table.name);
 }
 
-// [NOVO]
-/// @brief Coleta todos os dados da tabela de acordo com seu arquivo CSV
+/// @brief Coleta todos os dados da tabela de acordo com seu arquivo CSV.
 /// @param table a tabela
-/// @return a tabela, com todos os dados anteriormente vazios, preenchida
+/// @return a tabela, com todos os dados anteriormente vazios, preenchida.
 Table get_data_from_table(Table table) {
   char path[70];
   char line_content[200];
@@ -160,4 +135,3 @@ Table get_data_from_table(Table table) {
   pause_terminal();
   return table;
 }
-//

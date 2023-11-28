@@ -9,11 +9,10 @@
 /// uma tabela vazia, para simbolizar à main que é uma tabela invalida.
 Table new_table_procedure(Tables tables) {
   Table new_table = create_empty_table();
-  new_table.qtd_records = 2;
+
   int qtd_columns = 0;
   char yes_or_no;
-  // [CHANGE] A declaração de exists_message tava dentro de um laço. Coloquei a declaração fora 
-  // e a atribuição continua dentro do laço.
+
   char exists_message[120];
   
   bool table_exists = false;
@@ -44,7 +43,7 @@ Table new_table_procedure(Tables tables) {
 
   get_string(50, primary_column.name, "Nome da chave primária (max: 49): ");
   add_column(&new_table, primary_column);
-/////////////
+
   int valid_option = -1;
   do {
     int procedure_option = display_new_table_procedure_menu(new_table);
@@ -100,7 +99,7 @@ Table new_table_procedure(Tables tables) {
 
         add_column(&new_table, new_column);
         break;
-      case 3: // [TODO] Remover coluna 
+      case 3:
         do {
           column_option = display_select_column_menu(new_table, " para remover", false);
           column_valid_option = is_option_valid(column_option, new_table.qtd_columns);
@@ -135,7 +134,6 @@ Table new_table_procedure(Tables tables) {
   } while(valid_option == -1);
 }
 
-// [NOVO]
 /// @brief Cria uma nova tupla valida.
 /// @param table tabela a ser criada a tupla
 /// @return em caso de sucesso, a própria tupla criada. Em caso de erro ou cancelamento, 

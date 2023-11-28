@@ -33,7 +33,7 @@ int main() {
       case 1: // Criar uma nova tabela
         new_table = new_table_procedure(tables);
         if (strcmp(new_table.name, "") != 0) {
-          save_new_table_file(new_table);
+          save_table_file(new_table);
           printf("Tabela \"%s\" adicionada ao banco de dados com sucesso.\n", new_table.name);
         } else {
           printf("Operação cancelada!\n");
@@ -108,7 +108,7 @@ int main() {
                 table = new_tuple_procedure(table);
                 pause_terminal();
                 if (strcmp(table.records[0][0].value, "") != 0) {
-                  save_new_table_file(table);
+                  save_table_file(table);
                   printf("Tupla adicionada com sucesso!\n");
                 } else {
                   printf("Operação cancelada!\n");

@@ -90,7 +90,6 @@ Table create_empty_table() {
   return table;
 }
 
-// [NOVO]
 /// @brief Inicializa uma linha/tupla vazia, de acordo com a quantidade
 /// de colunas da tabela.
 /// @return a tupla vazia
@@ -98,7 +97,6 @@ Record *create_empty_tuple(int qtd_columns) {
   Record *tuple = calloc(qtd_columns, sizeof(Record));
   return tuple;
 }
-//
 
 /// @brief Adiciona uma coluna em uma tabela.
 /// @param table a tabela
@@ -165,7 +163,6 @@ bool column_already_exists(Column column, Table table) {
   return false;
 }
 
-// [NOVO]
 /// @brief Percorre a primeira linha da tabela e conta a quantidade de colunas da tabela.
 /// @param line a linha da tabela (estilo csv)
 /// @return a quantidade de colunas
@@ -187,65 +184,75 @@ int get_qtd_columns(char line[200]){
   return quantity;
 }
 
-/// @brief A partir de uma tabela, transforma todos os nomes de suas colunas em uma única
-/// string do formato csv (ex: "chaveprimaria,atributo1,atributo2,atributo3\n"). Não retorna
-/// nada, e sim, altera o "char line[200]" passado como parâmetro na chamada da função.
-void columns_names_to_csv_string(Table table, char line[200]) {
-  int line_len = 0; 
-  int csv_qtd_columns = table.qtd_columns;
+/// @brief Concatena os nomes das colunas em uma só string, separados por vírgula.
+/// @param table a tabela que contem as colunas
+/// @return uma string.
+char * columns_names_to_csv_string(Table table) {
+  char * result = malloc(sizeof(char));
+  strcpy(result, "");
+  unsigned long long result_alloc_size = 0;
 
-  strcpy(line, table.columns[0].name);      
-  if (csv_qtd_columns == 1) strcat(line, "\n"); else strcat(line, ",");
-
-  for (int i = 1; i < csv_qtd_columns; i++) {
-    if (i + 1 == csv_qtd_columns) {
-      strcat(line, table.columns[i].name);
-      strcat(line, "\n");
+  for (int i = 0; i < table.qtd_columns; i++) {
+    result_alloc_size += (strlen(table.columns[i].name) + 2) * sizeof(char);
+    result = realloc(result, result_alloc_size);
+    strcat(result, table.columns[i].name);
+    
+    if(i == table.qtd_columns - 1) {
+      strcat(result, "\n");
     } else {
-      strcat(line, table.columns[i].name);
-      strcat(line, ",");
+      strcat(result, ",");
     }
   };
 
+  return result;
 }
 
-/// @brief A partir de uma tabela, transforma todos os tipos de suas colunas em uma única
-/// string do formato csv (ex: "tipo1, tipo2, tipo3, tipo4\n"). Não retorna
-/// nada, e sim, altera o "char line[200]" passado como parâmetro na chamada da função.
-void columns_types_to_csv_string(Table table, char line[200], bool is_last_line) {
-  int line_len = 0; 
+/// @brief Concatena os typos das colunas em uma só string, separados por vírgula.
+/// @param table a tabela que contem as colunas
+/// @return uma string.
+char * columns_types_to_csv_string(Table table) {
+  char * result = malloc(sizeof(char));
+  strcpy(result, "");
+  unsigned long long result_alloc_size = 0;
 
-  strcpy(line, get_type_name(table.columns[0].type));      
-  if (table.qtd_columns == 1) strcat(line, "\n"); else strcat(line, ",");
+  for (int i = 0; i < table.qtd_columns; i++) {
+    char * type_name = get_type_name(table.columns[i].type);
 
-  for (int i = 1; i < table.qtd_columns; i++) {
-    strcat(line, get_type_name(table.columns[i].type));
-    if (is_last_line && i + 1 == table.qtd_columns) {
-      break;
-    } else if (i + 1 == table.qtd_columns) {
-      strcat(line, "\n");
+    result_alloc_size += (strlen(type_name) + 2) * sizeof(char);
+    result = realloc(result, result_alloc_size);
+    strcat(result, type_name);
+
+    if(i == table.qtd_columns - 1) {
+      strcat(result, "\n");
     } else {
-      strcat(line, ",");
-    }
-  }
+      strcat(result, ",");
+    };
+  };
+
+  return result;
 }
 
-void columns_values_to_csv_string(Table table, char line[200], bool is_last_line) {
-  int line_len = 0; 
+/// @brief Concatena os valores de uma linha em uma só string, separados por vírgula.
+/// @param table a tabela que contem a linha
+/// @return uma string.
+char * columns_values_to_csv_string(Table table, int record_index) {
+  char * result = malloc(sizeof(char));
+  strcpy(result, "");
+  unsigned long long result_alloc_size = 0;
 
-  strcpy(line, table.records[table.qtd_records - 3][0].value);      
-  if (table.qtd_columns == 1) strcat(line, "\n"); else strcat(line, ",");
+  for (int i = 0; i < table.qtd_columns; i++) {
+    result_alloc_size += (strlen(table.records[record_index][i].value) + 2) * sizeof(char);
+    result = realloc(result, result_alloc_size);
+    strcat(result, table.records[record_index][i].value);
 
-  for (int i = 1; i < table.qtd_columns; i++) {
-    strcat(line, table.records[table.qtd_records - 3][i].value);
-    if (is_last_line && i + 1 == table.qtd_columns) {
-      break;
-    } else if (i + 1 == table.qtd_columns) {
-      strcat(line, "\n");
+    if(i == table.qtd_columns - 1) {
+      strcat(table.records[record_index][i].value, "\n");
     } else {
-      strcat(line, ",");
+      strcat(table.records[record_index][i].value, ",");
     }
   };
+
+  return result;
 }
 
 /// @brief Transforma uma string em estilo CSV em várias outras string menores, as quais são 
@@ -322,5 +329,3 @@ Table csv_string_to_columns_values(Table table, char line[200], int qtd_records_
 
   return table;
 }
-//
-
