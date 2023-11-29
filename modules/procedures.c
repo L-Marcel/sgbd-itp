@@ -150,7 +150,6 @@ Table new_tuple_procedure(Table table) {
   for(int i = 0; i < table.qtd_columns; i++) {
     bool is_valid = true;
     char error[100] = "";
-
     do {
       if(!is_valid) {
         sprintf(

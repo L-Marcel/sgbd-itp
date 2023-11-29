@@ -23,6 +23,9 @@ int main() {
 
   while(menu_option != 0) {
     Tables tables = get_tables();
+    // [BUG]
+    // printf("Record[0][0]: %s\n", tables.list[0].records[0][0].value);
+    // pause_terminal();
     menu_option = display_default_menu(tables.size);
     clear_terminal();
     switch (menu_option) {
@@ -78,21 +81,6 @@ int main() {
           /// new_tuple_procedure(table) -> procedures.c, linha 143
           /// funções de conversão (string <-> CSV) -> tables.c, a partir da linha 193
           ///
-          /// Passo a passo do algoritmo (até a etapa 2, tá funcionando certo):
-          ///
-          /// 1 - A atribuição do table ocorre (linha 75), pegando somente o nome da tabela
-          /// 2 - Agora na linha 97, tá indo no CSV da tabela e pegando todos os dados da tabela através 
-          /// do get_data_from_table(table);
-          /// 3 - Depois, na linha 108, tá indo pra o procedimento em que o usuário
-          /// insire os dados da nova tupla. Até o momento, o programa consegue, com sucesso,
-          /// inserir os dados quando é a primeira tupla cadastrada. Quando já tem uma  ou mais tupla,
-          /// ainda não tá dando certo.
-          /// 
-          /// 4 - Depois de *teoricamente* tudo dar certo, vai para a linha 113 e sobrescreve
-          /// a tabela com a nova tupla. 
-          ///
-          // [NOVO]  
-
           table = get_data_from_table(table);
           do {
             procedure_option = display_procedures_menu(table);

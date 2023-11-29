@@ -226,8 +226,9 @@ char * columns_types_to_csv_string(Table table) {
     result_alloc_size += (strlen(type_name) + 2) * sizeof(char);
     result = realloc(result, result_alloc_size);
     strcat(result, type_name);
-
-    if(i == table.qtd_columns - 1) {
+    if (i == table.qtd_columns - 1 && table.qtd_records == 0) {
+      continue;
+    } else if(i == table.qtd_columns - 1) {
       strcat(result, "\n");
     } else {
       strcat(result, ",");
@@ -250,7 +251,9 @@ char * columns_values_to_csv_string(Table table, int record_index) {
     result = realloc(result, result_alloc_size);
     strcat(result, table.records[record_index][i].value);
 
-    if(i == table.qtd_columns - 1) {
+    if(i == table.qtd_columns - 1 && table.qtd_records == record_index + 1) {
+      continue;
+    } else if(i == table.qtd_columns - 1) {
       strcat(result, "\n");
     } else {
       strcat(result, ",");
@@ -302,12 +305,15 @@ Table csv_string_to_columns_types(Table table, char line[200]) {
   int counter = 0; 
   char aux_line[200];
   strcpy(aux_line, line);
-  trim(strlen(aux_line), aux_line);
-
+  // Tava bugando a linha, ela saia sem o último caractere
+  // trim(strlen(aux_line), aux_line);
   piece = strtok(aux_line, ",");
+  char aux_piece[100];
+
   while (piece != NULL) {
     table.columns[counter].type = get_type_original(piece);
     counter++;
+    strcpy(aux_piece, piece);
     piece = strtok(NULL, ",");
   }
 
@@ -318,30 +324,33 @@ Table csv_string_to_columns_types(Table table, char line[200]) {
 /// transformadas nos values das colunas 
 Table csv_string_to_columns_values(
   Table table, char line[200], 
-  int qtd_records_minus_3, bool is_last_line
+  int qtd_records, bool is_last_line
 ) {
   // [TODO] tirar limitação de 200 caracteres
   // Alocação dinâmica resolve isso
 
   char *piece;
+  int counter_j = 0;
   char aux_line[200];
   strcpy(aux_line, line);
-  aux_line[strlen(aux_line)] = '\0';
-  int counter_j = 0;
-  int aux_len;
+  if (!is_last_line) {
+    aux_line[strlen(aux_line) - 1] = '\0';
+  };
 
   piece = strtok(aux_line, ",");
 
+  // printf("Antes: ");
+  // pause_terminal();
+
   while (piece != NULL) {
-    strcpy(table.records[qtd_records_minus_3][counter_j].value, piece);
+    strcpy(table.records[qtd_records - 1][counter_j].value, piece);
     counter_j++;
     piece = strtok(NULL, ",");
   }
-  if (is_last_line && piece == NULL) {
-    aux_len = strlen(table.records[qtd_records_minus_3][counter_j].value);
-    table.records[qtd_records_minus_3][counter_j].value[aux_len] = '\0';
-  }
 
+  // printf("Depois: ");
+  // pause_terminal();
+  
   return table;
 }
 
