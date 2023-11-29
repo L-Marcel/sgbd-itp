@@ -274,7 +274,7 @@ Table csv_string_to_columns_names(Table table, char line[200]) {
   char *piece;
   char aux_line[200] = "";
   strcpy(aux_line, line);
-  trim(strlen(aux_line), aux_line);
+  trim(strlen(aux_line) + 1, aux_line);
 
   int counter = 0; 
 
@@ -304,7 +304,7 @@ Table csv_string_to_columns_types(Table table, char line[200]) {
   int counter = 0; 
   char aux_line[200];
   strcpy(aux_line, line);
-  trim(strlen(aux_line), aux_line);
+  trim(strlen(aux_line) + 1, aux_line);
   piece = strtok(aux_line, ",");
   char aux_piece[100];
 
@@ -335,10 +335,7 @@ Table csv_string_to_columns_values(
   int counter_j = 0;
   char aux_line[200];
   strcpy(aux_line, line);
-  if (!is_last_line) {
-    aux_line[strlen(aux_line) - 1] = '\0';
-  };
-
+  trim(strlen(aux_line) + 1, aux_line);
   piece = strtok(aux_line, ",");
 
   while(piece != NULL) {
