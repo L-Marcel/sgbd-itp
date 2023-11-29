@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include "utils.h"
 
-/// @brief Função que captura um texto não vazio, em caso de texto invalido, repete a operação.
+/// @brief Função que captura um texto não vazio, em caso de texto invalido, 
+/// repete a operação.
 /// @param max_size tamanho máximo do texto
 /// @param text o texto capturado
-/// @param message a texto imprimido antes do input
+/// @param message a texto imprimido antes do input.
 void get_string(unsigned long max_size, char text[max_size], char* message) {
   bool can_clear = true;
   char input[max_size + 2];
@@ -70,7 +71,7 @@ int sum(int size, int vector[size]) {
   return result;
 }
 
-/// @brief Limpa o terminal
+/// @brief Limpa o terminal.
 void clear_terminal() {
   #ifdef _WIN32
     system("cls");
@@ -79,7 +80,7 @@ void clear_terminal() {
   #endif
 }
 
-/// @brief Pausa o terminal
+/// @brief Pausa o terminal.
 void pause_terminal() {
   #ifdef _WIN32
 	  system("pause");

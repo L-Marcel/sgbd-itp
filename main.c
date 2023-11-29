@@ -104,7 +104,7 @@ int main() {
                 
                 pause_terminal();
                 break;
-              case 2: // [NOVO] Já funciona!
+              case 2:
                 print_table(table);
                 pause_terminal();
                 break;

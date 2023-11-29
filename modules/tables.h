@@ -58,8 +58,8 @@ Table csv_string_to_columns_values(
   Table table, char line[200], 
   int counter_i, bool is_last_line
 );
+//
 
-// [NOVO]
 int get_column_length(Table Table, int column_index);
 char * format_table_line_names(
   int qtd_columns, int columns_length[qtd_columns], 

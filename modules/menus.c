@@ -82,9 +82,9 @@ int display_procedures_menu(Table table) {
     return get_nat_option();
 }
 
-/// @brief Menu de opções durante criação de tabela
+/// @brief Menu de opções durante criação de tabela.
 /// @param table a tabela
-/// @return A opção escolhida
+/// @return A opção escolhida.
 int display_new_table_procedure_menu(Table table) {
     clear_terminal();
     print_divisor("Criar nova tabela");

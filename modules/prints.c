@@ -29,7 +29,8 @@ void print_columns(Table table, int start, bool include_primary_key) {
   };
 }
 
-// [NOVO] Imprimir tabela
+/// @brief Imprime uma tabela.
+/// @param table a tabela
 void print_table(Table table){
   int columns_length[table.qtd_columns];
   for(int i = 0; i < table.qtd_columns; i++) {

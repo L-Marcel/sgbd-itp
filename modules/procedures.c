@@ -154,7 +154,7 @@ Table new_tuple_procedure(Table table) {
       if(!is_valid) {
         sprintf(
           value_message, 
-          "%s\nInsira o valor do(a) campo \"%s\" (%s): ",
+          "%s\nInsira o valor do campo \"%s\" (%s): ",
           error,
           table.columns[i].name, 
           get_type_name(table.columns[i].type)
@@ -183,8 +183,6 @@ Table new_tuple_procedure(Table table) {
         );
       };
     } while(!is_valid);
-
-    pause_terminal();
   };
 
   while(true) {

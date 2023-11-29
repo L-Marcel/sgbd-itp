@@ -192,7 +192,6 @@ int get_qtd_columns(char line[200]){
 /// @param table a tabela que contem as colunas
 /// @return uma string.
 char * columns_names_to_csv_string(Table table) {
-  // [NOVO] Não tem mais limitação de 200 caracteres
   char * result = malloc(sizeof(char));
   strcpy(result, "");
   unsigned long long result_alloc_size = 0;
@@ -227,7 +226,7 @@ char * columns_types_to_csv_string(Table table) {
     result = realloc(result, result_alloc_size);
     strcat(result, type_name);
     if (i == table.qtd_columns - 1 && table.qtd_records == 0) {
-      continue;
+      break;
     } else if(i == table.qtd_columns - 1) {
       strcat(result, "\n");
     } else {
@@ -252,7 +251,7 @@ char * columns_values_to_csv_string(Table table, int record_index) {
     strcat(result, table.records[record_index][i].value);
 
     if(i == table.qtd_columns - 1 && table.qtd_records == record_index + 1) {
-      continue;
+      break;
     } else if(i == table.qtd_columns - 1) {
       strcat(result, "\n");
     } else {
@@ -263,11 +262,11 @@ char * columns_values_to_csv_string(Table table, int record_index) {
   return result;
 }
 
-/// @brief Transforma uma string em estilo CSV em várias outras string menores, as quais são 
-/// alocadas nos nomes das colunas
+/// @brief Transforma uma string no formato CSV em várias outras string menores, 
+/// as quais são alocadas nos nomes das colunas
 /// @param Table a tabela a ser inserida os dados
-/// @param line a linha em estilo CSV
-/// @return a tabela, com os nomes das colunas de acordo com o CSV
+/// @param line a linha no formato CSV
+/// @return a tabela, com os nomes das colunas de acordo com o CSV.
 Table csv_string_to_columns_names(Table table, char line[200]) {
   // [TODO] tirar limitação de 200 caracteres
   // Alocação dinâmica resolve isso
@@ -292,11 +291,11 @@ Table csv_string_to_columns_names(Table table, char line[200]) {
   return table;
 }
 
-/// @brief Transforma uma string em estilo CSV em várias outras string menores, as quais são 
-/// transformadas em "types" e então alocadas nos types das colunas
+/// @brief Transforma uma string no formato CSV em várias outras string menores, 
+/// as quais são transformadas em "types" e então alocadas nos types das colunas.
 /// @param Table a tabela a ser inserida os dados
-/// @param line a linha em estilo CSV
-/// @return a tabela, com os types das colunas de acordo com o CSV
+/// @param line a linha no formato CSV
+/// @return a tabela, com os types das colunas de acordo com o CSV.
 Table csv_string_to_columns_types(Table table, char line[200]) {
   // [TODO] tirar limitação de 200 caracteres
   // Alocação dinâmica resolve isso
@@ -305,8 +304,7 @@ Table csv_string_to_columns_types(Table table, char line[200]) {
   int counter = 0; 
   char aux_line[200];
   strcpy(aux_line, line);
-  // Tava bugando a linha, ela saia sem o último caractere
-  // trim(strlen(aux_line), aux_line);
+  trim(strlen(aux_line), aux_line);
   piece = strtok(aux_line, ",");
   char aux_piece[100];
 
@@ -320,8 +318,12 @@ Table csv_string_to_columns_types(Table table, char line[200]) {
   return table;
 }
 
-/// @brief Transforma uma string em estilo CSV em várias outras string menores, as quais são 
-/// transformadas nos values das colunas 
+/// @brief Transforma uma string no formato CSV em várias outras string menores, 
+/// as quais são transformadas nos values das colunas.
+/// @param table a tabela
+/// @param line a string 
+/// @param qtd_records o número de registros na tabela
+/// @param is_last_line se é a última linha
 Table csv_string_to_columns_values(
   Table table, char line[200], 
   int qtd_records, bool is_last_line
@@ -339,18 +341,12 @@ Table csv_string_to_columns_values(
 
   piece = strtok(aux_line, ",");
 
-  // printf("Antes: ");
-  // pause_terminal();
-
-  while (piece != NULL) {
+  while(piece != NULL) {
     strcpy(table.records[qtd_records - 1][counter_j].value, piece);
     counter_j++;
     piece = strtok(NULL, ",");
   }
 
-  // printf("Depois: ");
-  // pause_terminal();
-  
   return table;
 }
 
@@ -527,6 +523,10 @@ bool validate_record_value(char value[200], types type, char error[200]) {
   };
 }
 
+/// @brief Verifica se a chave primária está em uso.
+/// @param value o valor da chave
+/// @param table a tabela
+/// @return true, se estiver; false, caso contrário.
 bool primary_key_already_in_use(char value[200], Table table) {
   for(int i = 0; i < table.qtd_records; i++) {
     if(strcmp(table.records[i][0].value, value) == 0) {

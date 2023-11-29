@@ -89,8 +89,6 @@ Tables get_tables() {
 /// @param table a tabela
 void save_table_file(Table table) {
   char path[70];
-  printf("records: %i\n", table.qtd_records);
-  pause_terminal();
   sprintf(path, "./database/%s.csv", table.name);
   FILE * file = fopen(path, "w+");
 
@@ -119,7 +117,6 @@ void remove_table_file(Table table) {
 Table get_data_from_table(Table table) {
   char path[70];
   char line_content[200];
-  int qtd_records = 0;
 
   sprintf(path, "./database/%s.csv", table.name);
   FILE *file = fopen(path, "r");
@@ -129,28 +126,20 @@ Table get_data_from_table(Table table) {
   fgets(line_content, 199, file);
   table = csv_string_to_columns_types(table, line_content);
 
-  table.records = realloc(table.records, sizeof(Record*));
-
-  while (feof(file) == 0) {
-    table.records[qtd_records] = calloc(table.qtd_columns, sizeof(Record));
-
-    // printf("Laço: ");
-    // pause_terminal();
+  while(feof(file) == 0) {
+    table.qtd_records++;
+    table.records = realloc(table.records, sizeof(Record*) * table.qtd_records);
+    table.records[table.qtd_records - 1] = calloc(table.qtd_columns, sizeof(Record));
 
     fgets(line_content, 199, file);
-    qtd_records++;
-
-    // printf("%i %i %s\n", qtd_records, table.qtd_columns, line_content);
-
-    table = csv_string_to_columns_values(table, line_content, qtd_records, feof(file) == 0 ? false : true);
-  }; 
+    table = csv_string_to_columns_values(
+      table, 
+      line_content, 
+      table.qtd_records, 
+      feof(file) != 0
+    );
+  };
   
-  table.qtd_records = qtd_records;
-
   fclose(file);
-
-  // printf("Done!\n");
-  // pause_terminal();
-
   return table;
 }
