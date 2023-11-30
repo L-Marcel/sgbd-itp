@@ -44,8 +44,10 @@ void add_column(Table * table, Column column);
 void delete_column(Table * table, int column_index);
 bool table_already_exists(Table table, Tables tables);
 bool column_already_exists(Column column, Table table);
-// [NOVO]
-bool delete_tuple(Table table, int tuple_option);
+bool delete_tuple(Table * table, int tuple_option);
+/// [Novo]
+int get_tuple_index(Table table, int primary_key);
+///
 
 char * columns_names_to_csv_string(Table table);
 char * columns_types_to_csv_string(Table table);

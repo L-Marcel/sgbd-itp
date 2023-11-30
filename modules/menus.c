@@ -73,8 +73,10 @@ int display_procedures_menu(Table table) {
     print_divisor(table.name);
     printf("[1] → Criar um novo registro na tabela\n");
     printf("[2] → Listar todos os dados da tabela\n");
-    printf("[3] → Pesquisar valor na tabela\n");
-    printf("[4] → Apagar uma registro da tabela\n");
+    if(table.qtd_records > 0) {
+        printf("[3] → Pesquisar valor na tabela\n");
+        printf("[4] → Apagar uma registro da tabela\n");
+    };
     print_divisor("");
     printf("[0] → Voltar ao menu\n");
     print_divisor("");

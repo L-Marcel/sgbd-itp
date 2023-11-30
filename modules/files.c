@@ -95,7 +95,6 @@ void save_table_file(Table table) {
   fputs(columns_types_to_csv_string(table), file);
 
   for(int i = 0; i < table.qtd_records; i++) {
-    // Há um bug de segmentação dentro do columns_values_to_csv_string.
     fputs(columns_values_to_csv_string(table, i), file);
   };
 

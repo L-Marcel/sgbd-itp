@@ -10,7 +10,7 @@
 
 int main() {
   int table_option, procedure_option, tuple_option, table_exists;
-  char message[200];
+
   #ifdef _WIN32
     UINT CPAGE_UTF8 = 65001;
     SetConsoleOutputCP(CPAGE_UTF8);
@@ -94,25 +94,28 @@ int main() {
                 break;
               case 2:
                 print_table(table);
-
                 pause_terminal();
                 break;
               case 3: // [TODO] Pesquisar valor na tabela
+                if(table.qtd_records <= 0) {
+                  break;
+                };
+
                 break;
               case 4: // [TODO] Apagar uma registro da tabela
-                // [NOVO] tá meio feiozinho, depois dá pra otimizar e fazer uma função pra deixar mais enxuto
+                if(table.qtd_records <= 0) {
+                  break;
+                };
+
                 print_table(table);
-                sprintf(message, "Chave primária (\"%s\" da tupla): ", table.columns[0].name);
+                printf("Chave primária (\"%s\" da tupla): ", table.columns[0].name);
                 tuple_option = get_nat_option();
 
                 if (tuple_option < 0) break;
-                valid_option = delete_tuple(table, tuple_option);
+                valid_option = delete_tuple(&table, tuple_option);
                 if (!valid_option) break;
 
-                // Por algum motivo, a qtd_records não estava diminuindo ao voltar ao escopo da main
-                table.qtd_records--;
                 save_table_file(table);
-
                 break;
               default:
                 break;

@@ -195,7 +195,7 @@ Table new_tuple_procedure(Table table) {
       return table;
     } else if (tolower(yes_or_no) == 'n') {
       getchar();
-      table.records = calloc(table.qtd_records, sizeof(Record*));
+      table.records = realloc(table.records, table.qtd_records * sizeof(Record*));
       return table;
     };
   };

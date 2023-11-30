@@ -137,58 +137,49 @@ void delete_table(int table_index, Tables * tables) {
   tables -> list = realloc(tables -> list, sizeof(Table) * tables -> size);
 }
 
+/// @brief Retorna o index do registro se existir.
+/// @param table a tabela
+/// @param primary_key a chave primária do registro
+/// @return o index, se existir; -1, caso contrário.
+int get_tuple_index(Table table, int primary_key) {
+  for(int i = 0; i < table.qtd_records; i++) {
+    char str_primary_key[sizeof(primary_key) + 1];
+    sprintf(str_primary_key, "%i", primary_key);
+
+    if(strcmp(table.records[i][0].value, str_primary_key) == 0) {
+      return i;
+    };
+  };
+
+  return -1;
+}
+
 /// @brief Deleta uma tupla de uma tabela
 /// @param table a tabela
 /// @param tuple_option chave primária da tupla
 /// @return false, se não for possível deletar (ou erro); true, se bem sucedido 
-bool delete_tuple(Table table, int tuple_option) {
-  int tuple_index;
-  char str_tuple_option[3];
-  sprintf(str_tuple_option, "%i", tuple_option);
+bool delete_tuple(Table * table, int tuple_option) {
+  int tuple_index = get_tuple_index(*table, tuple_option);
 
-  if (table.qtd_records == 0) {
+  if(tuple_index == -1) {
     clear_terminal();
-    printf("Não há tuplas para serem removidas!\n");
+    printf("Nenhum registro encontrado!\n");
     pause_terminal();
-
     return false;
-  }
-
-  for (int i = 0; i < table.qtd_records; i++) {
-    if (strcmp(table.records[i][0].value, str_tuple_option) == 0) {
-      tuple_index = i;
-      break;
-    }
-    if (i + 1 == table.qtd_records) {
-      clear_terminal();
-      printf("Não há tupla com essa chave primária!\n");
-      pause_terminal();
-
-      return false;
-    }
-  }
-
-   for (int i = tuple_index; i < table.qtd_records - 1; i++) {
-     for (int j = 0; j < table.qtd_columns; j++) {
-       strcpy(table.records[i][j].value, table.records[i + 1][j].value);
-     };   
+  };
+  
+  table -> qtd_records--;
+  for(int i = tuple_index; i < table -> qtd_records; i++) {
+    table -> records[i] = table -> records[i + 1];
   };
 
-  // Tava meio estranho quando a tabala só tinha 1 record. Acredito que dava segmentation fault
-  if (table.qtd_records > 1) {
-    table.records = realloc(table.records, sizeof(Record*) * (table.qtd_records - 1));
-  } else {
-    table.records = realloc(table.records, sizeof(Record*));
-    table.records[0] = calloc(table.qtd_columns, sizeof(Record));
-  }
+  table -> records = realloc(table -> records, sizeof(Record*) * table -> qtd_records);
 
   clear_terminal();
   printf("Tupla removida com sucesso!\n");
   pause_terminal();
 
   return true;
-
-  // Anotação mental: Realoquei e não passei o endereço. Pode dar problema?
 }
 
 /// @brief Percorre a database para saber se a tabela inserida pelo usuário já existe.
@@ -297,11 +288,8 @@ char * columns_types_to_csv_string(Table table) {
 char * columns_values_to_csv_string(Table table, int record_index) {
   char * result = malloc(sizeof(char));
   strcpy(result, "");
-  unsigned long long result_alloc_size = 0;
-  // Esse print é so pra ver se tava passando da linha de cima. O segmentation fault é sempre nela.
-  // printf("Passou do RESULT\n");
-  // pause_terminal();
-
+  unsigned long result_alloc_size = 0;
+  
   for (int i = 0; i < table.qtd_columns; i++) {
     result_alloc_size += (strlen(table.records[record_index][i].value) + 2) * sizeof(char);
     result = realloc(result, result_alloc_size);
