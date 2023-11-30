@@ -9,7 +9,8 @@
 #endif
 
 int main() {
-  int table_option, procedure_option, table_exists;
+  int table_option, procedure_option, tuple_option, table_exists;
+  char message[200];
   #ifdef _WIN32
     UINT CPAGE_UTF8 = 65001;
     SetConsoleOutputCP(CPAGE_UTF8);
@@ -23,9 +24,6 @@ int main() {
 
   while(menu_option != 0) {
     Tables tables = get_tables();
-    // [BUG]
-    // printf("Record[0][0]: %s\n", tables.list[0].records[0][0].value);
-    // pause_terminal();
     menu_option = display_default_menu(tables.size);
     clear_terminal();
     switch (menu_option) {
@@ -72,16 +70,9 @@ int main() {
           valid_option = is_option_valid(table_option, tables.size);
           if (valid_option == 0) break;
           else if (valid_option == -1) continue;
-
           Table table = tables.list[table_option - 1];
-          /// Ajudinha pra não se perder:
-          ///
-          /// get_data_from_table(table) -> files.c, linha 137
-          /// set_new_table_file(table) (mudar nome depois pra set_table_file) -> files.c, linha 86
-          /// new_tuple_procedure(table) -> procedures.c, linha 143
-          /// funções de conversão (string <-> CSV) -> tables.c, a partir da linha 193
-          ///
           table = get_data_from_table(table);
+
           do {
             procedure_option = display_procedures_menu(table);
             valid_option = is_option_valid(procedure_option, 5);
@@ -90,27 +81,38 @@ int main() {
 
             switch (procedure_option) {
               case 1: 
-                // [CHANGE] Está completo! Mas como não está carregando as
-                // tuplas anteriores, ainda não foi testado a verificação
-                // de unicidade dos ids
-
                 table = new_tuple_procedure(table);
+
                 if (start_qtd_records < table.qtd_records) {
                   save_table_file(table);
                   printf("Tupla adicionada com sucesso!\n");
                 } else {
                   printf("Operação cancelada!\n");
                 }
-                
+
                 pause_terminal();
                 break;
               case 2:
                 print_table(table);
+
                 pause_terminal();
                 break;
               case 3: // [TODO] Pesquisar valor na tabela
                 break;
               case 4: // [TODO] Apagar uma registro da tabela
+                // [NOVO] tá meio feiozinho, depois dá pra otimizar e fazer uma função pra deixar mais enxuto
+                print_table(table);
+                sprintf(message, "Chave primária (\"%s\" da tupla): ", table.columns[0].name);
+                tuple_option = get_nat_option();
+
+                if (tuple_option < 0) break;
+                valid_option = delete_tuple(table, tuple_option);
+                if (!valid_option) break;
+
+                // Por algum motivo, a qtd_records não estava diminuindo ao voltar ao escopo da main
+                table.qtd_records--;
+                save_table_file(table);
+
                 break;
               default:
                 break;

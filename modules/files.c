@@ -64,10 +64,9 @@ Tables get_tables() {
     };
 
     struct dirent *file = readdir(dir);
-    // Calloca o aux_name baseado na quantidade de caracteres do diretório
     aux_name = calloc(strlen(file -> d_name), sizeof(char));
+    
     while(file != NULL) {
-      // Se for os diretórios "." ou "..", ele ignora e passa pro próximo (dois reais ou um presente misterioso? >:D)
       if (strcmp(file -> d_name, ".") != 0 && strcmp(file -> d_name, "..") != 0) {
         aux_name = realloc(aux_name, strlen(file -> d_name) * sizeof(char));
         strcpy(aux_name, file -> d_name);
@@ -94,8 +93,9 @@ void save_table_file(Table table) {
 
   fputs(columns_names_to_csv_string(table), file);
   fputs(columns_types_to_csv_string(table), file);
-  
+
   for(int i = 0; i < table.qtd_records; i++) {
+    // Há um bug de segmentação dentro do columns_values_to_csv_string.
     fputs(columns_values_to_csv_string(table, i), file);
   };
 

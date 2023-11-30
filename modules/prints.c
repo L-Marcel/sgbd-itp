@@ -7,7 +7,6 @@
 /// @param start número do primeiro elemento da lista 
 void print_tables(Tables tables, int start){
   tables = sort_tables(tables);
-  
   for(int i = 0; i < tables.size; i++) {
     printf("[%d] → %s\n", i + start, tables.list[i].name);
   };
@@ -40,7 +39,7 @@ void print_table(Table table){
 
   int line_length = sum(table.qtd_columns, columns_length) + 1;
   printf("%s / Registros: %d\n\n", table.name, table.qtd_records);
-
+  
   printf("%s\n", 
     format_table_line_names(
       table.qtd_columns, columns_length, 

@@ -138,7 +138,7 @@ int display_select_types_menu() {
 
 /// @brief Menu para selecionar coluna de uma tabela.
 /// @param table a tabela
-/// @param include_primary_keu se deve ou não incluir a chave primária
+/// @param include_primary_key se deve ou não incluir a chave primária
 /// @return A opção escolhida.
 int display_select_column_menu(Table table, char complement[26], bool include_primary_key) {
     clear_terminal();
