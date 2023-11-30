@@ -3,7 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "modules/procedures.h"
-#define MAIN = true;
+
+#define SEED = true;
 #include "seeds/users.h"
 
 #ifdef _WIN32

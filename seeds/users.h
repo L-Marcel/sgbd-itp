@@ -1,4 +1,4 @@
-#ifdef MAIN
+#ifdef SEED
 #else
 #include "../modules/procedures.h"
 #endif
