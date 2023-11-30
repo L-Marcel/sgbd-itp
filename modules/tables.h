@@ -38,15 +38,18 @@ Tables sort_tables(Tables tables);
 void add_table(Tables * tables, Table table);
 void delete_table(int table_index, Tables * tables);
 Table create_empty_table();
-Record *create_empty_tuple(int qtd_columns);
+Record *create_empty_record(int qtd_columns);
 
 void add_column(Table * table, Column column);
 void delete_column(Table * table, int column_index);
 bool table_already_exists(Table table, Tables tables);
 bool column_already_exists(Column column, Table table);
-bool delete_tuple(Table * table, int tuple_option);
+bool delete_record(Table * table, int record_option);
+bool validate_record_value(char value[200], types type, char error[200]);
+bool primary_key_already_in_use(char value[200], Table table);
+
 /// [Novo]
-int get_tuple_index(Table table, int primary_key);
+int get_record_index(Table table, int primary_key);
 ///
 
 char * columns_names_to_csv_string(Table table);
@@ -77,5 +80,3 @@ char * format_table_line_record(
   int line_length, int record_index,
   Table table
 );
-bool validate_record_value(char value[200], types type, char error[200]);
-bool primary_key_already_in_use(char value[200], Table table);

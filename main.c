@@ -3,13 +3,15 @@
 #include <string.h>
 #include <stdlib.h>
 #include "modules/procedures.h"
+#define MAIN = true;
+#include "seeds/users.h"
 
 #ifdef _WIN32
   #include <windows.h>
 #endif
 
-int main() {
-  int table_option, procedure_option, tuple_option, table_exists;
+int main(int argc, char **argv) {
+  int table_option, procedure_option, record_option, table_exists;
 
   #ifdef _WIN32
     UINT CPAGE_UTF8 = 65001;
@@ -17,10 +19,14 @@ int main() {
   #endif
 
   Table new_table;
-  Record *new_tuple;
+  Record *new_record;
 
   int menu_option = -1;
   int valid_option = -1;
+
+  if(argc >= 2 && strcmp(argv[1], "--seed") == 0) {
+    seed_users();
+  };
 
   while(menu_option != 0) {
     Tables tables = get_tables();
@@ -81,11 +87,11 @@ int main() {
 
             switch (procedure_option) {
               case 1: 
-                table = new_tuple_procedure(table);
+                table = new_record_procedure(table);
 
                 if (start_qtd_records < table.qtd_records) {
                   save_table_file(table);
-                  printf("Tupla adicionada com sucesso!\n");
+                  printf("Nova tupla registrada com sucesso!\n");
                 } else {
                   printf("Operação cancelada!\n");
                 }
@@ -102,20 +108,33 @@ int main() {
                 };
 
                 break;
-              case 4: // [TODO] Apagar uma registro da tabela
+              case 4:
                 if(table.qtd_records <= 0) {
                   break;
                 };
 
-                print_table(table);
-                printf("Chave primária (\"%s\" da tupla): ", table.columns[0].name);
-                tuple_option = get_nat_option();
+                do {
+                  record_option = display_delete_record_procedure_menu(table);
+                  if (record_option < -1) {
+                    valid_option = -1;
+                    continue;
+                  } else if(record_option == -1) {
+                    valid_option = 0;
+                    break;
+                  };
 
-                if (tuple_option < 0) break;
-                valid_option = delete_tuple(&table, tuple_option);
-                if (!valid_option) break;
+                  valid_option = delete_record(&table, record_option);
+                  if (!valid_option) {
+                    valid_option = -1;
+                    continue;
+                  };
 
-                save_table_file(table);
+                  save_table_file(table);
+
+                  clear_terminal();
+                  printf("Tupla removida com sucesso!\n");
+                  pause_terminal();
+                } while(valid_option == -1);
                 break;
               default:
                 break;

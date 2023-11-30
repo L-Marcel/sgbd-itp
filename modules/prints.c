@@ -30,7 +30,7 @@ void print_columns(Table table, int start, bool include_primary_key) {
 
 /// @brief Imprime uma tabela.
 /// @param table a tabela
-void print_table(Table table){
+void print_table(Table table) {
   int columns_length[table.qtd_columns];
   for(int i = 0; i < table.qtd_columns; i++) {
     int gap = i == table.qtd_columns - 1? 0:3;
@@ -38,16 +38,16 @@ void print_table(Table table){
   };
 
   int line_length = sum(table.qtd_columns, columns_length) + 1;
-  printf("%s / Registros: %d\n\n", table.name, table.qtd_records);
-  
-  printf("%s\n", 
+
+  print_divisor(table.name);
+  printf("\n%s\n", 
     format_table_line_names(
       table.qtd_columns, columns_length, 
       line_length, table
     )
   );
 
-  print_table_divisor(line_length);
+  print_table_divisor(line_length + 1);
 
   for(int i = 0; i < table.qtd_records; i++) {
     printf("%s\n", 
@@ -58,7 +58,10 @@ void print_table(Table table){
     );
   };
 
+  char records_text[50];
   printf("\n");
+  sprintf(records_text, "%d tuplas registradas", table.qtd_records);
+  print_divisor(records_text);
 }
 
 /// @brief Imprime o divisor horizontal da tabela.

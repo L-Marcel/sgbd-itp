@@ -13,7 +13,9 @@
     "dirent.h": "c",
     "files.h": "c",
     "tables.h": "c",
-    "stdlib.h": "c"
+    "stdlib.h": "c",
+    "users.h": "c",
+    "procedures.h": "c"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

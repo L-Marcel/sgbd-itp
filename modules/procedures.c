@@ -135,11 +135,11 @@ Table new_table_procedure(Tables tables) {
   } while(valid_option == -1);
 }
 
-/// @brief Cria uma nova tupla valida.
-/// @param table tabela a ser criada a tupla
-/// @return em caso de sucesso, a própria tupla criada. Em caso de erro ou cancelamento, 
-/// uma tupla com primeiro termo vazio, para simbolizar à main que é uma tabela invalida.
-Table new_tuple_procedure(Table table) {
+/// @brief Registra uma nova tupla na tabela.
+/// @param table a tabela
+/// @return em caso de sucesso, a tabela atualizada.
+/// Caso contrário, a tabela sem alteração.
+Table new_record_procedure(Table table) {
   char yes_or_no;
   char value_message[200];
   char test[200];
@@ -186,7 +186,7 @@ Table new_tuple_procedure(Table table) {
   };
 
   while(true) {
-    printf("Deseja realmente criar a tupla inserida? (Y/N): ");
+    printf("Deseja realmente registrar essa tupla? (Y/N): ");
     scanf("%c", &yes_or_no);
     clear_terminal();
     if (tolower(yes_or_no) == 'y') {

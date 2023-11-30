@@ -11,7 +11,19 @@ int get_nat_option() {
     char line[20];
     fgets(line, 20, stdin);
     int success = sscanf(line, "%i", &option);
-    if(success == 0 || option < 0) option = -1;
+    if(success <= 0 || option < 0) option = -1;
+    return option;
+}
+
+/// @brief Captura o natural ou -1 que representa a opção escolhida pelo usuário.
+/// @param option a opção escolhida
+/// @return -2 → se for inválido; o natural escolhido ou -1 → se for valido.
+int get_nat_or_cancel_option() {
+    int option = -2;
+    char line[20];
+    fgets(line, 20, stdin);
+    int success = sscanf(line, "%i", &option);
+    if(success <= 0 || option < -1) option = -2;
     return option;
 }
 
@@ -71,11 +83,11 @@ int display_tables_menu(Tables tables, char complement[26]) {
 int display_procedures_menu(Table table) {
     clear_terminal();
     print_divisor(table.name);
-    printf("[1] → Criar um novo registro na tabela\n");
+    printf("[1] → Registrar nova tupla na tabela\n");
     printf("[2] → Listar todos os dados da tabela\n");
     if(table.qtd_records > 0) {
         printf("[3] → Pesquisar valor na tabela\n");
-        printf("[4] → Apagar uma registro da tabela\n");
+        printf("[4] → Apagar uma tupla da tabela\n");
     };
     print_divisor("");
     printf("[0] → Voltar ao menu\n");
@@ -153,4 +165,17 @@ int display_select_column_menu(Table table, char complement[26], bool include_pr
     print_divisor("");
     printf("Opção: ");
     return get_nat_option();
+}
+
+/// @brief Menu de opções durante remoção de registro de uma tabela.
+/// @param table a tabela
+/// @return A opção escolhida.
+int display_delete_record_procedure_menu(Table table) {
+    clear_terminal();
+    print_table(table);
+    printf("[-1] → Cancelar\n");
+    printf("[%s] → Remover tupla\n", table.columns[0].name);
+    print_divisor("");
+    printf("Opção: ");
+    return get_nat_or_cancel_option();
 }

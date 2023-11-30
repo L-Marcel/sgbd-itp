@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "tables.h"
 
 /// @brief Converte o typo enumerado para um texto.
@@ -92,12 +93,12 @@ Table create_empty_table() {
   return table;
 }
 
-/// @brief Inicializa uma linha/tupla vazia, de acordo com a quantidade
-/// de colunas da tabela.
-/// @return a tupla vazia
-Record *create_empty_tuple(int qtd_columns) {
-  Record *tuple = calloc(qtd_columns, sizeof(Record));
-  return tuple;
+/// @brief Inicializa o registro de uma tupla vazia, de 
+/// acordo com a quantidade de colunas da tabela.
+/// @return o registro.
+Record *create_empty_record(int qtd_columns) {
+  Record *record = calloc(qtd_columns, sizeof(Record));
+  return record;
 }
 
 /// @brief Adiciona uma coluna em uma tabela.
@@ -141,7 +142,7 @@ void delete_table(int table_index, Tables * tables) {
 /// @param table a tabela
 /// @param primary_key a chave primária do registro
 /// @return o index, se existir; -1, caso contrário.
-int get_tuple_index(Table table, int primary_key) {
+int get_record_index(Table table, int primary_key) {
   for(int i = 0; i < table.qtd_records; i++) {
     char str_primary_key[sizeof(primary_key) + 1];
     sprintf(str_primary_key, "%i", primary_key);
@@ -154,32 +155,51 @@ int get_tuple_index(Table table, int primary_key) {
   return -1;
 }
 
-/// @brief Deleta uma tupla de uma tabela
+/// @brief Deleta os registros de uma tupla da tabela.
 /// @param table a tabela
-/// @param tuple_option chave primária da tupla
+/// @param record_option chave primária da tupla
 /// @return false, se não for possível deletar (ou erro); true, se bem sucedido 
-bool delete_tuple(Table * table, int tuple_option) {
-  int tuple_index = get_tuple_index(*table, tuple_option);
+bool delete_record(Table * table, int record_option) {
+  int record_index = get_record_index(*table, record_option);
 
-  if(tuple_index == -1) {
+  if(record_index == -1) {
     clear_terminal();
-    printf("Nenhum registro encontrado!\n");
+    printf("Nenhuma tupla encontrada!\n");
     pause_terminal();
     return false;
   };
-  
-  table -> qtd_records--;
-  for(int i = tuple_index; i < table -> qtd_records; i++) {
-    table -> records[i] = table -> records[i + 1];
+
+  char yes_or_no;
+  while(true) {
+    clear_terminal();
+
+    printf("Você está prestes a apagar esse registro da tabela:\n");
+    for(int i = 0; i < table -> qtd_columns; i++) {
+      printf(
+        "- %s : %s\n", 
+        table -> columns[i].name,
+        table -> records[record_index][i].value
+      );
+    };
+
+    printf("\nDeseja realmente fazer isso? (Y/N): ");
+    scanf("%c", &yes_or_no);
+    clear_terminal();
+    if (tolower(yes_or_no) == 'y') {
+      getchar();
+
+      table -> qtd_records--;
+      for(int i = record_index; i < table -> qtd_records; i++) {
+        table -> records[i] = table -> records[i + 1];
+      };
+
+      table -> records = realloc(table -> records, sizeof(Record*) * table -> qtd_records);
+
+      return true;
+    } else if (tolower(yes_or_no) == 'n') {
+      return false;
+    };
   };
-
-  table -> records = realloc(table -> records, sizeof(Record*) * table -> qtd_records);
-
-  clear_terminal();
-  printf("Tupla removida com sucesso!\n");
-  pause_terminal();
-
-  return true;
 }
 
 /// @brief Percorre a database para saber se a tabela inserida pelo usuário já existe.
@@ -398,15 +418,14 @@ Table csv_string_to_columns_values(
 /// @return o tamanho.
 int get_column_length(Table table, int column_index) {
   unsigned int length = 0;
-  char column[table.qtd_records + 2][200];
+  char column[table.qtd_records + 1][200];
   strcpy(column[0], table.columns[column_index].name);
-  strcpy(column[1], get_type_name(table.columns[column_index].type));
 
   for(int i = 0; i < table.qtd_records; i++) {
-    strcpy(column[i + 2], table.records[i][column_index].value);
+    strcpy(column[i + 1], table.records[i][column_index].value);
   };
 
-  for(int i = 0; i < table.qtd_records + 2; i++) {
+  for(int i = 0; i < table.qtd_records + 1; i++) {
     if(strlen(column[i]) > length) {
       length = strlen(column[i]);
     };
@@ -436,40 +455,10 @@ char * format_table_line_names(
     char column[columns_length[i]];
     sprintf(
       column, 
-      "%*s%s", -(columns_length[i] - gap), 
-      table.columns[i].name,
-      i == qtd_columns - 1? "":" | "
-    );
-    strcat(line, column);
-  };
-  
-  return line;
-}
-
-/// @brief Concatena os tipos das colunas em uma string,
-/// separadas por espaços.
-/// @param qtd_columns o numero de colunas
-/// @param columns_length o vetor de tamanho das colunas
-/// @param line_length o tamanho da linha
-/// @param table a tabela
-/// @return a string formatada.
-char * format_table_line_types(
-  int qtd_columns, 
-  int columns_length[qtd_columns], 
-  int line_length, 
-  Table table
-) {
-  char * line = malloc(sizeof(char) * line_length);
-  strcpy(line, "");
-
-  for(int i = 0; i < qtd_columns; i++) {
-    int gap = i == qtd_columns - 1? 4:3;
-    char column[columns_length[i]];
-    sprintf(
-      column, 
-      "%*s%s", 
+      "%s%*s%s", 
+      i == 0? " ":"",
       -(columns_length[i] - gap), 
-      get_type_name(table.columns[i].type),
+      table.columns[i].name,
       i == qtd_columns - 1? "":" | "
     );
     strcat(line, column);
@@ -501,9 +490,10 @@ char * format_table_line_record(
     char column[columns_length[i]];
     sprintf(
       column, 
-      "%*s%s", 
-      -(columns_length[i] - gap), 
-      table.records[record_index][i].value, 
+      "%s%*s%s",
+      i == 0? " ":"",
+      -(columns_length[i] - gap),  
+      table.records[record_index][i].value,
       i == qtd_columns - 1? "":" | "
     );
     strcat(line, column);
