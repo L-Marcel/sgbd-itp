@@ -8,10 +8,37 @@
 /// @param column_option a coluna da pesquisa
 /// @param search_option a configuração de pesquisa
 void search_main_caller(Table table, int column_option, int search_option) {
-    Table aux_table = create_empty_table(); 
-    aux_table = table;
+    Table aux_table = table;
     print_table(aux_table);
+    printf("Diff examples: \n");
+    printf("- 'A' - 'B' = %d ⇒  'A' > 'B'\n", strcmp("A", "B"));
+    printf("- 5 - 2 = %d ⇒  5 > 2\n", 5 - 2);
+    
+    printf("- \"Lucas\" - \"Natham\" = %d ⇒  \"Natham\" > \"Lucas\"\n", strcmp("Lucas", "Natham"));
+    printf("- \"Natham\" - \"Lucas\" = %d ⇒  \"Natham\" > \"Lucas\"\n", strcmp("Natham", "Lucas"));
+    // Não é o tamanho que está sendo comparado nas strings!
+    printf("- \"bcd\" - \"abc\" = %d ⇒  \"abc\" < \"bcd\"\n",  strcmp("bcd", "abc"));
+    printf("- \"abc\" - \"bcd\" = %d ⇒  \"abc\" < \"bcd\"\n", strcmp("abc", "bcd"));
+    printf("- \"abc\" - \"abc\" = %d ⇒  \"abc\" = \"abc\"\n", strcmp("abc", "abc"));
+    // Lembrando que, se for maior, é maior OU igual também!
+
     pause_terminal();
+}
+
+// Apenas esboço: o diff seria a diferença entre dois valores
+order compare(double diff) {
+    return EQ;
+}
+
+// Apenas esboço: recebe o valor a ser procurado como string mesmo, e
+// usa a função compare e o filter_order em um for para ver quais elementos
+// adicionar ao result. 
+Table filter_table(Table table, char value[200], order filter_order) {
+    Table result = create_empty_table();
+    // Tem que lembrar de adicionar as colunas da table original
+    // acho que temos uma função add_column
+
+    return result;
 }
 
 /// @brief Irá pegar o número inserido pelo usuário (apenas para não strings/char)

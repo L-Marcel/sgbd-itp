@@ -1,14 +1,5 @@
 #include "utils.h"
 
-typedef enum {
-  T_NAT,
-  T_INT,
-  T_FLOAT,
-  T_DOUBLE,
-  T_CHAR,
-  T_STRING
-} types;
-
 typedef struct {
   types type;
   char name[50];
