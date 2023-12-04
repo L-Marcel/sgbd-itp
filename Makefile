@@ -6,6 +6,7 @@ COMPILE = gcc main.c \
 	./build/modules/files.o \
 	./build/modules/menus.o \
 	./build/modules/procedures.o \
+	./build/modules/search.o \
 	./build/seeds/users.o \
 	-o ./build/main.exe
 EXECUTE = "./build/main.exe"
@@ -20,8 +21,10 @@ run: ./build/main.exe
 	${EXECUTE}
 all: main.c seeds
 	${COMPILE} ${PARAMS}
-seeds: ./seeds/users.c procedures
+seeds: ./seeds/users.c search
 	gcc ./seeds/users.c -o ./build/seeds/users.o -c ${PARAMS}
+search: ./modules/search.c procedures
+	gcc ./modules/search.c -o ./build/modules/search.o -c ${PARAMS}
 procedures: ./modules/procedures.c menus
 	gcc ./modules/procedures.c -o ./build/modules/procedures.o -c ${PARAMS}
 menus: ./modules/menus.c prints
