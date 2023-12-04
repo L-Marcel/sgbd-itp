@@ -107,6 +107,7 @@ int main(int argc, char **argv) {
                 if(table.qtd_records <= 0) {
                   break;
                 };
+                
                 column_option = display_select_column_menu(table, " para a pesquisa", true);
                 valid_option = is_option_valid(column_option, table.qtd_columns);
                 if (valid_option <= -1) break;

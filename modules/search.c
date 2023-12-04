@@ -9,11 +9,19 @@
 /// @param search_option a configuração de pesquisa
 void search_main_caller(Table table, int column_option, int search_option) {
     Table aux_table = table;
+
+    // Sugestão, transforma o tipo de search_option para o enum order
+    // e se quiser dá até para alterar os valores do enum
+    // ai nessa primeira linha da função já chama o filter_table
+    // logo depois de solicitar o valor (lembrando que tem que validar o valor
+    // solicitado). Se for Nat, nada de entradas negativas. Mas já temos isso em
+    // outra parte do código.
+
     print_table(aux_table);
     printf("Diff examples: \n");
     printf("- 'A' - 'B' = %d ⇒  'A' > 'B'\n", strcmp("A", "B"));
     printf("- 5 - 2 = %d ⇒  5 > 2\n", 5 - 2);
-    
+
     printf("- \"Lucas\" - \"Natham\" = %d ⇒  \"Natham\" > \"Lucas\"\n", strcmp("Lucas", "Natham"));
     printf("- \"Natham\" - \"Lucas\" = %d ⇒  \"Natham\" > \"Lucas\"\n", strcmp("Natham", "Lucas"));
     // Não é o tamanho que está sendo comparado nas strings!
@@ -22,11 +30,14 @@ void search_main_caller(Table table, int column_option, int search_option) {
     printf("- \"abc\" - \"abc\" = %d ⇒  \"abc\" = \"abc\"\n", strcmp("abc", "abc"));
     // Lembrando que, se for maior, é maior OU igual também!
 
+
     pause_terminal();
 }
 
-// Apenas esboço: o diff seria a diferença entre dois valores
-order compare(double diff) {
+// Apenas esboço: o compare e to são os valores para serem
+// comparados e o type é o tipo da coluna, pensei em receber
+// como double, mas dá erro de tipagem
+order compare(char compare[200], char to[200], types type) {
     return EQ;
 }
 
