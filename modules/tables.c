@@ -569,7 +569,10 @@ bool validate_record_value(char value[200], types type, char error[200]) {
 /// @return true, se estiver; false, caso contrário.
 bool primary_key_already_in_use(char value[200], Table table) {
   for(int i = 0; i < table.qtd_records; i++) {
-    if(strcmp(table.records[i][0].value, value) == 0) {
+    int x, y;
+    sscanf(table.records[i][0].value, "%d", &x);
+    sscanf(value, "%d", &y);
+    if(x == y) {
       return true;
     };
   };
