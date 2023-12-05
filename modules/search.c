@@ -1,6 +1,8 @@
 #include "search.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 /// @brief Irá pegar o input do usuário e chamar outras funções auxiliares
 /// @param table a tabela
@@ -19,7 +21,7 @@ void search_main_caller(Table table, int column_option, order search_option) {
         }
     } while (!is_valid);
 
-    filter_table(aux_table, value, search_option);
+    filter_table(aux_table, column_option, value, search_option);
 
     // print_table(aux_table);
     // printf("Diff examples: \n");
@@ -47,17 +49,36 @@ order compare(char compare[200], char to[200], types type) {
 // Apenas esboço: recebe o valor a ser procurado como string mesmo, e
 // usa a função compare e o filter_order em um for para ver quais elementos
 // adicionar ao result. 
-Table filter_table(Table table, char value[200], order filter_order) {
+Table filter_table(Table table, int column_option, char value[200], order filter_order) {
+    int i, strcmp_result;
+    // Tava dando warning sem o unsigned :P
+    unsigned int j;
+    char lower_record[200] = {0};
+    char lower_value[200] = {0};
+
     Table result = create_empty_table();
-    result.columns = realloc(result.columns, sizeof(Column) * table.qtd_columns);
-    for (int i = 0; i < table.qtd_columns; i++) {
-        result.columns[i] = table.columns[i];
+    for (i = 0; i < table.qtd_columns; i++) {
+        add_column(&result, table.columns[i]);
     }
-    result.qtd_columns = table.qtd_columns;
 
+    // O filter_order ser NT é o mesmo que ter certeza que o type é string.
+    if (filter_order == NT) {
+        for (i = 0; i < table.qtd_records; i++) {
+            lower_string(table.records[i][column_option - 1].value, lower_record);
+            lower_string(value, lower_value);
 
-    // Tem que lembrar de adicionar as colunas da table original
-    // acho que temos uma função add_column
+            // printf("Valores: %s e %s\n", lower_record, lower_value);
+            // pause_terminal();
+
+            if (strstr(lower_record, lower_value) != NULL) {
+                add_record(&result, table.records[i]);
+            }
+        }
+    } else {
+        for (i = 0; i < table.qtd_records; i++) {
+            compare(value, table.records[i][column_option].value, table.columns[column_option].type);
+        };
+    }
 
     print_table(result);
 

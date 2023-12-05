@@ -110,6 +110,15 @@ void add_column(Table * table, Column column) {
   table -> columns[table -> qtd_columns - 1] = column;
 }
 
+/// @brief Adiciona uma tupla em uma tabela.
+/// @param table a tabela
+/// @param record a tupla
+void add_record(Table * table, Record * record) {
+  table -> qtd_records++;
+  table -> records = realloc(table -> records, sizeof(Record*) * table -> qtd_records);
+  table -> records[table -> qtd_records - 1] = record;
+}
+
 /// @brief Apaga uma coluna de uma tabela.
 /// @param table a tabela
 /// @param column_index o index da coluna

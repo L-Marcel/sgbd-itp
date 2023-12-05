@@ -115,10 +115,7 @@ int main(int argc, char **argv) {
                 search_option = display_search_options_menu(table, column_option);
                 if (search_option <= 0 || search_option > 6) break;
                 search_main_caller(table, column_option, search_option);
-                printf("%i", search_option);
-                
-                pause_terminal();
-
+              
                 break;
               case 4:
                 if(table.qtd_records <= 0) {

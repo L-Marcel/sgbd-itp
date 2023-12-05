@@ -25,17 +25,21 @@ typedef struct {
 
 char* get_type_name(types type);
 types get_type_original(char string[15]);
+
 Tables sort_tables(Tables tables);
 void add_table(Tables * tables, Table table);
 void delete_table(int table_index, Tables * tables);
+
 Table create_empty_table();
 Record *create_empty_record(int qtd_columns);
 
 void add_column(Table * table, Column column);
+void add_record(Table * table, Record * record);
 void delete_column(Table * table, int column_index);
+bool delete_record(Table * table, int record_option);
+
 bool table_already_exists(Table table, Tables tables);
 bool column_already_exists(Column column, Table table);
-bool delete_record(Table * table, int record_option);
 bool validate_record_value(char value[200], types type, char error[200]);
 bool primary_key_already_in_use(char value[200], Table table);
 

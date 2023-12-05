@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "utils.h"
 
 /// @brief Função que captura um texto não vazio, em caso de texto invalido, 
@@ -102,4 +103,14 @@ bool include_char(char * text, char target) {
   };
 
   return false;
+}
+
+/// @brief Tolower uma string inteira.
+/// @param original_string a string original
+/// @param lowered_string a string lowered
+void lower_string(char original_string[200], char lowered_string[200]) {
+  for (unsigned int i = 0; i < strlen(original_string); i++) {
+    lowered_string[i] = tolower(original_string[i]);
+  }
+  lowered_string[strlen(original_string)] = '\0';
 }

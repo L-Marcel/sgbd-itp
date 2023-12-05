@@ -13,10 +13,10 @@ typedef enum {
 } types;
 
 typedef enum {
-  EQ,  
-  GT,
-  GTE,
-  LT, 
-  LTE,    
-  NT     
+  GT = 1,
+  GTE = 2,
+  EQ = 3,  
+  LTE = 4,  
+  LT = 5,
+  NT = 6
 } order;
