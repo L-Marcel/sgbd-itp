@@ -12,7 +12,8 @@
 #endif
 
 int main(int argc, char **argv) {
-  int table_option, procedure_option, column_option, record_option, search_option, table_exists;
+  int table_option, procedure_option, column_option, record_option, table_exists;
+  order search_option;
 
   #ifdef _WIN32
     UINT CPAGE_UTF8 = 65001;
@@ -107,13 +108,16 @@ int main(int argc, char **argv) {
                 if(table.qtd_records <= 0) {
                   break;
                 };
-                
+
                 column_option = display_select_column_menu(table, " para a pesquisa", true);
                 valid_option = is_option_valid(column_option, table.qtd_columns);
                 if (valid_option <= -1) break;
                 search_option = display_search_options_menu(table, column_option);
-                if (search_option <= 0 || search_option > 7) break;
+                if (search_option <= 0 || search_option > 6) break;
                 search_main_caller(table, column_option, search_option);
+                printf("%i", search_option);
+                
+                pause_terminal();
 
                 break;
               case 4:

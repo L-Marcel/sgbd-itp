@@ -10,4 +10,4 @@ int display_new_table_procedure_menu(Table table);
 int display_select_types_menu();
 int display_select_column_menu(Table table, char complement[26], bool include_primary_key);
 int display_delete_record_procedure_menu(Table table);
-int display_search_options_menu(Table table, int column_option);
+order display_search_options_menu(Table table, int column_option);

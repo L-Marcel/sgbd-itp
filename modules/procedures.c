@@ -17,13 +17,11 @@ Table new_table_procedure(Tables tables) {
   
   bool table_exists = false;
   do {
-    // NATHAM Coloca na exists_message essa string com a table inválida.
     sprintf(
       exists_message, 
       "Já existe uma tabela chamada \"%s\"!\nNome da tabela (max: 49): ", 
       new_table.name
     );
-    // NATHAM Se já existir a tabela, ele passa o exists_message (pergunta de novo o nome)
     get_string(
       50, 
       new_table.name,
@@ -31,8 +29,6 @@ Table new_table_procedure(Tables tables) {
         exists_message : 
         "Nome da tabela (max: 49): "
     );
-    // NATHAM Verifica se o nome inserido existe nas tables existentes. Se existir, retorna true.
-    // Se não, retorna false.
     table_exists = table_already_exists(new_table, tables);
   } while(table_exists);
 

@@ -13,9 +13,10 @@ typedef enum {
 } types;
 
 typedef enum {
-  EQ = 0,    // Equal
-  LTE = -1,  // Less than or equal
-  LT = -2,   // Less than
-  GTE = 1,   // Greater than or equal
-  GT = 2     // Greater than
+  EQ,  
+  GT,
+  GTE,
+  LT, 
+  LTE,    
+  NT     
 } order;

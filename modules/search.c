@@ -1,35 +1,38 @@
 #include "search.h"
 #include <stdio.h>
-
-// Alguns tipos de função e parâmetros ainda são meramente ilustrativos 
+#include <stdlib.h>
 
 /// @brief Irá pegar o input do usuário e chamar outras funções auxiliares
 /// @param table a tabela
 /// @param column_option a coluna da pesquisa
 /// @param search_option a configuração de pesquisa
-void search_main_caller(Table table, int column_option, int search_option) {
+void search_main_caller(Table table, int column_option, order search_option) {
     Table aux_table = table;
+    char value[200], error[200];
+    types type = table.columns[column_option - 1].type;
+    bool is_valid;
+    do {
+        get_string(200, value, "Digite o valor de parâmetro para a pesquisa: ");
+        is_valid = validate_record_value(value, type, error);
+        if(!is_valid) {
+            printf("%s", error);
+        }
+    } while (!is_valid);
 
-    // Sugestão, transforma o tipo de search_option para o enum order
-    // e se quiser dá até para alterar os valores do enum
-    // ai nessa primeira linha da função já chama o filter_table
-    // logo depois de solicitar o valor (lembrando que tem que validar o valor
-    // solicitado). Se for Nat, nada de entradas negativas. Mas já temos isso em
-    // outra parte do código.
+    filter_table(aux_table, value, search_option);
 
-    print_table(aux_table);
-    printf("Diff examples: \n");
-    printf("- 'A' - 'B' = %d ⇒  'A' > 'B'\n", strcmp("A", "B"));
-    printf("- 5 - 2 = %d ⇒  5 > 2\n", 5 - 2);
+    // print_table(aux_table);
+    // printf("Diff examples: \n");
+    // printf("- 'A' - 'B' = %d ⇒  'A' > 'B'\n", strcmp("A", "B"));
+    // printf("- 5 - 2 = %d ⇒  5 > 2\n", 5 - 2);
 
-    printf("- \"Lucas\" - \"Natham\" = %d ⇒  \"Natham\" > \"Lucas\"\n", strcmp("Lucas", "Natham"));
-    printf("- \"Natham\" - \"Lucas\" = %d ⇒  \"Natham\" > \"Lucas\"\n", strcmp("Natham", "Lucas"));
-    // Não é o tamanho que está sendo comparado nas strings!
-    printf("- \"bcd\" - \"abc\" = %d ⇒  \"abc\" < \"bcd\"\n",  strcmp("bcd", "abc"));
-    printf("- \"abc\" - \"bcd\" = %d ⇒  \"abc\" < \"bcd\"\n", strcmp("abc", "bcd"));
-    printf("- \"abc\" - \"abc\" = %d ⇒  \"abc\" = \"abc\"\n", strcmp("abc", "abc"));
-    // Lembrando que, se for maior, é maior OU igual também!
-
+    // printf("- \"Lucas\" - \"Natham\" = %d ⇒  \"Natham\" > \"Lucas\"\n", strcmp("Lucas", "Natham"));
+    // printf("- \"Natham\" - \"Lucas\" = %d ⇒  \"Natham\" > \"Lucas\"\n", strcmp("Natham", "Lucas"));
+    // // Não é o tamanho que está sendo comparado nas strings!
+    // printf("- \"bcd\" - \"abc\" = %d ⇒  \"abc\" < \"bcd\"\n",  strcmp("bcd", "abc"));
+    // printf("- \"abc\" - \"bcd\" = %d ⇒  \"abc\" < \"bcd\"\n", strcmp("abc", "bcd"));
+    // printf("- \"abc\" - \"abc\" = %d ⇒  \"abc\" = \"abc\"\n", strcmp("abc", "abc"));
+    // // Lembrando que, se for maior, é maior OU igual também!
 
     pause_terminal();
 }
@@ -46,8 +49,17 @@ order compare(char compare[200], char to[200], types type) {
 // adicionar ao result. 
 Table filter_table(Table table, char value[200], order filter_order) {
     Table result = create_empty_table();
+    result.columns = realloc(result.columns, sizeof(Column) * table.qtd_columns);
+    for (int i = 0; i < table.qtd_columns; i++) {
+        result.columns[i] = table.columns[i];
+    }
+    result.qtd_columns = table.qtd_columns;
+
+
     // Tem que lembrar de adicionar as colunas da table original
     // acho que temos uma função add_column
+
+    print_table(result);
 
     return result;
 }

@@ -184,7 +184,7 @@ int display_delete_record_procedure_menu(Table table) {
 /// @param table a tabela
 /// @param column_option a coluna a ser pesquisada
 /// @return A opção escolhida.
-int display_search_options_menu(Table table, int column_option) {
+order display_search_options_menu(Table table, int column_option) {
     clear_terminal();
     char str_type[100];
     char title[47];
@@ -192,14 +192,13 @@ int display_search_options_menu(Table table, int column_option) {
     strcpy(str_type, get_type_name(table.columns[column_option - 1].type));
 
     print_divisor("Selecione uma configuração de pesquisa");
-    printf("[1] → Pesquisa livre (sem pré-definições)\n");
-    printf("[2] → Valores maiores ao informado\n");
-    printf("[3] → Valores maiores ou iguais ao informado\n");
-    printf("[4] → Valores iguais ao informado\n");
-    printf("[5] → Valores menores ou iguais ao informado\n");
-    printf("[6] → Valores menores ao informado\n");
+    printf("[1] → Valores maiores ao informado\n");
+    printf("[2] → Valores maiores ou iguais ao informado\n");
+    printf("[3] → Valores iguais ao informado\n");
+    printf("[4] → Valores menores ou iguais ao informado\n");
+    printf("[5] → Valores menores ao informado\n");
     if (strcmp(str_type, "String") == 0) {
-        printf("[7] → Valores próximos ao informado\n");
+        printf("[6] → Valores próximos ao informado\n");
     }
 
     print_divisor("");
@@ -207,6 +206,8 @@ int display_search_options_menu(Table table, int column_option) {
     print_divisor("");
 
     printf("Opção: ");
+
+
 
     return get_nat_option();
 }
