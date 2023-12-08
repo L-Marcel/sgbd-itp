@@ -118,27 +118,54 @@ Table get_data_from_table(Table table) {
   char line_content[200];
 
   sprintf(path, "./database/%s.csv", table.name);
-  FILE *file = fopen(path, "r");
-
-  fgets(line_content, 199, file);
-  table = csv_string_to_columns_names(table, line_content);
-  fgets(line_content, 199, file);
-  table = csv_string_to_columns_types(table, line_content);
+  FILE * file = fopen(path, "r");
+  
+  char * file_content = malloc(0);
+  int size = 0;
 
   while(feof(file) == 0) {
-    table.qtd_records++;
-    table.records = realloc(table.records, sizeof(Record*) * table.qtd_records);
-    table.records[table.qtd_records - 1] = calloc(table.qtd_columns, sizeof(Record));
+    size++;
+    file_content = realloc(file_content, sizeof(char) * size);
+    file_content[size - 1] = fgetc(file);
+  };
 
-    fgets(line_content, 199, file);
-    table = csv_string_to_columns_values(
-      table, 
-      line_content, 
-      table.qtd_records, 
-      feof(file) != 0
-    );
+  fclose(file);
+
+  char * piece = strtok(file_content, "\n");
+  int count = 0;
+
+  char ** lines = malloc(0);
+
+  while(piece != NULL) {
+    lines = realloc(lines, sizeof(char*) * (count + 1));
+    lines[count] = malloc((strlen(piece) + 1) * sizeof(char));
+    strcpy(lines[count], piece);
+
+    piece = strtok(NULL, "\n");
+    count++;
+  };
+
+  for(int i = 0; i < count; i++) {
+    switch(i) {
+      case 0:
+        table = csv_string_to_columns_names(table, lines[i]);
+        break;
+      case 1:
+        table = csv_string_to_columns_types(table, lines[i]);
+        break;
+      default:
+        table.qtd_records++;
+        table.records = realloc(table.records, sizeof(Record*) * table.qtd_records);
+        table.records[table.qtd_records - 1] = calloc(table.qtd_columns, sizeof(Record));
+
+        table = csv_string_to_columns_values(
+          table, 
+          lines[i], 
+          table.qtd_records
+        );
+        break;
+    };
   };
   
-  fclose(file);
   return table;
 }
