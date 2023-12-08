@@ -2,10 +2,7 @@
 #include <locale.h>
 #include <string.h>
 #include <stdlib.h>
-#include "modules/search.h"
-
-#define SEED = true;
-#include "seeds/users.h"
+#include "modules/headers/core.h"
 
 #ifdef _WIN32
   #include <windows.h>
@@ -28,6 +25,7 @@ int main(int argc, char **argv) {
 
   if(argc >= 2 && strcmp(argv[1], "--seed") == 0) {
     seed_users();
+    return 0;
   };
 
   while(menu_option != 0) {
@@ -88,7 +86,7 @@ int main(int argc, char **argv) {
             if (valid_option == 0) break;
 
             switch (procedure_option) {
-              case 1: 
+              case 1: // Registrar nova tupla
                 table = new_record_procedure(table);
 
                 if (start_qtd_records < table.qtd_records) {
@@ -100,24 +98,31 @@ int main(int argc, char **argv) {
 
                 pause_terminal();
                 break;
-              case 2:
-                print_table(table);
+              case 2: // Imprimir tabela
+                print_table(table, "registradas");
                 pause_terminal();
                 break;
-              case 3: // [TODO] Pesquisar valor na tabela
+              case 3: // Pesquisar valor
                 if(table.qtd_records <= 0) {
                   break;
                 };
 
-                column_option = display_select_column_menu(table, " para a pesquisa", true);
-                valid_option = is_option_valid(column_option, table.qtd_columns);
-                if (valid_option <= -1) break;
-                search_option = display_search_options_menu(table, column_option);
-                if (search_option <= 0 || search_option > 6) break;
-                search_main_caller(table, column_option, search_option);
-              
+                do {
+                  column_option = display_select_column_menu(table, " para a pesquisa", true);
+                  valid_option = is_option_valid(column_option, table.qtd_columns);
+                  if (valid_option <= 0) continue;
+                  types type = table.columns[column_option - 1].type;
+                  unsigned int max_options = type == T_STRING? 6:5;
+
+                  do {
+                    search_option = display_search_options_menu(table, column_option);
+                    if (search_option <= 0 || search_option > max_options) continue;
+                    search_main_caller(table, column_option, search_option);
+                  } while(search_option < 0 || search_option > max_options);
+                } while(valid_option == -1);
+                
                 break;
-              case 4:
+              case 4: // Apagar tupla
                 if(table.qtd_records <= 0) {
                   break;
                 };

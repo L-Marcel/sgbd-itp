@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
-#include "procedures.h"
+#include "headers/procedures.h"
 
 /// @brief Cria uma nova tabela valida.
 /// @param tables lista de tabelas já existentes

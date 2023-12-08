@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "menus.h"
+#include "headers/menus.h"
 
 /// @brief Captura o natural que representa a opção escolhida pelo usuário.
 /// @param option a opção escolhida
@@ -48,14 +48,14 @@ int is_option_valid(int option, int qtd_menu_options) {
 /// @return A opção escolhida.
 int display_default_menu(int table_size) {
     clear_terminal();
-    print_divisor("SGDB / ITP");
+    print_divisor("SGDB / ITP", 0);
     printf("[0] → Sair do programa\n");
     printf("[1] → Criar uma nova tabela\n");
     if (table_size != 0) {
         printf("[2] → Deletar uma tabela existente\n");
         printf("[3] → Listar/selecionar tabela(s)\n");
     };
-    print_divisor("");
+    print_divisor("", 0);
     printf("Opção: ");
     return get_nat_option();
 }
@@ -68,11 +68,11 @@ int display_tables_menu(Tables tables, char complement[26]) {
     clear_terminal();
     char title[47];
     sprintf(title, "Tabelas disponíveis%s", complement);
-    print_divisor(title);
+    print_divisor(title, 1);
     print_tables(tables, 1);
-    print_divisor("");
+    print_divisor("", 0);
     printf("[0] → Voltar ao menu\n");
-    print_divisor("");
+    print_divisor("", 0);
     printf("Opção: ");
     return get_nat_option();
 }
@@ -82,16 +82,16 @@ int display_tables_menu(Tables tables, char complement[26]) {
 /// @return A opção escolhida.
 int display_procedures_menu(Table table) {
     clear_terminal();
-    print_divisor(table.name);
+    print_divisor(table.name, 0);
     printf("[1] → Registrar nova tupla na tabela\n");
     printf("[2] → Listar todos os dados da tabela\n");
     if(table.qtd_records > 0) {
         printf("[3] → Pesquisar valor na tabela\n");
         printf("[4] → Apagar uma tupla da tabela\n");
     };
-    print_divisor("");
+    print_divisor("", 0);
     printf("[0] → Voltar ao menu\n");
-    print_divisor("");
+    print_divisor("", 0);
     printf("Opção: ");
     return get_nat_option();
 }
@@ -101,7 +101,7 @@ int display_procedures_menu(Table table) {
 /// @return A opção escolhida.
 int display_new_table_procedure_menu(Table table) {
     clear_terminal();
-    print_divisor("Criar nova tabela");
+    print_divisor("Criar nova tabela", 0);
     
     printf("Tabela: %s\n", table.name);
     printf(
@@ -118,7 +118,7 @@ int display_new_table_procedure_menu(Table table) {
         );
     };
 
-    print_divisor("");
+    print_divisor("", 0);
     printf("[0] → Cancelar\n");
     printf("[1] → Finalizar\n");
     printf("[2] → Adicionar uma coluna\n");
@@ -126,7 +126,7 @@ int display_new_table_procedure_menu(Table table) {
       printf("[3] → Remover uma coluna\n");
     };
 
-    print_divisor("");
+    print_divisor("", 0);
     printf("Opção: ");
     return get_nat_option();
 }
@@ -135,7 +135,7 @@ int display_new_table_procedure_menu(Table table) {
 /// @return A opção escolhida.
 int display_select_types_menu() {
     clear_terminal();
-    print_divisor("Escolha o tipo da coluna");
+    print_divisor("Escolha o tipo da coluna", 0);
 
     // Já está na ordem do enum!
     printf("[0] → Nat\n");
@@ -145,7 +145,7 @@ int display_select_types_menu() {
     printf("[4] → Char\n");
     printf("[5] → String\n");
 
-    print_divisor("");
+    print_divisor("", 0);
     printf("Opção: ");
     return get_nat_option();
 }
@@ -156,13 +156,15 @@ int display_select_types_menu() {
 /// @return A opção escolhida.
 int display_select_column_menu(Table table, char complement[26], bool include_primary_key) {
     clear_terminal();
+
     char title[47];
     sprintf(title, "Colunas disponíveis%s", complement);
-    print_divisor(title);
+    print_divisor(title, 1);
+
     print_columns(table, 1, include_primary_key);
-    print_divisor("");
+    print_divisor("", 0);
     printf("[0] → Voltar\n");
-    print_divisor("");
+    print_divisor("", 0);
     printf("Opção: ");
     return get_nat_option();
 }
@@ -172,10 +174,10 @@ int display_select_column_menu(Table table, char complement[26], bool include_pr
 /// @return A opção escolhida.
 int display_delete_record_procedure_menu(Table table) {
     clear_terminal();
-    print_table(table);
+    print_table(table, "registradas");
     printf("[-1] → Cancelar\n");
     printf("[%s] → Remover tupla\n", table.columns[0].name);
-    print_divisor("");
+    print_divisor("", 0);
     printf("Opção: ");
     return get_nat_or_cancel_option();
 }
@@ -189,25 +191,22 @@ order display_search_options_menu(Table table, int column_option) {
     char str_type[100];
     char title[47];
 
-    strcpy(str_type, get_type_name(table.columns[column_option - 1].type));
+    types type = table.columns[column_option - 1].type;
 
-    print_divisor("Selecione uma configuração de pesquisa");
+    print_divisor("Seleciosne uma configuração de pesquisa", 2);
     printf("[1] → Valores maiores ao informado\n");
     printf("[2] → Valores maiores ou iguais ao informado\n");
     printf("[3] → Valores iguais ao informado\n");
     printf("[4] → Valores menores ou iguais ao informado\n");
     printf("[5] → Valores menores ao informado\n");
-    if (strcmp(str_type, "String") == 0) {
+    if (type == T_STRING) {
         printf("[6] → Valores próximos ao informado\n");
-    }
+    };
 
-    print_divisor("");
+    print_divisor("", 0);
     printf("[0] → Voltar\n");
-    print_divisor("");
-
+    print_divisor("", 0);
     printf("Opção: ");
-
-
-
+    
     return get_nat_option();
 }

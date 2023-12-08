@@ -15,7 +15,13 @@
     "tables.h": "c",
     "stdlib.h": "c",
     "users.h": "c",
-    "procedures.h": "c"
+    "procedures.h": "c",
+    "search.h": "c",
+    "utils.h": "c",
+    "string.h": "c",
+    "prints.h": "c",
+    "menus.h": "c",
+    "windows.h": "c"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

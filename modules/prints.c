@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "prints.h"
+#include "headers/prints.h"
 
 /// @brief Imprime as tabelas disponíveis.
 /// @param tables lista de tabelas
@@ -30,7 +30,7 @@ void print_columns(Table table, int start, bool include_primary_key) {
 
 /// @brief Imprime uma tabela.
 /// @param table a tabela
-void print_table(Table table) {
+void print_table(Table table, char turples_message[50]) {
   int columns_length[table.qtd_columns];
   for(int i = 0; i < table.qtd_columns; i++) {
     int gap = i == table.qtd_columns - 1? 0:3;
@@ -39,7 +39,7 @@ void print_table(Table table) {
 
   int line_length = sum(table.qtd_columns, columns_length) + 1;
 
-  print_divisor(table.name);
+  print_divisor(table.name, 0);
   printf("\n%s\n", 
     format_table_line_names(
       table.qtd_columns, columns_length, 
@@ -60,8 +60,8 @@ void print_table(Table table) {
 
   char records_text[50];
   printf("\n");
-  sprintf(records_text, "%d tuplas registradas", table.qtd_records);
-  print_divisor(records_text);
+  sprintf(records_text, "%d tuplas %s", table.qtd_records, turples_message);
+  print_divisor(records_text, 0);
 }
 
 /// @brief Imprime o divisor horizontal da tabela.
@@ -79,8 +79,9 @@ void print_table_divisor(int line_length) {
 
 /// @brief Gera divisores com um título no meio.
 /// @param title o título, tamanho máximo 53
-void print_divisor(char title[53]) {
-  int size = strlen(title);
+/// @param utf8_chars número de caracteres especiais no texto
+void print_divisor(char title[53], int utf8_chars) {
+  int size = strlen(title) - utf8_chars;
 
   if(size == 0) {
     printf("======================================================\n");
@@ -90,14 +91,15 @@ void print_divisor(char title[53]) {
   int left = 0;
   int right = 0;
   int max = 54 - size;
+  int gap = 0;
 
   if(size != 0) max -= 2; 
   if(size % 2 == 1) {
-    max++;
+    gap++;
   };
 
   left += max/2;
-  right += max/2;
+  right += max/2 + gap;
 
   char left_divider[55] = "======================================================";
   char right_divider[55] = "======================================================";
@@ -106,3 +108,4 @@ void print_divisor(char title[53]) {
 
   printf("%s %s %s\n", left_divider, title, right_divider);
 }
+

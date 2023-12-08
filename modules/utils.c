@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "utils.h"
+#include "headers/utils.h"
 
 /// @brief Função que captura um texto não vazio, em caso de texto invalido, 
 /// repete a operação.
 /// @param max_size tamanho máximo do texto
 /// @param text o texto capturado
-/// @param message a texto imprimido antes do input.
+/// @param message o texto imprimido antes do input.
 void get_string(unsigned long max_size, char text[max_size], char* message) {
   bool can_clear = true;
   char input[max_size + 2];

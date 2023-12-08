@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "users.h"
+#include "headers/core.h"
 
 void seed_users() {
   Table table = create_empty_table();
@@ -131,6 +131,6 @@ void seed_users() {
   };
 
   save_table_file(table);
-  printf("[AVISO]: Você importou uma tabela predefinida!\nQualquer tabela de mesmo nome foi substituída por essa...\n");
-  pause_terminal();
+  clear_terminal();
+  printf("Tabela \"Usuarios\" criada/sobrescrevida!\nExecute \"make run\" para conseguir acessá-la!\n");
 }

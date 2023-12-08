@@ -2,11 +2,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "tables.h"
+#include "headers/tables.h"
 
 /// @brief Converte o typo enumerado para um texto.
 /// @param type o tipo enumerado
-/// @return A texto, com tamanho máximo de 10 chars.
+/// @return O texto, com tamanho máximo de 10 chars.
 char* get_type_name(types type) {
   switch (type) {
     case T_NAT:
@@ -85,8 +85,6 @@ Table create_empty_table() {
     .qtd_records = 0,
   };
 
-  //É necessário alocar para conseguirmos
-  //realocar depois
   table.columns = malloc(0);
   table.records = malloc(0);
 
@@ -546,7 +544,6 @@ bool validate_record_value(char value[200], types type, char error[200]) {
       success = sscanf(value, "%lf", &number);
 
       if(success == 1 || strcmp(value_to_validate, "0") == 0) {
-        //Bonus da função: vai deixar no formato reduzido do double/float
         sprintf(value, "%lg", number);
         return true;
       };

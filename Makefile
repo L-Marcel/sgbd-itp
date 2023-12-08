@@ -6,25 +6,23 @@ COMPILE = gcc main.c \
 	./build/modules/files.o \
 	./build/modules/menus.o \
 	./build/modules/procedures.o \
-	./build/modules/search.o \
-	./build/seeds/users.o \
+	./build/modules/searches.o \
+	./build/modules/seeds.o \
 	-o ./build/main.exe
 EXECUTE = "./build/main.exe"
 
-dev.seeded: all ./build/main.exe
+seed: all ./build/main.exe
 	${EXECUTE} --seed
 dev: all ./build/main.exe
 	${EXECUTE}
-run.seeded: ./build/main.exe
-	${EXECUTE} --seed
 run: ./build/main.exe
 	${EXECUTE}
 all: main.c seeds
 	${COMPILE} ${PARAMS}
-seeds: ./seeds/users.c search
-	gcc ./seeds/users.c -o ./build/seeds/users.o -c ${PARAMS}
-search: ./modules/search.c procedures
-	gcc ./modules/search.c -o ./build/modules/search.o -c ${PARAMS}
+seeds: ./modules/seeds.c searches
+	gcc ./modules/seeds.c -o ./build/modules/seeds.o -c ${PARAMS}
+searches: ./modules/searches.c procedures
+	gcc ./modules/searches.c -o ./build/modules/searches.o -c ${PARAMS}
 procedures: ./modules/procedures.c menus
 	gcc ./modules/procedures.c -o ./build/modules/procedures.o -c ${PARAMS}
 menus: ./modules/menus.c prints

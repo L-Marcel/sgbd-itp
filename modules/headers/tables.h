@@ -42,10 +42,7 @@ bool table_already_exists(Table table, Tables tables);
 bool column_already_exists(Column column, Table table);
 bool validate_record_value(char value[200], types type, char error[200]);
 bool primary_key_already_in_use(char value[200], Table table);
-
-/// [Novo]
 int get_record_index(Table table, int primary_key);
-///
 
 char * columns_names_to_csv_string(Table table);
 char * columns_types_to_csv_string(Table table);

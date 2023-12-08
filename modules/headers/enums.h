@@ -18,5 +18,5 @@ typedef enum {
   EQ = 3,  
   LTE = 4,  
   LT = 5,
-  NT = 6
+  CT = 6
 } order;
