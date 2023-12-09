@@ -36,7 +36,7 @@ void get_string(unsigned long max_size, char text[max_size], char *message) {
 /// @param text o texto
 void trim(unsigned long size, char text[size]) {
   for (int i = size - 1; i > 0; i--) {
-    if (text[i] == ' ' || text[i] == '\n' || text[i] == '\t') {
+    if (text[i] == ' ' || text[i] == '\n' || text[i] == '\t' || text[i] == '\r') {
       text[i] = '\0';
     } else if (text[i] != '\0') {
       break;
@@ -45,7 +45,7 @@ void trim(unsigned long size, char text[size]) {
 
   int gap = 0;
   for (unsigned long i = 0; i < size - 1; i++) {
-    if (text[i] == ' ' || text[i] == '\n' || text[i] == '\t') {
+    if (text[i] == ' ' || text[i] == '\n' || text[i] == '\t' || text[i] == '\r') {
       gap++;
     } else {
       break;

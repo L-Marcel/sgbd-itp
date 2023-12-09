@@ -119,7 +119,7 @@ Table get_data_from_table(Table table) {
 
   char *file_content = malloc(0);
   int size = 0;
-
+  
   while (true) {
     char c = fgetc(file);
     if (feof(file)) { break; };
