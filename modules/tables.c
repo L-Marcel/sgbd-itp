@@ -373,8 +373,6 @@ Table csv_string_to_columns_types(Table table, char * line) {
   piece = strtok(aux_line, ",");
 
   while (piece != NULL) {
-    printf("-- t> %s\n", piece);
-    pause_terminal();
     table.columns[counter].type = get_type_original(piece);
     counter++;
     piece = strtok(NULL, ",");
@@ -392,6 +390,7 @@ Table csv_string_to_columns_values(
   Table table, char * line, 
   int qtd_records
 ) {
+
   char *piece;
   int counter_j = 0;
   char aux_line[strlen(line) + 1];

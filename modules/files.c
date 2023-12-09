@@ -141,9 +141,19 @@ Table get_data_from_table(Table table) {
     lines[count] = malloc((strlen(piece) + 1) * sizeof(char));
     strcpy(lines[count], piece);
 
+    printf("Linha %i: strlen -> %i\n", count + 1, strlen(piece));
+    pause_terminal();    
+
     piece = strtok(NULL, "\n");
     count++;
   };
+  printf("antes de colocar \'\\0\': %i\n", strlen(lines[count -1]));
+  pause_terminal();
+
+  lines[count - 1][strlen(lines[count - 1]) - 2] = '\0';
+
+  printf("depois: %i\n", strlen(lines[count -1]));
+  pause_terminal();
 
   for(int i = 0; i < count; i++) {
     switch(i) {
