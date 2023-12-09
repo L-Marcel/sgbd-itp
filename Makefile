@@ -9,8 +9,29 @@ COMPILE = gcc main.c \
 	./build/modules/searches.o \
 	./build/modules/seeds.o \
 	-o ./build/main.exe
+FILES = ./main.c \
+	./modules/files.c \
+	./modules/menus.c \
+	./modules/prints.c \
+	./modules/procedures.c \
+	./modules/searches.c \
+	./modules/seeds.c \
+	./modules/tables.c \
+	./modules/utils.c \
+	./modules/headers/files.h \
+	./modules/headers/menus.h \
+	./modules/headers/prints.h \
+	./modules/headers/procedures.h \
+	./modules/headers/searches.h \
+	./modules/headers/seeds.h \
+	./modules/headers/tables.h \
+	./modules/headers/utils.h \
+	./modules/headers/core.h \
+	./modules/headers/enums.h
 EXECUTE = "./build/main.exe"
 
+format:
+	clang-format -i ${FILES}
 seed: all ./build/main.exe
 	${EXECUTE} --seed
 dev: all ./build/main.exe

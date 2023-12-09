@@ -1,24 +1,24 @@
+#include "headers/utils.h"
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
-#include "headers/utils.h"
 
-/// @brief Função que captura um texto não vazio, em caso de texto invalido, 
+/// @brief Função que captura um texto não vazio, em caso de texto invalido,
 /// repete a operação.
 /// @param max_size tamanho máximo do texto
 /// @param text o texto capturado
 /// @param message o texto imprimido antes do input.
-void get_string(unsigned long max_size, char text[max_size], char* message) {
+void get_string(unsigned long max_size, char text[max_size], char *message) {
   bool can_clear = true;
   char input[max_size + 2];
   do {
-    if(can_clear) clear_terminal();
+    if (can_clear) clear_terminal();
     printf("%s", message);
 
     fgets(input, max_size + 3, stdin);
     trim(strlen(input), input);
 
-    if(strlen(input) >= max_size) {
+    if (strlen(input) >= max_size) {
       fflush(stdin);
       can_clear = false;
       clear_terminal();
@@ -26,7 +26,7 @@ void get_string(unsigned long max_size, char text[max_size], char* message) {
     } else {
       can_clear = true;
     };
-  } while(strlen(input) == 0 || strlen(input) >= max_size + 1);
+  } while (strlen(input) == 0 || strlen(input) >= max_size + 1);
 
   strcpy(text, input);
 }
@@ -35,24 +35,24 @@ void get_string(unsigned long max_size, char text[max_size], char* message) {
 /// @param size tamanho do texto
 /// @param text o texto
 void trim(unsigned long size, char text[size]) {
-  for(int i = size - 1; i > 0; i--) {
-    if(text[i] == ' ' || text[i] == '\n' || text[i] == '\t') {
+  for (int i = size - 1; i > 0; i--) {
+    if (text[i] == ' ' || text[i] == '\n' || text[i] == '\t') {
       text[i] = '\0';
-    } else if(text[i] != '\0') {
+    } else if (text[i] != '\0') {
       break;
     };
   };
 
   int gap = 0;
-  for(unsigned long i = 0; i < size - 1; i++) {
-    if(text[i] == ' ' || text[i] == '\n' || text[i] == '\t') {
+  for (unsigned long i = 0; i < size - 1; i++) {
+    if (text[i] == ' ' || text[i] == '\n' || text[i] == '\t') {
       gap++;
     } else {
       break;
     };
   };
 
-  for(unsigned long i = gap; i < size - 1; i++) {
+  for (unsigned long i = gap; i < size - 1; i++) {
     text[i - gap] = text[i];
   };
   text[size - 1 - gap] = '\0';
@@ -65,7 +65,7 @@ void trim(unsigned long size, char text[size]) {
 int sum(int size, int vector[size]) {
   int result = 0;
 
-  for(int i = 0; i < size; i++) {
+  for (int i = 0; i < size; i++) {
     result += vector[i];
   };
 
@@ -74,32 +74,30 @@ int sum(int size, int vector[size]) {
 
 /// @brief Limpa o terminal.
 void clear_terminal() {
-  #ifdef _WIN32
-    system("cls");
-  #else
-    system("clear");
-  #endif
+#ifdef _WIN32
+  system("cls");
+#else
+  system("clear");
+#endif
 }
 
 /// @brief Pausa o terminal.
 void pause_terminal() {
-  #ifdef _WIN32
-	  system("pause");
-	#else
-    system("read -p \"Pressione ENTER para sair.\" saindo");
-    clear_terminal();
-	#endif
+#ifdef _WIN32
+  system("pause");
+#else
+  system("read -p \"Pressione ENTER para sair.\" saindo");
+  clear_terminal();
+#endif
 }
 
 /// @brief Diz se uma string contem ou não um caractere especifico.
 /// @param text a string
 /// @param target o caractere
 /// @return true, se conter; false, caso constrário.
-bool include_char(char * text, char target) {
-  for(unsigned long i = 0; i < strlen(text); i++) {
-    if(text[i] == target) {
-      return true;
-    };
+bool include_char(char *text, char target) {
+  for (unsigned long i = 0; i < strlen(text); i++) {
+    if (text[i] == target) { return true; };
   };
 
   return false;
@@ -115,7 +113,7 @@ void lower_string(char original_string[200], char lowered_string[200]) {
   lowered_string[strlen(original_string)] = '\0';
 }
 
-/// @brief Conta o número de digitos depois do ponto de um 
+/// @brief Conta o número de digitos depois do ponto de um
 /// valor numérico salvo em uma string
 /// @param value o valor
 /// @return o número de digitos
@@ -124,13 +122,10 @@ int count_right_digits(char value[200]) {
   int count = 0;
   bool ignore_zeros = true;
 
-  for(int i = size - 1; i >= 0; i--) {
-    if(value[i] == '.') {
+  for (int i = size - 1; i >= 0; i--) {
+    if (value[i] == '.') {
       return count;
-    } else if(
-      (value[i] != '0' && ignore_zeros)
-      || !ignore_zeros
-    ) {
+    } else if ((value[i] != '0' && ignore_zeros) || !ignore_zeros) {
       count++;
       ignore_zeros = false;
     };

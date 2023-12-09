@@ -1,8 +1,8 @@
-#include <stdio.h>
-#include <locale.h>
-#include <string.h>
-#include <stdlib.h>
 #include "modules/headers/core.h"
+#include <locale.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #ifdef _WIN32
   #include <windows.h>
@@ -12,10 +12,10 @@ int main(int argc, char **argv) {
   int table_option, procedure_option, column_option, record_option, table_exists;
   order search_option;
 
-  #ifdef _WIN32
-    UINT CPAGE_UTF8 = 65001;
-    SetConsoleOutputCP(CPAGE_UTF8);
-  #endif
+#ifdef _WIN32
+  UINT CPAGE_UTF8 = 65001;
+  SetConsoleOutputCP(CPAGE_UTF8);
+#endif
 
   Table new_table;
   Record *new_record;
@@ -23,12 +23,12 @@ int main(int argc, char **argv) {
   int menu_option = -1;
   int valid_option = -1;
 
-  if(argc >= 2 && strcmp(argv[1], "--seed") == 0) {
+  if (argc >= 2 && strcmp(argv[1], "--seed") == 0) {
     seed_users();
     return 0;
   };
 
-  while(menu_option != 0) {
+  while (menu_option != 0) {
     Tables tables = get_tables();
     menu_option = display_default_menu(tables.size);
     clear_terminal();
@@ -47,35 +47,33 @@ int main(int argc, char **argv) {
         pause_terminal();
         break;
       case 2: // Deletar uma tabela existente
-        if(tables.size == 0) {
-          goto error_message;
-        };
+        if (tables.size == 0) { goto error_message; };
 
         valid_option = -1;
         do {
-          table_option = display_tables_menu(tables, " para remover");  
-          valid_option = is_option_valid(table_option, tables.size);   
-         
+          table_option = display_tables_menu(tables, " para remover");
+          valid_option = is_option_valid(table_option, tables.size);
+
           if (valid_option == 0) break;
-          else if (valid_option == -1) continue;
+          else if (valid_option == -1)
+            continue;
 
           Table table_to_delete = tables.list[table_option - 1];
           delete_table(table_option - 1, &tables);
           remove_table_file(table_to_delete);
           pause_terminal();
-        } while(valid_option == -1);
+        } while (valid_option == -1);
         break;
       case 3: // Listar/selecionar tabela(s)
-        if(tables.size == 0) {
-          goto error_message;
-        };
+        if (tables.size == 0) { goto error_message; };
 
         valid_option = -1;
         do {
           table_option = display_tables_menu(tables, "");
           valid_option = is_option_valid(table_option, tables.size);
           if (valid_option == 0) break;
-          else if (valid_option == -1) continue;
+          else if (valid_option == -1)
+            continue;
           Table table = tables.list[table_option - 1];
           table = get_data_from_table(table);
 
@@ -103,36 +101,32 @@ int main(int argc, char **argv) {
                 pause_terminal();
                 break;
               case 3: // Pesquisar valor
-                if(table.qtd_records <= 0) {
-                  break;
-                };
+                if (table.qtd_records <= 0) { break; };
 
                 do {
                   column_option = display_select_column_menu(table, " para a pesquisa", true);
                   valid_option = is_option_valid(column_option, table.qtd_columns);
                   if (valid_option <= 0) continue;
                   types type = table.columns[column_option - 1].type;
-                  unsigned int max_options = type == T_STRING? 6:5;
+                  unsigned int max_options = type == T_STRING ? 6 : 5;
 
                   do {
                     search_option = display_search_options_menu(table, column_option);
                     if (search_option <= 0 || search_option > max_options) continue;
                     search_main_caller(table, column_option, search_option);
-                  } while(search_option < 0 || search_option > max_options);
-                } while(valid_option == -1);
-                
+                  } while (search_option < 0 || search_option > max_options);
+                } while (valid_option == -1);
+
                 break;
               case 4: // Apagar tupla
-                if(table.qtd_records <= 0) {
-                  break;
-                };
+                if (table.qtd_records <= 0) { break; };
 
                 do {
                   record_option = display_delete_record_procedure_menu(table);
                   if (record_option < -1) {
                     valid_option = -1;
                     continue;
-                  } else if(record_option == -1) {
+                  } else if (record_option == -1) {
                     valid_option = 0;
                     break;
                   };
@@ -148,15 +142,15 @@ int main(int argc, char **argv) {
                   clear_terminal();
                   printf("Tupla removida com sucesso!\n");
                   pause_terminal();
-                } while(valid_option == -1);
+                } while (valid_option == -1);
                 break;
               default:
                 break;
             };
 
             valid_option = -1;
-          } while(valid_option == -1);
-        } while(valid_option == -1);
+          } while (valid_option == -1);
+        } while (valid_option == -1);
 
         break;
       error_message:
@@ -164,13 +158,13 @@ int main(int argc, char **argv) {
         break;
     };
   };
-  
+
   clear_terminal();
   printf("Programa encerrado!\n");
-  #ifdef _WIN32
-    UINT CPAGE_DEFAULT = GetConsoleOutputCP();
-    SetConsoleOutputCP(CPAGE_DEFAULT);
-  #endif
+#ifdef _WIN32
+  UINT CPAGE_DEFAULT = GetConsoleOutputCP();
+  SetConsoleOutputCP(CPAGE_DEFAULT);
+#endif
 
   return 0;
 }
