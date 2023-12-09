@@ -295,9 +295,7 @@ char * columns_types_to_csv_string(Table table) {
     result_alloc_size += (strlen(type_name) + 2) * sizeof(char);
     result = realloc(result, result_alloc_size);
     strcat(result, type_name);
-    if (i == table.qtd_columns - 1 && table.qtd_records == 0) {
-      break;
-    } else if(i == table.qtd_columns - 1) {
+    if(i == table.qtd_columns - 1) {
       strcat(result, "\n");
     } else {
       strcat(result, ",");
@@ -320,9 +318,7 @@ char * columns_values_to_csv_string(Table table, int record_index) {
     result = realloc(result, result_alloc_size);
     strcat(result, table.records[record_index][i].value);
 
-    if(i == table.qtd_columns - 1 && table.qtd_records == record_index + 1) {
-      break;
-    } else if(i == table.qtd_columns - 1) {
+    if(i == table.qtd_columns - 1) {
       strcat(result, "\n");
     } else {
       strcat(result, ",");
@@ -532,7 +528,7 @@ bool validate_record_value(char value[200], types type, char error[200]) {
       success = sscanf(value, "%lf", &number);
 
       if(success == 1 || strcmp(value_to_validate, "0") == 0) {
-        sprintf(value, "%lg", number);
+        sprintf(value, "%.3lf", number);
         return true;
       };
 

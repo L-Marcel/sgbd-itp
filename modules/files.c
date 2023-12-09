@@ -123,11 +123,20 @@ Table get_data_from_table(Table table) {
   char * file_content = malloc(0);
   int size = 0;
 
-  while(feof(file) == 0) {
-    size++;
-    file_content = realloc(file_content, sizeof(char) * size);
-    file_content[size - 1] = fgetc(file);
+  while(true) {
+      char c = fgetc(file);
+      if(feof(file)) {
+        break;
+      };
+
+      size++;
+      file_content = realloc(file_content, sizeof(char) * size);
+      file_content[size - 1] = c;
   };
+
+  file_content[size - 1] = '\0';
+  printf("->%s<-\n", file_content);
+  pause_terminal();
 
   fclose(file);
 
