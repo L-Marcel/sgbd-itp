@@ -8,3 +8,4 @@ void clear_terminal();
 void pause_terminal();
 bool include_char(char * text, char target);
 int sum(int size, int vector[size]);
+int count_right_digits(char value[200]);

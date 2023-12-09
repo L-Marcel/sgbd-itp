@@ -114,3 +114,27 @@ void lower_string(char original_string[200], char lowered_string[200]) {
   }
   lowered_string[strlen(original_string)] = '\0';
 }
+
+/// @brief Conta o número de digitos depois do ponto de um 
+/// valor numérico salvo em uma string
+/// @param value o valor
+/// @return o número de digitos
+int count_right_digits(char value[200]) {
+  int size = strlen(value);
+  int count = 0;
+  bool ignore_zeros = true;
+
+  for(int i = size - 1; i >= 0; i--) {
+    if(value[i] == '.') {
+      return count;
+    } else if(
+      (value[i] != '0' && ignore_zeros)
+      || !ignore_zeros
+    ) {
+      count++;
+      ignore_zeros = false;
+    };
+  };
+
+  return 0;
+}

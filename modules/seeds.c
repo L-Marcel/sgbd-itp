@@ -50,7 +50,7 @@ void seed_users() {
       { .value = "Joao" },
       { .value = "20" },
       { .value = "1.80" },
-      { .value = "80.0" },
+      { .value = "80.00" },
       { .value = "M" }
     },
     {
@@ -58,7 +58,7 @@ void seed_users() {
       { .value = "Maria" },
       { .value = "25" },
       { .value = "1.60" },
-      { .value = "60.0" },
+      { .value = "60.00" },
       { .value = "F" }
     },
     {
@@ -66,7 +66,7 @@ void seed_users() {
       { .value = "Jose" },
       { .value = "30" },
       { .value = "1.70" },
-      { .value = "70.0" },
+      { .value = "70.00" },
       { .value = "M" }
     },
     {
@@ -74,7 +74,7 @@ void seed_users() {
       { .value = "Ana" },
       { .value = "35" },
       { .value = "1.65" },
-      { .value = "65.0" },
+      { .value = "65.00" },
       { .value = "F" }
     },
     {
@@ -82,7 +82,7 @@ void seed_users() {
       { .value = "Pedro" },
       { .value = "40" },
       { .value = "1.75" },
-      { .value = "75.0" },
+      { .value = "75.00" },
       { .value = "M" }
     },
     {
@@ -90,7 +90,7 @@ void seed_users() {
       { .value = "Carla" },
       { .value = "45" },
       { .value = "1.55" },
-      { .value = "55.0" },
+      { .value = "55.00" },
       { .value = "F" }
     },
     {
@@ -98,7 +98,7 @@ void seed_users() {
       { .value = "Paulo" },
       { .value = "50" },
       { .value = "1.85" },
-      { .value = "85.0" },
+      { .value = "85.00" },
       { .value = "M" }
     },
     {
@@ -106,7 +106,7 @@ void seed_users() {
       { .value = "Julia" },
       { .value = "55" },
       { .value = "1.75" },
-      { .value = "75.0" },
+      { .value = "75.00" },
       { .value = "F" }
     },
     {
@@ -114,7 +114,7 @@ void seed_users() {
       { .value = "Marcos" },
       { .value = "60" },
       { .value = "1.65" },
-      { .value = "65.0" },
+      { .value = "65.00" },
       { .value = "M" }
     }
   };

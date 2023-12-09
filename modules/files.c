@@ -135,8 +135,6 @@ Table get_data_from_table(Table table) {
   };
 
   file_content[size - 1] = '\0';
-  printf("->%s<-\n", file_content);
-  pause_terminal();
 
   fclose(file);
 
@@ -149,7 +147,6 @@ Table get_data_from_table(Table table) {
     lines = realloc(lines, sizeof(char*) * (count + 1));
     lines[count] = malloc((strlen(piece) + 1) * sizeof(char));
     strcpy(lines[count], piece);
- 
     piece = strtok(NULL, "\n");
     count++;
   };

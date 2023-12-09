@@ -243,11 +243,10 @@ bool column_already_exists(Column column, Table table) {
 int get_qtd_columns(char * line){
   char token[strlen(line) + 1];
   strcpy(token, line);
-
   char *piece;
   int quantity = 0;
 
-  trim(strlen(token), token);
+  trim(strlen(token) + 1, token);
   piece = strtok(token, ",");
 
   while (piece != NULL) {
@@ -340,7 +339,7 @@ Table csv_string_to_columns_names(Table table, char * line) {
   trim(strlen(aux_line) + 1, aux_line);
   
   int counter = 0;
-
+ 
   table.qtd_columns = get_qtd_columns(aux_line);
   table.columns = realloc(table.columns, table.qtd_columns * sizeof(Column));
  
@@ -372,7 +371,7 @@ Table csv_string_to_columns_types(Table table, char * line) {
     table.columns[counter].type = get_type_original(piece);
     counter++;
     piece = strtok(NULL, ",");
-  }
+  };
 
   return table;
 }
@@ -442,7 +441,7 @@ char * format_table_line_names(
   strcpy(line, "");
 
   for(int i = 0; i < qtd_columns; i++) {
-    int gap = i == qtd_columns - 1? 4:3;
+    int gap = i == qtd_columns - 1? 2:3;
     char column[columns_length[i]];
     sprintf(
       column, 
@@ -477,7 +476,7 @@ char * format_table_line_record(
   strcpy(line, "");
 
   for(int i = 0; i < qtd_columns; i++) {
-    int gap = i == qtd_columns - 1? 4:3;
+    int gap = i == qtd_columns - 1? 2:3;
     char column[columns_length[i]];
     sprintf(
       column, 
@@ -528,7 +527,15 @@ bool validate_record_value(char value[200], types type, char error[200]) {
       success = sscanf(value, "%lf", &number);
 
       if(success == 1 || strcmp(value_to_validate, "0") == 0) {
-        sprintf(value, "%.3lf", number);
+        sprintf(value, "%lf", number);
+        int right_digits = count_right_digits(value);
+
+        if(right_digits > 1) {
+          sprintf(value, "%.*lf", right_digits, number);
+        } else {
+          sprintf(value, "%.2lf", number);
+        };
+
         return true;
       };
 
