@@ -29,7 +29,8 @@ char* get_type_name(types type) {
 /// @brief Converte o texto para um type
 /// @param str a string do tipo enumerado
 /// @return O tipo correspondente à string
-types get_type_original(char str[10]) {
+types get_type_original(char * str) {
+  printf("-d>%d -> |%s|\n", strcmp(str, "Char"), str);
   if (strcmp(str, "Nat") == 0) {
     return T_NAT;
   } else if (strcmp(str, "Int") == 0) {
@@ -336,7 +337,12 @@ Table csv_string_to_columns_names(Table table, char * line) {
   char *piece;
   char aux_line[strlen(line) + 1];
   strcpy(aux_line, line);
-  trim(strlen(aux_line) + 1, aux_line);
+
+  #ifdef _WIN32
+    trim(strlen(aux_line) + 1, aux_line);
+  #else
+    trim(strlen(aux_line), aux_line);
+  #endif
   
   int counter = 0;
  
@@ -363,10 +369,14 @@ Table csv_string_to_columns_types(Table table, char * line) {
   int counter = 0; 
   char aux_line[strlen(line) + 1];
   strcpy(aux_line, line);
-  trim(strlen(aux_line) + 1, aux_line);
+
+  #ifdef _WIN32
+    trim(strlen(aux_line) + 1, aux_line);
+  #else
+    trim(strlen(aux_line), aux_line);
+  #endif
 
   piece = strtok(aux_line, ",");
-
   while (piece != NULL) {
     table.columns[counter].type = get_type_original(piece);
     counter++;

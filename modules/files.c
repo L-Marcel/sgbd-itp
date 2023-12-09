@@ -124,14 +124,14 @@ Table get_data_from_table(Table table) {
   int size = 0;
 
   while(true) {
-      char c = fgetc(file);
-      if(feof(file)) {
-        break;
-      };
+    char c = fgetc(file);
+    if(feof(file)) {
+      break;
+    };
 
-      size++;
-      file_content = realloc(file_content, sizeof(char) * size);
-      file_content[size - 1] = c;
+    size++;
+    file_content = realloc(file_content, sizeof(char) * size);
+    file_content[size - 1] = c;
   };
 
   file_content[size - 1] = '\0';
