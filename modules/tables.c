@@ -324,11 +324,7 @@ Table csv_string_to_columns_names(Table table, char *line) {
   char aux_line[strlen(line) + 1];
   strcpy(aux_line, line);
 
-#ifdef _WIN32
   trim(strlen(aux_line) + 1, aux_line);
-#else
-  trim(strlen(aux_line), aux_line);
-#endif
 
   int counter = 0;
 
@@ -356,11 +352,7 @@ Table csv_string_to_columns_types(Table table, char *line) {
   char aux_line[strlen(line) + 1];
   strcpy(aux_line, line);
 
-#ifdef _WIN32
   trim(strlen(aux_line) + 1, aux_line);
-#else
-  trim(strlen(aux_line), aux_line);
-#endif
 
   piece = strtok(aux_line, ",");
   while (piece != NULL) {
