@@ -390,7 +390,6 @@ Table csv_string_to_columns_values(
   Table table, char * line, 
   int qtd_records
 ) {
-
   char *piece;
   int counter_j = 0;
   char aux_line[strlen(line) + 1];
@@ -399,6 +398,7 @@ Table csv_string_to_columns_values(
   piece = strtok(aux_line, ",");
 
   while(piece != NULL) {
+    trim(strlen(piece) + 1, piece);
     strcpy(table.records[qtd_records - 1][counter_j].value, piece);
     counter_j++;
     piece = strtok(NULL, ",");
