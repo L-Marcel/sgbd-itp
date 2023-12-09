@@ -18,14 +18,14 @@ Table new_table_procedure(Tables tables) {
   bool table_exists = false;
   do {
     sprintf(exists_message,
-        "Já existe uma tabela chamada \"%s\"!\nNome da tabela (max: 49): ", new_table.name);
+      "Já existe uma tabela chamada \"%s\"!\nNome da tabela (max: 49): ", new_table.name);
     get_string(50, new_table.name, table_exists ? exists_message : "Nome da tabela (max: 49): ");
     table_exists = table_already_exists(new_table, tables);
   } while (table_exists);
 
   Column primary_column = {
-      .is_primary_key = true,
-      .type = T_NAT,
+    .is_primary_key = true,
+    .type = T_NAT,
   };
 
   get_string(50, primary_column.name, "Nome da chave primária (max: 49): ");
@@ -44,8 +44,8 @@ Table new_table_procedure(Tables tables) {
       will_create = false;
 
     Column new_column = {
-        .is_primary_key = false,
-        .name = "",
+      .is_primary_key = false,
+      .name = "",
     };
 
     bool column_exists = false;
@@ -59,11 +59,11 @@ Table new_table_procedure(Tables tables) {
         do {
           char exists_message[120];
           sprintf(exists_message,
-              "Já existe uma uma coluna chamada \"%s\"!\nNome da coluna (max: 49): ",
-              new_column.name);
+            "Já existe uma uma coluna chamada \"%s\"!\nNome da coluna (max: 49): ",
+            new_column.name);
 
           get_string(
-              50, new_column.name, column_exists ? exists_message : "Nome da coluna (max: 49): ");
+            50, new_column.name, column_exists ? exists_message : "Nome da coluna (max: 49): ");
           column_exists = column_already_exists(new_column, new_table);
         } while (column_exists);
 
@@ -95,7 +95,7 @@ Table new_table_procedure(Tables tables) {
       default:
         while (true) {
           printf("Deseja realmente %s a tabela \"%s\"? (Y/N): ",
-              will_create ? "criar" : "descartar", new_table.name);
+            will_create ? "criar" : "descartar", new_table.name);
 
           scanf("%c", &yes_or_no);
           clear_terminal();
@@ -131,15 +131,15 @@ Table new_record_procedure(Table table) {
     do {
       if (!is_valid) {
         sprintf(value_message, "%s\nInsira o valor do campo \"%s\" (%s): ", error,
-            table.columns[i].name, get_type_name(table.columns[i].type));
+          table.columns[i].name, get_type_name(table.columns[i].type));
       } else {
         sprintf(value_message, "Insira o valor do campo \"%s\" (%s): ", table.columns[i].name,
-            get_type_name(table.columns[i].type));
+          get_type_name(table.columns[i].type));
       };
 
       get_string(200, table.records[table.qtd_records][i].value, value_message);
       is_valid = validate_record_value(
-          table.records[table.qtd_records][i].value, table.columns[i].type, error);
+        table.records[table.qtd_records][i].value, table.columns[i].type, error);
 
       if (i == 0 && is_valid) {
         strcpy(error, "Já existe um registro com essa chave primária!");

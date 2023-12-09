@@ -81,9 +81,9 @@ void add_table(Tables *tables, Table table) {
 /// @return a tabela vazia
 Table create_empty_table() {
   Table table = {
-      .name = "",
-      .qtd_columns = 0,
-      .qtd_records = 0,
+    .name = "",
+    .qtd_columns = 0,
+    .qtd_records = 0,
   };
 
   table.columns = malloc(0);
@@ -423,7 +423,7 @@ int get_column_length(Table table, int column_index) {
 /// @param table a tabela
 /// @return a string formatada.
 char *format_table_line_names(
-    int qtd_columns, int columns_length[qtd_columns], int line_length, Table table) {
+  int qtd_columns, int columns_length[qtd_columns], int line_length, Table table) {
   char *line = malloc(sizeof(char) * line_length);
   strcpy(line, "");
 
@@ -431,7 +431,7 @@ char *format_table_line_names(
     int gap = i == qtd_columns - 1 ? 2 : 3;
     char column[columns_length[i]];
     sprintf(column, "%s%*s%s", i == 0 ? " " : "", -(columns_length[i] - gap), table.columns[i].name,
-        i == qtd_columns - 1 ? "" : " | ");
+      i == qtd_columns - 1 ? "" : " | ");
     strcat(line, column);
   };
 
@@ -447,7 +447,7 @@ char *format_table_line_names(
 /// @param table a tabela
 /// @return a string formatada.
 char *format_table_line_record(int qtd_columns, int columns_length[qtd_columns], int line_length,
-    int record_index, Table table) {
+  int record_index, Table table) {
   char *line = malloc(sizeof(char) * line_length);
   strcpy(line, "");
 
@@ -455,7 +455,7 @@ char *format_table_line_record(int qtd_columns, int columns_length[qtd_columns],
     int gap = i == qtd_columns - 1 ? 2 : 3;
     char column[columns_length[i]];
     sprintf(column, "%s%*s%s", i == 0 ? " " : "", -(columns_length[i] - gap),
-        table.records[record_index][i].value, i == qtd_columns - 1 ? "" : " | ");
+      table.records[record_index][i].value, i == qtd_columns - 1 ? "" : " | ");
     strcat(line, column);
   };
 

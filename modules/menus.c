@@ -105,7 +105,7 @@ int display_new_table_procedure_menu(Table table) {
 
   printf("Tabela: %s\n", table.name);
   printf("Colunas:\n- %s : %s (chave primaria)\n", table.columns[0].name,
-      get_type_name(table.columns[0].type));
+    get_type_name(table.columns[0].type));
 
   for (int i = 1; i < table.qtd_columns; i++) {
     printf("- %s : %s\n", table.columns[i].name, get_type_name(table.columns[i].type));

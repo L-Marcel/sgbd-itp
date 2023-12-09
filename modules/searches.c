@@ -168,7 +168,7 @@ Table filter_table(Table table, int column_option, char user_value[200], order f
   } else {
     for (i = 0; i < table.qtd_records; i++) {
       result_order = compare(user_value, table.records[i][column_option - 1].value,
-          table.columns[column_option - 1].type);
+        table.columns[column_option - 1].type);
 
       switch (filter_order) {
         case GT:
@@ -196,7 +196,7 @@ Table filter_table(Table table, int column_option, char user_value[200], order f
     Record *next = result.records[i];
     for (int j = i; j < result.qtd_records; j++) {
       if (LT == compare(next[column_option - 1].value, result.records[j][column_option - 1].value,
-                    result.columns[column_option - 1].type)) {
+                  result.columns[column_option - 1].type)) {
         Record *old_next = next;
         next = result.records[j];
         result.records[j] = old_next;
@@ -209,8 +209,8 @@ Table filter_table(Table table, int column_option, char user_value[200], order f
   clear_terminal();
   print_table(result, "encontradas");
   printf("Coluna alvo: %s (%s)\nValor alvo: %s\nOrdem: %s\n",
-      result.columns[column_option - 1].name, get_type_name(result.columns[column_option - 1].type),
-      user_value, get_order_name(filter_order));
+    result.columns[column_option - 1].name, get_type_name(result.columns[column_option - 1].type),
+    user_value, get_order_name(filter_order));
   print_divisor("", 0);
 
   return result;

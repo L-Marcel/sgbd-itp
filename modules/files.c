@@ -30,10 +30,10 @@ Tables get_tables() {
   Tables tables = {.size = 0, .list = malloc(0)};
 
   Table table = {
-      .qtd_columns = 0,
-      .qtd_records = 0,
-      .records = malloc(0),
-      .columns = malloc(0),
+    .qtd_columns = 0,
+    .qtd_records = 0,
+    .records = malloc(0),
+    .columns = malloc(0),
   };
 
   char *piece, *aux_name;

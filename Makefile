@@ -15,7 +15,6 @@ FILES = ./main.c \
 	./modules/prints.c \
 	./modules/procedures.c \
 	./modules/searches.c \
-	./modules/seeds.c \
 	./modules/tables.c \
 	./modules/utils.c \
 	./modules/headers/files.h \

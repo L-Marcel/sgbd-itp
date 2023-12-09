@@ -20,7 +20,7 @@ void print_columns(Table table, int start, bool include_primary_key) {
   int start_column = include_primary_key ? 0 : 1;
   for (int i = start_column; i < table.qtd_columns; i++) {
     printf("[%d] → %s : %s\n", i - start_column + start, table.columns[i].name,
-        get_type_name(table.columns[i].type));
+      get_type_name(table.columns[i].type));
   };
 }
 
@@ -42,7 +42,7 @@ void print_table(Table table, char turples_message[50]) {
 
   for (int i = 0; i < table.qtd_records; i++) {
     printf(
-        "%s\n", format_table_line_record(table.qtd_columns, columns_length, line_length, i, table));
+      "%s\n", format_table_line_record(table.qtd_columns, columns_length, line_length, i, table));
   };
 
   char records_text[50];

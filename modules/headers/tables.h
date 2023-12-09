@@ -55,8 +55,8 @@ Table csv_string_to_columns_values(Table table, char line[200], int qtd_records)
 
 int get_column_length(Table Table, int column_index);
 char *format_table_line_names(
-    int qtd_columns, int columns_length[qtd_columns], int line_length, Table table);
+  int qtd_columns, int columns_length[qtd_columns], int line_length, Table table);
 char *format_table_line_types(
-    int qtd_columns, int columns_length[qtd_columns], int line_length, Table table);
-char *format_table_line_record(int qtd_columns, int columns_length[qtd_columns], int line_length,
-    int record_index, Table table);
+  int qtd_columns, int columns_length[qtd_columns], int line_length, Table table);
+char *format_table_line_record(
+  int qtd_columns, int columns_length[qtd_columns], int line_length, int record_index, Table table);
