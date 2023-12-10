@@ -1,5 +1,5 @@
 # SGBD - ITP
-Projeto de SGBD realizado durante a disciplina de Introdução a Técnicas de Programação. Apresentação disponível [aqui](https://www.youtube.com/watch?v=BPqZ5fia_r8).
+Projeto de SGBD realizado durante a disciplina de Introdução a Técnicas de Programação. Apresentação disponível [aqui](https://youtu.be/-KOv9IaK7Jc).
 
 ## Alunos
 - Lucas Marcel
